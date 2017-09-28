@@ -34,6 +34,7 @@ import chri_vp_D13HDHS_D13WUHS_v1_0_2_0_ as DeviceC
 import extr_sm_SMP_111_v1_1_0_0 as DeviceD
 import extr_sm_SMP_111_v1_1_0_0_ as DeviceE
 import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceF
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0_ as DeviceG
 
 ## IP
 XTP   = DeviceA.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
@@ -41,7 +42,8 @@ ProjA = DeviceB.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
 ProjB = DeviceC.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
 RecA  = DeviceD.EthernetClass('192.168.0.13', 23, Model='SMP 111')
 RecB  = DeviceE.EthernetClass('192.168.0.14', 23, Model='SMP 111')
-LCD1  = DeviceF.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
+LCD3  = DeviceF.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
+LCD4  = DeviceG.EthernetClass('192.168.0.29', 1515, Model='LH55QMFPLGC/KR')
 
 ## Relay
 AScreenUp = RelayInterface(IPCP, 'RLY3')
@@ -174,22 +176,27 @@ ASignal20   = Button(TLP1, 147) ##Core ShareLink 2
 ASignal21   = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
 ASignal22   = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
 ## Full Display ---------------------------------------------------
-AProjAPwr   = Button(TLP1, 44)
-AProjAFre   = Button(TLP1, 45)
-AScUp       = Button(TLP1, 46)
-AScDw       = Button(TLP1, 47)
-AElUp       = Button(TLP1, 50)
-AElDw       = Button(TLP1, 51)
+AProjAPwr   = Button(TLP1, 30)
+AScUp       = Button(TLP1, 31)
+AScDw       = Button(TLP1, 32)
+AElUp       = Button(TLP1, 33)
+AElDw       = Button(TLP1, 34)
 
-AProjBPwr   = Button(TLP1, 33)
-AProjBFre   = Button(TLP1, 32)
+AProjBPwr   = Button(TLP1, 35)
+A2ScUp      = Button(TLP1, 36)
+A2ScDw      = Button(TLP1, 37)
+A2ElUp      = Button(TLP1, 38)
+A2ElDw      = Button(TLP1, 39)
 
-A2ScUp      = Button(TLP1, 30)
-A2ScDw      = Button(TLP1, 31)
-A2ElUp      = Button(TLP1, 48)
-A2ElDw      = Button(TLP1, 49)
+ALCDCab1    = Button(TLP1, 42)
+ALCDCab2    = Button(TLP1, 41)
+ALCDCab3    = Button(TLP1, 40)
+ALCDLobby   = Button(TLP1, 43)
 
-ALCD1       = Button(TLP1, 40)
+A2LCDCab1   = Button(TLP1, 44)
+A2LCDCab2   = Button(TLP1, 45)
+A2LCDCab3   = Button(TLP1, 46)
+A2LCDLobby  = Button(TLP1, 47)
 
 ## Full Rec ---------------------------------------------------
 Astop      = Button(TLP1, 60)
@@ -269,8 +276,8 @@ Inputs = [AInput1, AInput2, AInput3, AInput4, AInput5, AInput6, AInput7, AInput8
           AInput9, AInput10, AInput11, AInput12, AInput13, AInput14, AInput17,
           AInput18, AInput19, AInput20, AInput21, AInput22]
 GroupInputs = MESet(Inputs)
-ProjeccionA = [AProjAPwr, AProjAFre, AScUp, AScDw, AElUp, AElDw, ALCD1]
-ProjeccionB = [AProjBPwr, AProjBFre, A2ScUp, A2ScDw, A2ElUp, A2ElDw]
+ProjeccionA = [AProjAPwr, AScUp, AScDw, AElUp, AElDw, ALCDCab1, ALCDCab2, ALCDCab3, ALCDLobby]
+ProjeccionB = [AProjBPwr, A2ScUp, A2ScDw, A2ElUp, A2ElDw, A2LCDCab1, A2LCDCab2, A2LCDCab3, A2LCDLobby]
 
 GroupScreenA = MESet([AScUp, AScDw])
 GroupElevatA = MESet([AElUp, AElDw])
@@ -287,7 +294,7 @@ ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 ## End Communication Interface Definition --------------------------------------
 
 def Initialize():
-    """This is the last function that loads when starting the system """
+    """This is the last function that loads when starting the system"""
     ## Open Sockets
     ## IP
     XTP.Connect()
@@ -295,7 +302,8 @@ def Initialize():
     ProjB.Connect()
     RecA.Connect()
     RecB.Connect()
-    LCD1.Connect()
+    LCD3.Connect()
+    LCD4.Connect()
 
     ## XTP Matrix Data Init
     global output
@@ -312,7 +320,7 @@ def Initialize():
 
 ## SUBSCRIBE FUNCTIONS ---------------------------------------------------------
 def subscribe_matrix():
-    """This send Subscribe Commands to Device """
+    """This send Subscribe Commands to Device"""
     ## Socket Status
     XTP.SubscribeStatus('ConnectionStatus', None, matrix_parsing)
     ## Input Signal Status
@@ -384,25 +392,23 @@ def subscribe_matrix():
     pass
 
 def subscribe_projectorA():
-    """This send Subscribe Commands to Device """
+    """This send Subscribe Commands to Device"""
     ## Socket Status
     ProjA.SubscribeStatus('ConnectionStatus', None, projectorA_parsing)
     ## Device Status
     ProjA.SubscribeStatus('Power', None, projectorA_parsing)
-    ProjA.SubscribeStatus('Freeze', None, projectorA_parsing)
     pass
 
 def subscribe_projectorB():
-    """This send Subscribe Commands to Device """
+    """This send Subscribe Commands to Device"""
     ## Socket Status
     ProjB.SubscribeStatus('ConnectionStatus', None, projectorB_parsing)
     ## Device Status
     ProjB.SubscribeStatus('Power', None, projectorB_parsing)
-    ProjB.SubscribeStatus('Freeze', None, projectorB_parsing)
     pass
 
 def subscribe_recA():
-    """This send Subscribe Commands to Device """
+    """This send Subscribe Commands to Device"""
     ## Socket Status
     RecA.SubscribeStatus('ConnectionStatus', None, recA_parsing)
     ## Device Status
@@ -417,7 +423,7 @@ def subscribe_recA():
     pass
 
 def subscribe_recB():
-    """This send Subscribe Commands to Device """
+    """This send Subscribe Commands to Device"""
     ## Socket Status
     RecB.SubscribeStatus('ConnectionStatus', None, recB_parsing)
     ## Device Status
@@ -431,15 +437,23 @@ def subscribe_recB():
     RecB.SubscribeStatus('CurrentRecordingDuration', None, recB_parsing)
     pass
 
-def subscribe_LCD1():
-    """This send Subscribe Commands to Device """
+def subscribe_LCD3():
+    """This send Subscribe Commands to Device"""
     ## Socket Status
-    LCD1.SubscribeStatus('ConnectionStatus', None, Lcd1_parsing)
+    LCD3.SubscribeStatus('ConnectionStatus', None, Lcd3_parsing)
     ## Device Status
-    LCD1.SubscribeStatus('Power', None, Lcd1_parsing)
-    LCD1.SubscribeStatus('Input', None, Lcd1_parsing)
+    LCD3.SubscribeStatus('Power', None, Lcd3_parsing)
+    LCD3.SubscribeStatus('Input', None, Lcd3_parsing)
     pass
 
+def subscribe_LCD4():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCD4.SubscribeStatus('ConnectionStatus', None, Lcd4_parsing)
+    ## Device Status
+    LCD4.SubscribeStatus('Power', None, Lcd4_parsing)
+    LCD4.SubscribeStatus('Input', None, Lcd4_parsing)
+    pass
 ## UPDATE FUNCTIONS ------------------------------------------------------------
 def update_matrix():
     """This send Update Commands to Device"""
@@ -479,13 +493,11 @@ def update_matrix():
 def update_projectorA():
     """This send Update Commands to Device"""
     ProjA.Update('Power')
-    ProjA.Update('Freeze')
     pass
 
 def update_projectorB():
     """This send Update Commands to Device"""
     ProjB.Update('Power')
-    ProjB.Update('Freeze')
     pass
 
 def update_recA():
@@ -512,10 +524,16 @@ def update_recB():
     RecB.Update('CurrentRecordingDuration')
     pass
 
-def update_LCD1():
+def update_LCD3():
     """This send Update Commands to Device"""
-    LCD1.Update('Power')
-    LCD1.Update('Input')
+    LCD3.Update('Power')
+    LCD3.Update('Input')
+    pass
+
+def update_LCD4():
+    """This send Update Commands to Device"""
+    LCD4.Update('Power')
+    LCD4.Update('Input')
     pass
 
 ## DATA PARSING FUNCTIONS ------------------------------------------------------
@@ -525,7 +543,7 @@ def update_LCD1():
 def matrix_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('Matrix Module Conex status: {}'.format(value))
+        print('> Module: ' + value + " | XTP II 3200")
         #
         if value == 'Connected':
             Matrix_Data['ConexModule'] = True
@@ -538,10 +556,10 @@ def matrix_parsing(command, value, qualifier):
     
     elif command == 'InputSignal':
         if value == 'Active':
-            print('Input ' + qualifier['Input'] + ' ...')
+            print('--- Parsing Matrix: (Input ' + qualifier['Input'] + ' Ok)' )
         else:
-            print('Input ' + qualifier['Input'] + ': Ok')
-
+            print('--- Parsing Matrix: (Input ' + qualifier['Input'] + ' ...)')
+        #
         # XTP Slot 1-------------------
         if qualifier['Input'] == '1':
             if value == 'Active':
@@ -566,7 +584,7 @@ def matrix_parsing(command, value, qualifier):
                 ASignal4.SetState(1)
             else:
                 ASignal4.SetState(0)
-        
+        #
         # XTP Slot 2--------------------
         if qualifier['Input'] == '5':
             if value == 'Active':
@@ -591,7 +609,7 @@ def matrix_parsing(command, value, qualifier):
                 ASignal8.SetState(1)
             else:
                 ASignal8.SetState(0)
-        
+        #
         # XTP Slot 3--------------------
         elif qualifier['Input'] == '9':
             if value == 'Active':
@@ -616,7 +634,7 @@ def matrix_parsing(command, value, qualifier):
                 ASignal12.SetState(1)
             else:
                 ASignal12.SetState(0)
-        
+        #
         # XTP Slot 4--------------------
         elif qualifier['Input'] == '13':
             if value == 'Active':
@@ -629,7 +647,7 @@ def matrix_parsing(command, value, qualifier):
                 ASignal14.SetState(1)
             else:
                 ASignal14.SetState(0)
-        
+        #
         # XTP Slot 5---------------------
         elif qualifier['Input'] == '17':
             if value == 'Active':
@@ -654,7 +672,7 @@ def matrix_parsing(command, value, qualifier):
                 ASignal20.SetState(1)
             else:
                 ASignal20.SetState(0)
-
+        #
         # XTP Slot 6--------------------
         elif qualifier['Input'] == '21':
             if value == 'Active':
@@ -669,55 +687,53 @@ def matrix_parsing(command, value, qualifier):
                 ASignal22.SetState(0)
 
     elif command == 'OutputTieStatus':
-            if value == '1':
-                GroupInputs.SetCurrent(AInput1)
-            elif value == '2':
-                GroupInputs.SetCurrent(AInput2)
-            elif value == '3':
-                GroupInputs.SetCurrent(AInput3)
-            elif value == '4':
-                GroupInputs.SetCurrent(AInput4)
-            elif value == '5':
-                GroupInputs.SetCurrent(AInput5)
-            elif value == '6':
-                GroupInputs.SetCurrent(AInput6)
-            elif value == '7':
-                GroupInputs.SetCurrent(AInput7)
-            elif value == '8':
-                GroupInputs.SetCurrent(AInput8)
-            elif value == '9':
-                GroupInputs.SetCurrent(AInput9)
-            elif value == '10':
-                GroupInputs.SetCurrent(AInput10)
-            elif value == '11':
-                GroupInputs.SetCurrent(AInput11)
-            elif value == '12':
-                GroupInputs.SetCurrent(AInput12)
-            elif value == '13':
-                GroupInputs.SetCurrent(AInput13)
-            elif value == '14':
-                GroupInputs.SetCurrent(AInput14)
-            elif value == '17':
-                GroupInputs.SetCurrent(AInput17)
-            elif value == '18':
-                GroupInputs.SetCurrent(AInput18)
-            elif value == '19':
-                GroupInputs.SetCurrent(AInput19)
-            elif value == '20':
-                GroupInputs.SetCurrent(AInput20)
-            elif value == '21':
-                GroupInputs.SetCurrent(AInput21)
-            elif value == '22':
-                GroupInputs.SetCurrent(AInput22)
-
-            print(qualifier)
-            print(value)
+        print('--- Parsing Matrix: (Out ' +  qualifier['Output'] + ' In ' + value + ' ' + qualifier['Tie Type'] + ')')
+        if value == '1':
+            GroupInputs.SetCurrent(AInput1)
+        elif value == '2':
+            GroupInputs.SetCurrent(AInput2)
+        elif value == '3':
+            GroupInputs.SetCurrent(AInput3)
+        elif value == '4':
+            GroupInputs.SetCurrent(AInput4)
+        elif value == '5':
+            GroupInputs.SetCurrent(AInput5)
+        elif value == '6':
+            GroupInputs.SetCurrent(AInput6)
+        elif value == '7':
+            GroupInputs.SetCurrent(AInput7)
+        elif value == '8':
+            GroupInputs.SetCurrent(AInput8)
+        elif value == '9':
+            GroupInputs.SetCurrent(AInput9)
+        elif value == '10':
+            GroupInputs.SetCurrent(AInput10)
+        elif value == '11':
+            GroupInputs.SetCurrent(AInput11)
+        elif value == '12':
+            GroupInputs.SetCurrent(AInput12)
+        elif value == '13':
+            GroupInputs.SetCurrent(AInput13)
+        elif value == '14':
+            GroupInputs.SetCurrent(AInput14)
+        elif value == '17':
+            GroupInputs.SetCurrent(AInput17)
+        elif value == '18':
+            GroupInputs.SetCurrent(AInput18)
+        elif value == '19':
+            GroupInputs.SetCurrent(AInput19)
+        elif value == '20':
+            GroupInputs.SetCurrent(AInput20)
+        elif value == '21':
+            GroupInputs.SetCurrent(AInput21)
+        elif value == '22':
+            GroupInputs.SetCurrent(AInput22)
     pass
 
 def projectorA_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('Christie A Module Conex status: {}'.format(value))
+        print('> Module: ' + value + " | Projector A")
         #
         if value == 'Connected':
             ProjectorA_Data['ConexModule'] = True
@@ -729,29 +745,21 @@ def projectorA_parsing(command, value, qualifier):
             ProjA.Disconnect()
     
     elif command == 'Power':
-        print('Christie A Power: ' + value)
+        print('--- Parsing Projector A: ' + command + ' ' + value)
         AInfoProjA.SetText(value)
+        #
         if value == 'On':
             ProjectorA_Data['Power'] == True
             AProjAPwr.SetState(1)
         else:
             ProjectorA_Data['Power'] == False
             AProjAPwr.SetState(0)
-    
-    elif command == 'Freeze':
-        print('Christie A Freeze: ' + value)
-        if value == 'On':
-            ProjectorA_Data['Freeze'] == True
-            AProjAFre.SetState(1)
-        else:
-            ProjectorA_Data['Freeze'] == False
-            AProjAFre.SetState(0)
     pass
 
 def projectorB_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('Christie B Module Conex status: {}'.format(value))
+        print('> Module: ' + value + " | Projector B")
         #
         if value == 'Connected':
             ProjectorB_Data['ConexModule'] = True
@@ -764,29 +772,21 @@ def projectorB_parsing(command, value, qualifier):
             ProjB.Disconnect()
 
     elif command == 'Power':
-        print('Christie B Power: ' + value)
+        print('--- Parsing Projector A: ' + command + ' ' + value)
         AInfoProjB.SetText(value)
+        #
         if value == 'On':
             ProjectorB_Data['Power'] == True
             AProjBPwr.SetState(1)
         else:
             ProjectorB_Data['Power'] == False
             AProjBPwr.SetState(0)
-    
-    elif command == 'Freeze':
-        print('Christie B Freeze: ' + value)
-        if value == 'On':
-            ProjectorB_Data['Freeze'] == True
-            AProjBFre.SetState(1)
-        else:
-            ProjectorB_Data['Freeze'] == False
-            AProjBFre.SetState(0)
     pass
 
 def recA_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('SMP111-A Module Conex status: {}'.format(value))
+        print('> Module: ' + value + " | Recorder A")
         #
         if value == 'Connected':
             RecA_Data['ConexModule'] = True
@@ -798,7 +798,7 @@ def recA_parsing(command, value, qualifier):
             RecA.Disconnect()
     #
     elif command == 'Record':
-        print('SMP111-A Record: ' + value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
         AinfoRecA.SetText(value)
         if value == 'Start':
             GroupRecA.SetCurrent(Arecord)
@@ -809,35 +809,35 @@ def recA_parsing(command, value, qualifier):
     #
     elif command == 'RecordDestination':
         ARecDestine.SetText(value)
-        print('SMP111-A RecordDestination: ' + value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
         ARecMode.SetText(value)
-        print('SMP111-A RecordingMode: ' + value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
         ARecResolut.SetText(value)
-        print('SMP111-A VideoResolution: ' + value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
         ARecHDCP.SetText(value)
-        print('SMP111-A HDCPStatus: ' + value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
             ARecDisk.SetText('Disk Free: ' + str(value) + 'GB')
-            print('SMP111-A Drive Free Space: ' + str(value))
+            print('--- Parsing Recorder A: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
-        print('SMP111-A Elapsed: ' + value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
         Atime.SetText(value)
     pass
 
 def recB_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('SMP111-B Module Conex status: {}'.format(value))
+        print('> Module: ' + value + " | Recorder B")
         #
         if value == 'Connected':
             RecB_Data['ConexModule'] = True
@@ -849,7 +849,7 @@ def recB_parsing(command, value, qualifier):
             RecB.Disconnect()
     #
     elif command == 'Record':
-        print('SMP111-B Record: ' + value)
+        print('--- Parsing Recorder B: ' + command + ' ' + value)
         AinfoRecB.SetText(value)
         if value == 'Start':
             GroupRecB.SetCurrent(A2record)
@@ -860,83 +860,94 @@ def recB_parsing(command, value, qualifier):
     #
     elif command == 'RecordDestination':
         A2RecDestine.SetText(value)
-        print('SMP111-B RecordDestination: ' + value)
+        print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
         A2RecMode.SetText(value)
-        print('SMP111-B RecordingMode: ' + value)
+        print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
         A2RecResolut.SetText(value)
-        print('SMP111-B VideoResolution: ' + value)
+        print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
         A2RecHDCP.SetText(value)
-        print('SMP111-B HDCPStatus: ' + value)
+        print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
             A2RecDisk.SetText('Disk Free: ' + str(value) + 'GB')
-            print('SMP111-B Drive Free Space: ' + str(value))
+            print('--- Parsing Recorder B: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
-        print('SMP111-B Elapsed: ' + value)
+        print('--- Parsing Recorder B: ' + command + ' ' + value)
         A2time.SetText(value)
     pass
 
-def Lcd1_parsing(command, value, qualifier):
+def Lcd3_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('LCD Module Conex status: {}'.format(value))
+        print('> Module: ' + value + " | LCD Left Cabina 1")
         #
         if value == 'Connected':
-            LCD1_Data['ConexModule'] = True
+            LCD3_Data['ConexModule'] = True
         else:
-            LCD1_Data['ConexModule'] = False
+            LCD3_Data['ConexModule'] = False
             ## Disconnect the IP Socket
-            LCD1.Disconnect()
+            LCD3.Disconnect()
     #
     elif command == 'Power':
-        print('LCD1 Power: ' + value)        
+        print('--- Parsing LCD3: ' + command + ' ' + value)
         if value == 'On':
-            ALCD1.SetState(1)
+            ALCDCab1.SetState(1)
         else:
-            ALCD1.SetState(0)
+            ALCDCab1.SetState(0)
     #
     elif command == 'Input':
-        print('LCD1 Input: ' + value)
+        print('--- Parsing LCD3: ' + command + ' ' + value)
     pass
+
+def Lcd4_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD Center Cabina 1")
+        #
+        if value == 'Connected':
+            LCD4_Data['ConexModule'] = True
+        else:
+            LCD4_Data['ConexModule'] = False
+            ## Disconnect the IP Socket
+            LCD4.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD4: ' + command + ' ' + value)
+        if value == 'On':
+            ALCDCab2.SetState(1)
+        else:
+            ALCDCab2.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD4: ' + command + ' ' + value)
+    pass
+
 ## EVENT FUNCTIONS ----------------------------------------------------------------
 ## This functions report a 'Online' / 'Offline' status after to send a Connect()
 ## CAUTION: If you never make a Connect(), the Module never work with Subscriptions
-@event(LCD1, 'Connected')
-@event(LCD1, 'Disconnected')
-def matrix_conex_event(interface, state):
-    """LCD1 CONNECT() STATUS """
-    print('LCD1 Conex Event: ' + state)
-    if state == 'Connected':
-        LCD1_Data['ConexEvent'] = True
-        ## Send & Query Information
-        subscribe_LCD1()
-        update_LCD1()
-    elif state == 'Disconnected':
-        LCD1_Data['ConexEvent'] = False
-        trying_LCD1()
-    pass
-
 @event(XTP, 'Connected')
 @event(XTP, 'Disconnected')
 def matrix_conex_event(interface, state):
-    """MATRIX CONNECT() STATUS """
-    print('Matrix Conex Event: ' + state)
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | XTP II 3200")
+    #
     if state == 'Connected':
         Matrix_Data['ConexEvent'] = True
         ALANXtp.SetText('Online')
         ## Send & Query Information
         subscribe_matrix()
         update_matrix()
-    elif state == 'Disconnected':
+    else:
         Matrix_Data['ConexEvent'] = False
         ALANXtp.SetText('Fail')
         trying_matrix()
@@ -945,15 +956,17 @@ def matrix_conex_event(interface, state):
 @event(ProjA, 'Connected')
 @event(ProjA, 'Disconnected')
 def projectorA_conex_event(interface, state):
-    """CHRISTIE A CONNECT() STATUS """
-    print('Christie Conex Event: ' + state)
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Projector A")
+    #
     if state == 'Connected':
         ProjectorA_Data['ConexEvent'] = True
         ALANProjA.SetText('Online')
         ## Send & Query Information
         subscribe_projectorA()
         update_projectorA()
-    elif state == 'Disconnected':
+    else:
         ALANProjA.SetText('Fail')
         ProjectorA_Data['ConexEvent'] = False
         trying_projectorA()
@@ -962,15 +975,17 @@ def projectorA_conex_event(interface, state):
 @event(ProjB, 'Connected')
 @event(ProjB, 'Disconnected')
 def projectorB_conex_event(interface, state):
-    """CHRISTIE B CONNECT() STATUS """
-    print('Christie Conex Event: ' + state)
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Projector B")
+    #
     if state == 'Connected':
         ProjectorB_Data['ConexEvent'] = True
         ALANProjB.SetText('Online')
         ## Send & Query Information
         subscribe_projectorB()
         update_projectorB()
-    elif state == 'Disconnected':
+    else:
         ProjectorB_Data['ConexEvent'] = False
         ALANProjB.SetText('Fail')
         trying_projectorB()
@@ -979,15 +994,17 @@ def projectorB_conex_event(interface, state):
 @event(RecA, 'Connected')
 @event(RecA, 'Disconnected')
 def SMP111_A_conex_event(interface, state):
-    """SMP111-A CONNECT() STATUS """
-    print('SMP111-A Conex Event: ' + state)
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Recorder A")
+    #
     if state == 'Connected':
         RecA_Data['ConexEvent'] = True
         ALANRecA.SetText('Online')
         ## Send & Query Information
         subscribe_recA()
         update_recA()
-    elif state == 'Disconnected':
+    else:
         RecA_Data['ConexEvent'] = False
         ALANRecA.SetText('Fail')
         trying_recA()
@@ -996,18 +1013,54 @@ def SMP111_A_conex_event(interface, state):
 @event(RecB, 'Connected')
 @event(RecB, 'Disconnected')
 def SMP111_B_conex_event(interface, state):
-    """SMP111-B CONNECT() STATUS """
-    print('SMP111-B Conex Event: ' + state)
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Recorder B")
+    #
     if state == 'Connected':
         RecB_Data['ConexEvent'] = True
         ALANRecB.SetText('Online')
         ## Send & Query Information
         subscribe_recB()
         update_recB()
-    elif state == 'Disconnected':
+    else:
         RecB_Data['ConexEvent'] = False
         ALANRecB.SetText('Online')
         trying_recB()
+    pass
+
+@event(LCD3, 'Connected')
+@event(LCD3, 'Disconnected')
+def LCD3_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD Left Cabin 1")
+    #
+    if state == 'Connected':
+        LCD3_Data['ConexEvent'] = True
+        ## Send & Query Information
+        subscribe_LCD3()
+        update_LCD3()
+    else:
+        LCD3_Data['ConexEvent'] = False
+        trying_LCD3()
+    pass
+
+@event(LCD4, 'Connected')
+@event(LCD4, 'Disconnected')
+def LCD4_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD Center Cabin 1")
+    #
+    if state == 'Connected':
+        LCD4_Data['ConexEvent'] = True
+        ## Send & Query Information
+        subscribe_LCD4()
+        update_LCD4()
+    else:
+        LCD4_Data['ConexEvent'] = False
+        trying_LCD4()
     pass
 
 ## RECURSIVE FUNCTIONS ------------------------------------------------------------
@@ -1052,13 +1105,21 @@ def trying_recB():
     pass
 loop_trying_recB = Wait(5, trying_recB)
 
-def trying_LCD1():
+def trying_LCD3():
     """Try to make a Connect() to device"""
-    if LCD1_Data['ConexEvent'] == False:
-        print('Tryng to make a Connect() in LCD1')
-        LCD1.Connect(4) ## Have 4 seconds to try to connect
+    if LCD3_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCD3')
+        LCD3.Connect(4) ## Have 4 seconds to try to connect
     pass
-loop_trying_LCD1 = Wait(5, trying_LCD1)
+loop_trying_LCD3 = Wait(5, trying_LCD3)
+
+def trying_LCD4():
+    """Try to make a Connect() to device"""
+    if LCD4_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCD4')
+        LCD4.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCD4 = Wait(5, trying_LCD4)
 ## RECURSIVE LOOP FUNCTIONS -----------------------------------------------------------
 ## This not affect any device
 ## This return True / False when no response is received from Module
@@ -1094,11 +1155,17 @@ def update_loop_recB():
     loop_update_recB.Restart()
 loop_update_recB = Wait(12, update_loop_recB)
 
-def update_loop_LCD1():
+def update_loop_LCD3():
     """Continuos Update Commands to produce Module Connected / Disconnected"""
-    LCD1.Update('Power')
-    loop_update_LCD1.Restart()
-loop_update_LCD1 = Wait(12, update_loop_LCD1)
+    LCD3.Update('Power')
+    loop_update_LCD3.Restart()
+loop_update_LCD3 = Wait(12, update_loop_LCD3)
+
+def update_loop_LCD4():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCD4.Update('Power')
+    loop_update_LCD4.Restart()
+loop_update_LCD4 = Wait(12, update_loop_LCD4)
 
 ## DATA DICTIONARIES -----------------------------------------------------------
 ## Each dictionary store the real time information of room devices
@@ -1116,14 +1183,12 @@ ProjectorA_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
     'Power'  : None,
-    'Freeze' : None,
 }
 
 ProjectorB_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
     'Power'  : None,
-    'Freeze' : None,
 }
 
 RecA_Data = {
@@ -1136,7 +1201,12 @@ RecB_Data = {
     'ConexEvent' : None,
 }
 
-LCD1_Data = {
+LCD3_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCD4_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
 }
@@ -1144,6 +1214,8 @@ LCD1_Data = {
 ## Index Page
 @event(Index, 'Pressed')
 def Index(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     if button.Host.DeviceAlias == 'TouchPanelA':
         TLP1.ShowPage('Main')
         print("Touch 1: {0}".format("Index"))
@@ -1155,6 +1227,8 @@ def Index(button, state):
 ## Room Page
 @event(ModeRoom, 'Pressed')
 def Index(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     if button.Host.DeviceAlias == 'TouchPanelA':
         #
         #Mutually Exclusive
@@ -1177,6 +1251,7 @@ def Index(button, state):
 
 @event(Main, 'Pressed')
 def FullMain(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
     #
     if button.Host.DeviceAlias == 'TouchPanelA':
         GroupMainA.SetCurrent(button)
@@ -1343,6 +1418,8 @@ def FunctionActiveTie(output):
 
 @event(Outputs, 'Pressed')
 def OutsSwitching(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     ## Mutually Exclusive
     GroupOutputs.SetCurrent(button)
     global output
@@ -1478,6 +1555,8 @@ def OutsSwitching(button, state):
 
 @event(Inputs, 'Pressed')
 def InSwitching(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     ## Data Init
     global output
     global input
@@ -1591,47 +1670,57 @@ def InSwitching(button, state):
     pass
 
 def Room1ScreenUp():
+    """Control of Relays"""
     AScreenDw.SetState('Open')
     AScreenUp.SetState('Close')
     pass
 
 def Room1ScreenDown():
+    """Control of Relays"""
     AScreenUp.SetState('Open')
     AScreenDw.SetState('Close')
     pass
 
 def Room1ElevatorUp():
+    """Control of Relays"""
     AElevatDw.SetState('Open')
     AElevatUp.SetState('Close')
     pass
 
 def Room1ElevatorDown():
+    """Control of Relays"""
     AElevatUp.SetState('Open')
     AElevatDw.SetState('Close')
     pass
 
 def Room2ScreenUp():
+    """Control of Relays"""
     A2ScreenDw.SetState('Open')
     A2ScreenUp.SetState('Close')
     pass
 
 def Room2ScreenDown():
+    """Control of Relays"""
     A2ScreenUp.SetState('Open')
     A2ScreenDw.SetState('Close')
     pass
 
 def Room2ElevatorUp():
+    """Control of Relays"""
     A2ElevatDw.SetState('Open')
     A2ElevatUp.SetState('Close')
     pass
 
 def Room2ElevatorDown():
+    """Control of Relays"""
     A2ElevatUp.SetState('Open')
     A2ElevatDw.SetState('Close')
     pass
 
 @event(ProjeccionA, 'Pressed')
 def ButtonObjectPressed(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     if button is AProjAPwr:
         if ProjA.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 1: PowerOff"))
@@ -1639,14 +1728,6 @@ def ButtonObjectPressed(button, state):
         else:
             print("Touch 1: {0}".format("Proyector 1: PowerOn"))
             ProjA.Set('Power','On')
-    #
-    elif button is AProjAFre:
-        if ProjA.ReadStatus('Freeze',None) == 'On':
-            print("Touch 1: {0}".format("Proyector 1: Freeze Off"))
-            ProjA.Set('Freeze','Off')
-        else:
-            print("Touch 1: {0}".format("Proyector 1: Freeze On"))
-            ProjA.Set('Freeze','On')
     #
     elif button is AScUp:
         GroupScreenA.SetCurrent(AScUp)
@@ -1668,17 +1749,27 @@ def ButtonObjectPressed(button, state):
         Room1ElevatorDown()
         print("Touch 1: {0}".format("Elevator 1: Down"))
     #
-    elif button is ALCD1:
-        if LCD1.ReadStatus('Power', None) == 'On':
-            LCD1.Set('Power','Off')
-            print("Touch 1: {0}".format("LCD 1 Power Off"))
+    elif button is ALCDCab1:
+        if LCD3.ReadStatus('Power', None) == 'On':
+            LCD3.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD 3 Power Off"))
         else:
-            LCD1.Set('Power','On')
-            print("Touch 1: {0}".format("LCD 1 Power On"))
+            LCD3.Set('Power','On')
+            print("Touch 1: {0}".format("LCD 3 Power On"))
+    #
+    elif button is ALCDCab2:
+        if LCD4.ReadStatus('Power', None) == 'On':
+            LCD4.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD 4 Power Off"))
+        else:
+            LCD4.Set('Power','On')
+            print("Touch 1: {0}".format("LCD 4 Power On"))
     pass
 
 @event(ProjeccionB, 'Pressed')
 def ButtonObjectPressed(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     if button is AProjBPwr:
         if ProjB.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 2: PowerOff"))
@@ -1686,14 +1777,6 @@ def ButtonObjectPressed(button, state):
         else:
             print("Touch 1: {0}".format("Proyector 2: PowerOn"))
             ProjB.Set('Power','On')
-    #
-    elif button is AProjBFre:
-        if ProjB.ReadStatus('Freeze',None) == 'On':
-            print("Touch 1: {0}".format("Proyector 2: Freeze Off"))
-            ProjB.Set('Freeze','Off')
-        else:
-            print("Touch 1: {0}".format("Proyector 2: Freeze On"))
-            ProjB.Set('Freeze','On')
     #
     elif button is A2ScUp:
         GroupScreen2A.SetCurrent(A2ScUp)
@@ -1718,6 +1801,8 @@ def ButtonObjectPressed(button, state):
 
 @event(Rec, 'Pressed')
 def ButtonObjectPressed(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
     if button is Arecord:
         RecA.Set('Record','Start')
         print("Touch 1: {0}".format("SMP11-A: Rec"))
