@@ -1,9 +1,16 @@
+"""--------------------------------------------------------------------------
+ Business   | Asesores y Consultores en Tecnología S.A. de C.V.
+ Programmer | Dyanko Cisneros Mendoza
+ Customer   | Colegio de México (COLMEX)
+ Project    | Alfonso Reyes Auditorium
+ Version    | 0.1 --------------------------------------------------------- """
+
 ## Begin ControlScript Import --------------------------------------------------
 from extronlib import event, Version
 from extronlib.device import eBUSDevice, ProcessorDevice, UIDevice
-from extronlib.interface import (ContactInterface, DigitalIOInterface,
-    EthernetClientInterface, EthernetServerInterfaceEx, FlexIOInterface,
-    IRInterface, RelayInterface, SerialInterface, SWPowerInterface,
+from extronlib.interface import (ContactInterface, DigitalIOInterface, \
+    EthernetClientInterface, EthernetServerInterfaceEx, FlexIOInterface, \
+    IRInterface, RelayInterface, SerialInterface, SWPowerInterface, \
     VolumeInterface)
 from extronlib.ui import Button, Knob, Label, Level
 from extronlib.system import Clock, MESet, Wait
@@ -12,12 +19,6 @@ print(Version())
 
 ## End ControlScript Import ----------------------------------------------------
 ##
-## Begin User Import -----------------------------------------------------------
-import extr_matrix_XTPIICrossPointSeries_v1_1_1_1 as DeviceA
-Matrix = DeviceA.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
-
-## End User Import -------------------------------------------------------------
-##
 ## Begin Device/Processor Definition -------------------------------------------
 IPCP = ProcessorDevice('IPCP550')
 ## End Device/Processor Definition ---------------------------------------------
@@ -25,6 +26,41 @@ IPCP = ProcessorDevice('IPCP550')
 ## Begin Device/User Interface Definition --------------------------------------
 TLP1 = UIDevice('TouchPanelA')
 TLP2 = UIDevice('TouchPanelB')
+## Begin User Import -----------------------------------------------------------
+## IP Modules
+import extr_matrix_XTPIICrossPointSeries_v1_1_1_1 as DeviceA
+import chri_vp_D13HDHS_D13WUHS_v1_0_2_0 as DeviceB
+import chri_vp_D13HDHS_D13WUHS_v1_0_2_0_ as DeviceC
+import extr_sm_SMP_111_v1_1_0_0 as DeviceD
+import extr_sm_SMP_111_v1_1_0_0_ as DeviceE
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceF
+
+## IP
+XTP   = DeviceA.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
+ProjA = DeviceB.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
+ProjB = DeviceC.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
+RecA  = DeviceD.EthernetClass('192.168.0.13', 23, Model='SMP 111')
+RecB  = DeviceE.EthernetClass('192.168.0.14', 23, Model='SMP 111')
+LCD1  = DeviceF.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
+
+## Relay
+AScreenUp = RelayInterface(IPCP, 'RLY3')
+AScreenDw = RelayInterface(IPCP, 'RLY4')
+AElevatUp = RelayInterface(IPCP, 'RLY7')
+AElevatDw = RelayInterface(IPCP, 'RLY8')
+A2ScreenUp = RelayInterface(IPCP, 'RLY1')
+A2ScreenDw = RelayInterface(IPCP, 'RLY2')
+A2ElevatUp = RelayInterface(IPCP, 'RLY5')
+A2ElevatDw = RelayInterface(IPCP, 'RLY6')
+
+## 12v Power Interface
+SWPowerPort1 = SWPowerInterface(IPCP, 'SPI1')
+SWPowerPort2 = SWPowerInterface(IPCP, 'SPI2')
+SWPowerPort3 = SWPowerInterface(IPCP, 'SPI3')
+SWPowerPort4 = SWPowerInterface(IPCP, 'SPI4')
+
+
+## End User Import -------------------------------------------------------------
 
 ## End Device/User Interface Definition ----------------------------------------
 ##
@@ -32,7 +68,11 @@ TLP2 = UIDevice('TouchPanelB')
 # TouchPanel A -----------------------------------------------------------------
 ## Index
 ABtnIndex = Button(TLP1, 1)
-## Full Main - Lateral Bar
+## Full Room ---------------------------------------------------
+ARoomSplit = Button(TLP1, 240)
+ARoomMixed = Button(TLP1, 241)
+
+## Full Main - Lateral Bar -------------------------------------
 ABtnRoom    = Button(TLP1, 10)
 ABtnSwitch  = Button(TLP1, 11)
 ABtnDisplay = Button(TLP1, 12)
@@ -44,8 +84,8 @@ ABtnInfo    = Button(TLP1, 17)
 ABtnPower   = Button(TLP1, 18)
 ## Full Main - Up Bar
 ALblMain    = Label(TLP1, 20)
-ABtnRoom1   = Button(TLP1, 21)
-ABtnRoom2   = Button(TLP1, 22)
+ABtnRoom2   = Button(TLP1, 21)
+ABtnRoom1   = Button(TLP1, 22)
 ## Full Switching---------------------------------------------
 ## Outputs
 ## XTP Out Slot 1
@@ -133,6 +173,62 @@ ASignal20   = Button(TLP1, 147) ##Core ShareLink 2
 ## XTP Slot 6
 ASignal21   = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
 ASignal22   = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
+## Full Display ---------------------------------------------------
+AProjAPwr   = Button(TLP1, 44)
+AProjAFre   = Button(TLP1, 45)
+AScUp       = Button(TLP1, 46)
+AScDw       = Button(TLP1, 47)
+AElUp       = Button(TLP1, 50)
+AElDw       = Button(TLP1, 51)
+
+AProjBPwr   = Button(TLP1, 33)
+AProjBFre   = Button(TLP1, 32)
+
+A2ScUp      = Button(TLP1, 30)
+A2ScDw      = Button(TLP1, 31)
+A2ElUp      = Button(TLP1, 48)
+A2ElDw      = Button(TLP1, 49)
+
+ALCD1       = Button(TLP1, 40)
+
+## Full Rec ---------------------------------------------------
+Astop      = Button(TLP1, 60)
+Arecord    = Button(TLP1, 61)
+Apause     = Button(TLP1, 62)
+Atime      = Label(TLP1, 63)
+##
+ARecSource  = Label(TLP1, 64)
+ARecDestine = Label(TLP1, 65)
+ARecResolut = Label(TLP1, 66)
+ARecMode    = Label(TLP1, 67)
+ARecDisk    = Label(TLP1, 68)
+ARecHDCP    = Label(TLP1, 69)
+##
+A2stop      = Button(TLP1, 70)
+A2record    = Button(TLP1, 71)
+A2pause     = Button(TLP1, 72)
+A2time      = Label(TLP1, 73)
+##
+A2RecSource  = Label(TLP1, 74)
+A2RecDestine = Label(TLP1, 75)
+A2RecResolut = Label(TLP1, 76)
+A2RecMode    = Label(TLP1, 77)
+A2RecDisk    = Label(TLP1, 78)
+A2RecHDCP    = Label(TLP1, 79)
+## Status ---------------------------------------------------
+ALANProjA    = Label(TLP1, 2512)
+AInfoProjA   = Label(TLP1, 2513)
+
+ALANProjB    = Label(TLP1, 2500)
+AInfoProjB   = Label(TLP1, 2501)
+
+ALANRecA     = Label(TLP1, 2515)
+AinfoRecA    = Label(TLP1, 2516)
+
+ALANRecB     = Label(TLP1, 2503)
+AinfoRecB    = Label(TLP1, 2504)
+
+ALANXtp      = Label(TLP1, 2524)
 
 
 # TouchPanel B -----------------------------------------------------------------
@@ -154,10 +250,16 @@ BBtnRoom1   = Button(TLP2, 21)
 BBtnRoom2   = Button(TLP2, 22)
 
 
+
+# Button Grouping -----------------------------------------------------------------
+ModeRoom = [ARoomSplit, ARoomMixed]
+GroupRoom = MESet(ModeRoom)
+
 Index = [ABtnIndex, BBtnIndex]
 
 Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio, ABtnREC, ABtnVoIP, ABtnInfo, ABtnPower,
          BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnAudio, BBtnREC, BBtnVoIP, BBtnInfo, BBtnPower]
+GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio, ABtnREC, ABtnVoIP, ABtnInfo, ABtnPower])
 
 Outputs = [AOut1, AOut2, AOut3, AOut5, AOut6, AOut7, AOut9, AOut10, AOut11, AOut12,
            AOut13, AOut14, AOut15, AOut16, AOut17, AOut18, AOut19, AOut20, AOut21, AOut22]      
@@ -167,129 +269,253 @@ Inputs = [AInput1, AInput2, AInput3, AInput4, AInput5, AInput6, AInput7, AInput8
           AInput9, AInput10, AInput11, AInput12, AInput13, AInput14, AInput17,
           AInput18, AInput19, AInput20, AInput21, AInput22]
 GroupInputs = MESet(Inputs)
+ProjeccionA = [AProjAPwr, AProjAFre, AScUp, AScDw, AElUp, AElDw, ALCD1]
+ProjeccionB = [AProjBPwr, AProjBFre, A2ScUp, A2ScDw, A2ElUp, A2ElDw]
+
+GroupScreenA = MESet([AScUp, AScDw])
+GroupElevatA = MESet([AElUp, AElDw])
+
+GroupScreen2A = MESet([A2ScUp, A2ScDw])
+GroupElevat2A = MESet([A2ElUp, A2ElDw])
+
+Rec = [Arecord, Astop, Apause, A2record, A2stop, A2pause]
+GroupRecA = MESet([Arecord, Astop, Apause])
+GroupRecB = MESet([A2record, A2stop, A2pause])
+
+
+ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 ## End Communication Interface Definition --------------------------------------
 
 def Initialize():
     """This is the last function that loads when starting the system """
     ## Open Sockets
     ## IP
-    Matrix.Connect()
-    
-    ## Data Init
+    XTP.Connect()
+    ProjA.Connect()
+    ProjB.Connect()
+    RecA.Connect()
+    RecB.Connect()
+    LCD1.Connect()
+
+    ## XTP Matrix Data Init
     global output
     global input
     output = ''
     input = ''
 
+    ##12v Interface (This brings power to all Relays)
+    SWPowerPort1.SetState('On')
+    SWPowerPort2.SetState('On')
+    SWPowerPort3.SetState('On')
+    SWPowerPort4.SetState('On')
     pass
 
 ## SUBSCRIBE FUNCTIONS ---------------------------------------------------------
 def subscribe_matrix():
     """This send Subscribe Commands to Device """
     ## Socket Status
-    Matrix.SubscribeStatus('ConnectionStatus', None, matrix_parsing)
+    XTP.SubscribeStatus('ConnectionStatus', None, matrix_parsing)
     ## Input Signal Status
-    Matrix.SubscribeStatus('InputSignal', {'Input':'1'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'2'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'3'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'4'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'5'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'6'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'7'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'8'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'9'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'10'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'11'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'12'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'13'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'14'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'15'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'16'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'17'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'18'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'19'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'20'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'21'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'22'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'23'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'24'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'25'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'26'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'27'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'28'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'29'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'30'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'31'}, matrix_parsing)
-    Matrix.SubscribeStatus('InputSignal', {'Input':'32'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'1'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'2'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'3'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'4'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'5'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'6'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'7'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'8'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'9'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'10'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'11'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'12'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'13'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'14'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'15'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'16'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'17'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'18'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'19'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'20'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'21'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'22'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'23'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'24'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'25'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'26'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'27'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'28'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'29'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'30'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'31'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'32'}, matrix_parsing)
     ## Output Signal Status
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'12', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'13', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'14', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'15', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'16', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'17', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'18', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'19', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, matrix_parsing)
-    Matrix.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'12', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'13', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'14', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'15', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'16', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'17', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'18', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'19', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, matrix_parsing)
+    pass
+
+def subscribe_projectorA():
+    """This send Subscribe Commands to Device """
+    ## Socket Status
+    ProjA.SubscribeStatus('ConnectionStatus', None, projectorA_parsing)
+    ## Device Status
+    ProjA.SubscribeStatus('Power', None, projectorA_parsing)
+    ProjA.SubscribeStatus('Freeze', None, projectorA_parsing)
+    pass
+
+def subscribe_projectorB():
+    """This send Subscribe Commands to Device """
+    ## Socket Status
+    ProjB.SubscribeStatus('ConnectionStatus', None, projectorB_parsing)
+    ## Device Status
+    ProjB.SubscribeStatus('Power', None, projectorB_parsing)
+    ProjB.SubscribeStatus('Freeze', None, projectorB_parsing)
+    pass
+
+def subscribe_recA():
+    """This send Subscribe Commands to Device """
+    ## Socket Status
+    RecA.SubscribeStatus('ConnectionStatus', None, recA_parsing)
+    ## Device Status
+    RecA.SubscribeStatus('Record', None, recA_parsing)
+    RecA.SubscribeStatus('RecordDestination', None, recA_parsing)
+    RecA.SubscribeStatus('RecordingMode', None, recA_parsing)
+    RecA.SubscribeStatus('HDCPStatus', None, recA_parsing)
+    RecA.SubscribeStatus('VideoResolution', {'Stream':'Record'}, recA_parsing)
+    RecA.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Primary'}, recA_parsing)
+    RecA.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Secondary'}, recA_parsing)
+    RecA.SubscribeStatus('CurrentRecordingDuration', None, recA_parsing)
+    pass
+
+def subscribe_recB():
+    """This send Subscribe Commands to Device """
+    ## Socket Status
+    RecB.SubscribeStatus('ConnectionStatus', None, recB_parsing)
+    ## Device Status
+    RecB.SubscribeStatus('Record', None, recB_parsing)
+    RecB.SubscribeStatus('RecordDestination', None, recB_parsing)
+    RecB.SubscribeStatus('RecordingMode', None, recB_parsing)
+    RecB.SubscribeStatus('HDCPStatus', None, recB_parsing)
+    RecB.SubscribeStatus('VideoResolution', {'Stream':'Record'}, recB_parsing)
+    RecB.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Primary'}, recB_parsing)
+    RecB.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Secondary'}, recB_parsing)
+    RecB.SubscribeStatus('CurrentRecordingDuration', None, recB_parsing)
+    pass
+
+def subscribe_LCD1():
+    """This send Subscribe Commands to Device """
+    ## Socket Status
+    LCD1.SubscribeStatus('ConnectionStatus', None, Lcd1_parsing)
+    ## Device Status
+    LCD1.SubscribeStatus('Power', None, Lcd1_parsing)
+    LCD1.SubscribeStatus('Input', None, Lcd1_parsing)
     pass
 
 ## UPDATE FUNCTIONS ------------------------------------------------------------
 def update_matrix():
     """This send Update Commands to Device"""
-    Matrix.Update('InputSignal',{'Input':'1'})
-    Matrix.Update('InputSignal',{'Input':'2'})
-    Matrix.Update('InputSignal',{'Input':'3'})
-    Matrix.Update('InputSignal',{'Input':'4'})
-    Matrix.Update('InputSignal',{'Input':'5'})
-    Matrix.Update('InputSignal',{'Input':'6'})
-    Matrix.Update('InputSignal',{'Input':'7'})
-    Matrix.Update('InputSignal',{'Input':'8'})
-    Matrix.Update('InputSignal',{'Input':'9'})
-    Matrix.Update('InputSignal',{'Input':'10'})
-    Matrix.Update('InputSignal',{'Input':'11'})
-    Matrix.Update('InputSignal',{'Input':'12'})
-    Matrix.Update('InputSignal',{'Input':'13'})
-    Matrix.Update('InputSignal',{'Input':'14'})
-    Matrix.Update('InputSignal',{'Input':'15'})
-    Matrix.Update('InputSignal',{'Input':'16'})
-    Matrix.Update('InputSignal',{'Input':'17'})
-    Matrix.Update('InputSignal',{'Input':'18'})
-    Matrix.Update('InputSignal',{'Input':'19'})
-    Matrix.Update('InputSignal',{'Input':'20'})
-    Matrix.Update('InputSignal',{'Input':'21'})
-    Matrix.Update('InputSignal',{'Input':'22'})
-    Matrix.Update('InputSignal',{'Input':'23'})
-    Matrix.Update('InputSignal',{'Input':'24'})
-    Matrix.Update('InputSignal',{'Input':'25'})
-    Matrix.Update('InputSignal',{'Input':'27'})
-    Matrix.Update('InputSignal',{'Input':'28'})
-    Matrix.Update('InputSignal',{'Input':'29'})
-    Matrix.Update('InputSignal',{'Input':'30'})
-    Matrix.Update('InputSignal',{'Input':'31'})
-    Matrix.Update('InputSignal',{'Input':'32'})
+    XTP.Update('InputSignal',{'Input':'1'})
+    XTP.Update('InputSignal',{'Input':'2'})
+    XTP.Update('InputSignal',{'Input':'3'})
+    XTP.Update('InputSignal',{'Input':'4'})
+    XTP.Update('InputSignal',{'Input':'5'})
+    XTP.Update('InputSignal',{'Input':'6'})
+    XTP.Update('InputSignal',{'Input':'7'})
+    XTP.Update('InputSignal',{'Input':'8'})
+    XTP.Update('InputSignal',{'Input':'9'})
+    XTP.Update('InputSignal',{'Input':'10'})
+    XTP.Update('InputSignal',{'Input':'11'})
+    XTP.Update('InputSignal',{'Input':'12'})
+    XTP.Update('InputSignal',{'Input':'13'})
+    XTP.Update('InputSignal',{'Input':'14'})
+    XTP.Update('InputSignal',{'Input':'15'})
+    XTP.Update('InputSignal',{'Input':'16'})
+    XTP.Update('InputSignal',{'Input':'17'})
+    XTP.Update('InputSignal',{'Input':'18'})
+    XTP.Update('InputSignal',{'Input':'19'})
+    XTP.Update('InputSignal',{'Input':'20'})
+    XTP.Update('InputSignal',{'Input':'21'})
+    XTP.Update('InputSignal',{'Input':'22'})
+    XTP.Update('InputSignal',{'Input':'23'})
+    XTP.Update('InputSignal',{'Input':'24'})
+    XTP.Update('InputSignal',{'Input':'25'})
+    XTP.Update('InputSignal',{'Input':'27'})
+    XTP.Update('InputSignal',{'Input':'28'})
+    XTP.Update('InputSignal',{'Input':'29'})
+    XTP.Update('InputSignal',{'Input':'30'})
+    XTP.Update('InputSignal',{'Input':'31'})
+    XTP.Update('InputSignal',{'Input':'32'})
+    pass
+
+def update_projectorA():
+    """This send Update Commands to Device"""
+    ProjA.Update('Power')
+    ProjA.Update('Freeze')
+    pass
+
+def update_projectorB():
+    """This send Update Commands to Device"""
+    ProjB.Update('Power')
+    ProjB.Update('Freeze')
+    pass
+
+def update_recA():
+    """This send Update Commands to Device"""
+    RecA.Update('Record')
+    RecA.Update('RecordDestination')
+    RecA.Update('RecordingMode')
+    RecA.Update('VideoResolution', {'Stream':'Record'})
+    RecA.Update('HDCPStatus')
+    RecA.Update('RemainingFreeDiskSpace',{'Drive':'Primary'})
+    RecA.Update('RemainingFreeDiskSpace',{'Drive':'Secondary'})
+    RecA.Update('CurrentRecordingDuration')
+    pass
+
+def update_recB():
+    """This send Update Commands to Device"""
+    RecB.Update('Record')
+    RecB.Update('RecordDestination')
+    RecB.Update('RecordingMode')
+    RecB.Update('VideoResolution', {'Stream':'Record'})
+    RecB.Update('HDCPStatus')
+    RecB.Update('RemainingFreeDiskSpace',{'Drive':'Primary'})
+    RecB.Update('RemainingFreeDiskSpace',{'Drive':'Secondary'})
+    RecB.Update('CurrentRecordingDuration')
+    pass
+
+def update_LCD1():
+    """This send Update Commands to Device"""
+    LCD1.Update('Power')
+    LCD1.Update('Input')
     pass
 
 ## DATA PARSING FUNCTIONS ------------------------------------------------------
@@ -303,12 +529,12 @@ def matrix_parsing(command, value, qualifier):
         #
         if value == 'Connected':
             Matrix_Data['ConexModule'] = True
-            #BTN['LANMatrix'].SetState(1)
+            ALANXtp.SetText('Online')
         else:
             Matrix_Data['ConexModule'] = False
-            #BTN['LANMatrix'].SetState(0)
+            ALANXtp.SetText('Fail')
             ## Disconnect the IP Socket
-            Matrix.Disconnect()
+            XTP.Disconnect()
     
     elif command == 'InputSignal':
         if value == 'Active':
@@ -486,25 +712,302 @@ def matrix_parsing(command, value, qualifier):
 
             print(qualifier)
             print(value)
-
     pass
 
+def projectorA_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('Christie A Module Conex status: {}'.format(value))
+        #
+        if value == 'Connected':
+            ProjectorA_Data['ConexModule'] = True
+            ALANProjA.SetText('Online')
+        else:
+            ProjectorA_Data['ConexModule'] = False
+            ALANProjA.SetText('Fail')
+            ## Disconnect the IP Socket
+            ProjA.Disconnect()
+    
+    elif command == 'Power':
+        print('Christie A Power: ' + value)
+        AInfoProjA.SetText(value)
+        if value == 'On':
+            ProjectorA_Data['Power'] == True
+            AProjAPwr.SetState(1)
+        else:
+            ProjectorA_Data['Power'] == False
+            AProjAPwr.SetState(0)
+    
+    elif command == 'Freeze':
+        print('Christie A Freeze: ' + value)
+        if value == 'On':
+            ProjectorA_Data['Freeze'] == True
+            AProjAFre.SetState(1)
+        else:
+            ProjectorA_Data['Freeze'] == False
+            AProjAFre.SetState(0)
+    pass
+
+def projectorB_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('Christie B Module Conex status: {}'.format(value))
+        #
+        if value == 'Connected':
+            ProjectorB_Data['ConexModule'] = True
+            ALANProjB.SetText('Online')
+            
+        else:
+            ProjectorB_Data['ConexModule'] = False
+            ALANProjB.SetText('Fail')
+            ## Disconnect the IP Socket
+            ProjB.Disconnect()
+
+    elif command == 'Power':
+        print('Christie B Power: ' + value)
+        AInfoProjB.SetText(value)
+        if value == 'On':
+            ProjectorB_Data['Power'] == True
+            AProjBPwr.SetState(1)
+        else:
+            ProjectorB_Data['Power'] == False
+            AProjBPwr.SetState(0)
+    
+    elif command == 'Freeze':
+        print('Christie B Freeze: ' + value)
+        if value == 'On':
+            ProjectorB_Data['Freeze'] == True
+            AProjBFre.SetState(1)
+        else:
+            ProjectorB_Data['Freeze'] == False
+            AProjBFre.SetState(0)
+    pass
+
+def recA_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('SMP111-A Module Conex status: {}'.format(value))
+        #
+        if value == 'Connected':
+            RecA_Data['ConexModule'] = True
+            ALANRecA.SetText('Online')
+        else:
+            RecA_Data['ConexModule'] = False
+            ALANRecA.SetText('Fail')
+            ## Disconnect the IP Socket
+            RecA.Disconnect()
+    #
+    elif command == 'Record':
+        print('SMP111-A Record: ' + value)
+        AinfoRecA.SetText(value)
+        if value == 'Start':
+            GroupRecA.SetCurrent(Arecord)
+        elif value == 'Pause':
+            GroupRecA.SetCurrent(Apause)
+        elif value == 'Stop':
+            GroupRecA.SetCurrent(Astop)
+    #
+    elif command == 'RecordDestination':
+        ARecDestine.SetText(value)
+        print('SMP111-A RecordDestination: ' + value)
+    #
+    elif command == 'RecordingMode':
+        ARecMode.SetText(value)
+        print('SMP111-A RecordingMode: ' + value)
+    #
+    elif command == 'VideoResolution':
+        ARecResolut.SetText(value)
+        print('SMP111-A VideoResolution: ' + value)
+    #
+    elif command == 'HDCPStatus':
+        ARecHDCP.SetText(value)
+        print('SMP111-A HDCPStatus: ' + value)
+    #
+    elif command == 'RemainingFreeDiskSpace':
+        if qualifier['Drive'] == 'Primary':
+            value = int(value / 1024)
+            ARecDisk.SetText('Disk Free: ' + str(value) + 'GB')
+            print('SMP111-A Drive Free Space: ' + str(value))
+    #
+    elif command == 'CurrentRecordingDuration':
+        print('SMP111-A Elapsed: ' + value)
+        Atime.SetText(value)
+    pass
+
+def recB_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('SMP111-B Module Conex status: {}'.format(value))
+        #
+        if value == 'Connected':
+            RecB_Data['ConexModule'] = True
+            ALANRecB.SetText('Online')
+        else:
+            RecB_Data['ConexModule'] = False
+            ALANRecB.SetText('Fail')
+            ## Disconnect the IP Socket
+            RecB.Disconnect()
+    #
+    elif command == 'Record':
+        print('SMP111-B Record: ' + value)
+        AinfoRecB.SetText(value)
+        if value == 'Start':
+            GroupRecB.SetCurrent(A2record)
+        elif value == 'Pause':
+            GroupRecB.SetCurrent(A2pause)
+        elif value == 'Stop':
+            GroupRecB.SetCurrent(A2stop)
+    #
+    elif command == 'RecordDestination':
+        A2RecDestine.SetText(value)
+        print('SMP111-B RecordDestination: ' + value)
+    #
+    elif command == 'RecordingMode':
+        A2RecMode.SetText(value)
+        print('SMP111-B RecordingMode: ' + value)
+    #
+    elif command == 'VideoResolution':
+        A2RecResolut.SetText(value)
+        print('SMP111-B VideoResolution: ' + value)
+    #
+    elif command == 'HDCPStatus':
+        A2RecHDCP.SetText(value)
+        print('SMP111-B HDCPStatus: ' + value)
+    #
+    elif command == 'RemainingFreeDiskSpace':
+        if qualifier['Drive'] == 'Primary':
+            value = int(value / 1024)
+            A2RecDisk.SetText('Disk Free: ' + str(value) + 'GB')
+            print('SMP111-B Drive Free Space: ' + str(value))
+    #
+    elif command == 'CurrentRecordingDuration':
+        print('SMP111-B Elapsed: ' + value)
+        A2time.SetText(value)
+    pass
+
+def Lcd1_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('LCD Module Conex status: {}'.format(value))
+        #
+        if value == 'Connected':
+            LCD1_Data['ConexModule'] = True
+        else:
+            LCD1_Data['ConexModule'] = False
+            ## Disconnect the IP Socket
+            LCD1.Disconnect()
+    #
+    elif command == 'Power':
+        print('LCD1 Power: ' + value)        
+        if value == 'On':
+            ALCD1.SetState(1)
+        else:
+            ALCD1.SetState(0)
+    #
+    elif command == 'Input':
+        print('LCD1 Input: ' + value)
+    pass
 ## EVENT FUNCTIONS ----------------------------------------------------------------
 ## This functions report a 'Online' / 'Offline' status after to send a Connect()
 ## CAUTION: If you never make a Connect(), the Module never work with Subscriptions
-@event(Matrix, 'Connected')
-@event(Matrix, 'Disconnected')
+@event(LCD1, 'Connected')
+@event(LCD1, 'Disconnected')
+def matrix_conex_event(interface, state):
+    """LCD1 CONNECT() STATUS """
+    print('LCD1 Conex Event: ' + state)
+    if state == 'Connected':
+        LCD1_Data['ConexEvent'] = True
+        ## Send & Query Information
+        subscribe_LCD1()
+        update_LCD1()
+    elif state == 'Disconnected':
+        LCD1_Data['ConexEvent'] = False
+        trying_LCD1()
+    pass
+
+@event(XTP, 'Connected')
+@event(XTP, 'Disconnected')
 def matrix_conex_event(interface, state):
     """MATRIX CONNECT() STATUS """
     print('Matrix Conex Event: ' + state)
     if state == 'Connected':
         Matrix_Data['ConexEvent'] = True
+        ALANXtp.SetText('Online')
         ## Send & Query Information
         subscribe_matrix()
         update_matrix()
     elif state == 'Disconnected':
         Matrix_Data['ConexEvent'] = False
+        ALANXtp.SetText('Fail')
         trying_matrix()
+    pass
+
+@event(ProjA, 'Connected')
+@event(ProjA, 'Disconnected')
+def projectorA_conex_event(interface, state):
+    """CHRISTIE A CONNECT() STATUS """
+    print('Christie Conex Event: ' + state)
+    if state == 'Connected':
+        ProjectorA_Data['ConexEvent'] = True
+        ALANProjA.SetText('Online')
+        ## Send & Query Information
+        subscribe_projectorA()
+        update_projectorA()
+    elif state == 'Disconnected':
+        ALANProjA.SetText('Fail')
+        ProjectorA_Data['ConexEvent'] = False
+        trying_projectorA()
+    pass
+
+@event(ProjB, 'Connected')
+@event(ProjB, 'Disconnected')
+def projectorB_conex_event(interface, state):
+    """CHRISTIE B CONNECT() STATUS """
+    print('Christie Conex Event: ' + state)
+    if state == 'Connected':
+        ProjectorB_Data['ConexEvent'] = True
+        ALANProjB.SetText('Online')
+        ## Send & Query Information
+        subscribe_projectorB()
+        update_projectorB()
+    elif state == 'Disconnected':
+        ProjectorB_Data['ConexEvent'] = False
+        ALANProjB.SetText('Fail')
+        trying_projectorB()
+    pass
+
+@event(RecA, 'Connected')
+@event(RecA, 'Disconnected')
+def SMP111_A_conex_event(interface, state):
+    """SMP111-A CONNECT() STATUS """
+    print('SMP111-A Conex Event: ' + state)
+    if state == 'Connected':
+        RecA_Data['ConexEvent'] = True
+        ALANRecA.SetText('Online')
+        ## Send & Query Information
+        subscribe_recA()
+        update_recA()
+    elif state == 'Disconnected':
+        RecA_Data['ConexEvent'] = False
+        ALANRecA.SetText('Fail')
+        trying_recA()
+    pass
+
+@event(RecB, 'Connected')
+@event(RecB, 'Disconnected')
+def SMP111_B_conex_event(interface, state):
+    """SMP111-B CONNECT() STATUS """
+    print('SMP111-B Conex Event: ' + state)
+    if state == 'Connected':
+        RecB_Data['ConexEvent'] = True
+        ALANRecB.SetText('Online')
+        ## Send & Query Information
+        subscribe_recB()
+        update_recB()
+    elif state == 'Disconnected':
+        RecB_Data['ConexEvent'] = False
+        ALANRecB.SetText('Online')
+        trying_recB()
     pass
 
 ## RECURSIVE FUNCTIONS ------------------------------------------------------------
@@ -513,125 +1016,282 @@ def trying_matrix():
     """Try to make a Connect() to device"""
     if Matrix_Data['ConexEvent'] == False:
         print('Tryng to make a Connect() in Matrix')
-        Matrix.Connect(4) ## Have 4 seconds to try to connect
+        XTP.Connect(4) ## Have 4 seconds to try to connect
     pass
 loop_trying_matrix = Wait(5, trying_matrix)
 
+def trying_projectorA():
+    """Try to make a Connect() to device"""
+    if ProjectorA_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in Christie A')
+        ProjA.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_projectorA = Wait(5, trying_projectorA)
+
+def trying_projectorB():
+    """Try to make a Connect() to device"""
+    if ProjectorB_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in Christie B')
+        ProjB.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_projectorB = Wait(5, trying_projectorB)
+
+def trying_recA():
+    """Try to make a Connect() to device"""
+    if RecA_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in SMP111-A')
+        RecA.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_recA = Wait(5, trying_recA)
+
+def trying_recB():
+    """Try to make a Connect() to device"""
+    if RecB_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in SMP111-B')
+        RecB.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_recB = Wait(5, trying_recB)
+
+def trying_LCD1():
+    """Try to make a Connect() to device"""
+    if LCD1_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCD1')
+        LCD1.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCD1 = Wait(5, trying_LCD1)
 ## RECURSIVE LOOP FUNCTIONS -----------------------------------------------------------
 ## This not affect any device
 ## This return True / False when no response is received from Module
 ## If in 5 times the data is not reported (connectionCounter = 5) from the Update Command
 ## Generate 'Connected' / 'Disconnected'
-
 def update_loop_matrix():
     """Continuos Update Commands to produce Module Connected / Disconnected"""
-    Update('InputSignal',{'Input':'1'})
-    loop_update_Restart()
+    XTP.Update('InputSignal',{'Input':'1'})
+    loop_update_matrix.Restart()
 loop_update_matrix = Wait(12, update_loop_matrix)
+
+def update_loop_projectorA():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    ProjA.Update('Power')
+    loop_update_projectorA.Restart()
+loop_update_projectorA = Wait(12, update_loop_projectorA)
+
+def update_loop_projectorB():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    ProjB.Update('Power')
+    loop_update_projectorB.Restart()
+loop_update_projectorB = Wait(12, update_loop_projectorB)
+
+def update_loop_recA():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    RecA.Update('Record')
+    loop_update_recA.Restart()
+loop_update_recA = Wait(12, update_loop_recA)
+
+def update_loop_recB():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    RecB.Update('Record')
+    loop_update_recB.Restart()
+loop_update_recB = Wait(12, update_loop_recB)
+
+def update_loop_LCD1():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCD1.Update('Power')
+    loop_update_LCD1.Restart()
+loop_update_LCD1 = Wait(12, update_loop_LCD1)
 
 ## DATA DICTIONARIES -----------------------------------------------------------
 ## Each dictionary store the real time information of room devices
+## Room
+Room_Data = {
+    'Mixed' : None
+}
 ## IP
 Matrix_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
 }
 
+ProjectorA_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+    'Power'  : None,
+    'Freeze' : None,
+}
+
+ProjectorB_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+    'Power'  : None,
+    'Freeze' : None,
+}
+
+RecA_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+RecB_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCD1_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
 ## Event Definitions -----------------------------------------------------------
 ## Index Page
-ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
-
-
-@event(Index, ButtonEventList)
+@event(Index, 'Pressed')
 def Index(button, state):
-    if state == 'Pressed':
-        if button.Host.DeviceAlias == 'TouchPanelA':
-            TLP1.ShowPage('Main')
-            print("Touch 1: {0}".format("Index"))
-        else:
-            TLP2.ShowPage('Main')
-            print("Touch 2: {0}".format("Index"))
+    if button.Host.DeviceAlias == 'TouchPanelA':
+        TLP1.ShowPage('Main')
+        print("Touch 1: {0}".format("Index"))
+    else:
+        TLP2.ShowPage('Main')
+        print("Touch 2: {0}".format("Index"))
     pass
 
-@event(Main, ButtonEventList)
+## Room Page
+@event(ModeRoom, 'Pressed')
+def Index(button, state):
+    if button.Host.DeviceAlias == 'TouchPanelA':
+        #
+        #Mutually Exclusive
+        GroupRoom.SetCurrent(button)
+        #
+        if button is ARoomSplit:
+            Room_Data['Mixed'] = False
+            ABtnRoom1.SetState(1)
+            ABtnRoom2.SetState(0)
+            TLP1.ShowPage('Main')
+            print("Touch 1: {0}".format("Room Split"))
+        #
+        elif button is ARoomMixed:
+            Room_Data['Mixed'] = True
+            ABtnRoom1.SetState(1)
+            ABtnRoom2.SetState(1)
+            TLP2.ShowPage('Main')
+            print("Touch 1: {0}".format("Room Mixed"))
+    pass
+
+@event(Main, 'Pressed')
 def FullMain(button, state):
-    if state == 'Pressed':
-        if button.Host.DeviceAlias == 'TouchPanelA':
-            TLP1.HideAllPopups()
-            if button is ABtnRoom:
-                TLP1.ShowPopup('Room')
-                print("Touch 1: {0}".format("Mode Room"))
+    #
+    if button.Host.DeviceAlias == 'TouchPanelA':
+        GroupMainA.SetCurrent(button)
+        TLP1.HideAllPopups()
+        #
+        if button is ABtnRoom:
+            TLP1.ShowPopup('Room')
+            ALblMain.SetText('Configurar Sala')
+            print("Touch 1: {0}".format("Mode Room"))
+        #
+        elif button is ABtnSwitch:
+            ALblMain.SetText('Switcheo de Video')
+            print("Touch 1: {0}".format("Mode Switching"))
             #
-            elif button is ABtnSwitch:
+            if Room_Data['Mixed'] == True:
                 TLP1.ShowPopup('Full.Outputs')
                 TLP1.ShowPopup('Full.Inputs')
-                print("Touch 1: {0}".format("Mode Switching"))
+            else:
+                TLP1.ShowPopup('Split.OutputsA')
+                TLP1.ShowPopup('Full.Inputs')
+        #
+        elif button is ABtnDisplay:
+            TLP1.ShowPopup('Full.Displays')
+            ALblMain.SetText('Control de Display')
+            print("Touch 1: {0}".format("Mode Display"))
+        #
+        elif button is ABtnVC:
+            TLP1.ShowPopup('Full.VC')
+            ALblMain.SetText('Control de Videoconferencia')
+            print("Touch 1: {0}".format("Mode VideoConferencia"))
+        #
+        elif button is ABtnAudio:
+            ## Audio Routing
+            ## XTP Input Slot 1
+            XTP.Set('MatrixTieCommand', None, {'Input':'1', 'Output':'9', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'2', 'Output':'10', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'3', 'Output':'11', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'4', 'Output':'12', 'Tie Type':'Audio'})
+            ## XTP Input Slot 2
+            XTP.Set('MatrixTieCommand', None, {'Input':'5', 'Output':'13', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'6', 'Output':'14', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'7', 'Output':'15', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'8', 'Output':'16', 'Tie Type':'Audio'})
+            ## XTP Input Slot 3
+            XTP.Set('MatrixTieCommand', None, {'Input':'13', 'Output':'17', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'14', 'Output':'18', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'19', 'Output':'19', 'Tie Type':'Audio'})
+            XTP.Set('MatrixTieCommand', None, {'Input':'20', 'Output':'20', 'Tie Type':'Audio'})
+            ##
+            ALblMain.SetText('Control de Sala')
+            print("Touch 1: {0}".format("Mode Audio"))
+        #
+        elif button is ABtnREC:
+            ALblMain.SetText('Control de Grabación')
+            print("Touch 1: {0}".format("Mode REC"))
             #
-            elif button is ABtnDisplay:
-                TLP1.ShowPopup('Full.Displays')
-                print("Touch 1: {0}".format("Mode Display"))
-            #
-            elif button is ABtnVC:
-                TLP1.ShowPopup('Full.VC')
-                print("Touch 1: {0}".format("Mode VideoConferencia"))
-            #
-            elif button is ABtnAudio:
-                print("Touch 1: {0}".format("Mode Audio"))
-            #
-            elif button is ABtnREC:
+            if Room_Data['Mixed'] == True:
                 TLP1.ShowPopup('Full.Rec')
-                print("Touch 1: {0}".format("Mode REC"))
-            #
-            elif button is ABtnVoIP:
-                TLP1.ShowPopup('Full.VoIP')
-                print("Touch 1: {0}".format("Mode VoIP"))
-            #
-            elif button is ABtnInfo:
-                TLP1.ShowPopup('Full.Info')
-                print("Touch 1: {0}".format("Mode Info"))
-            #
-            elif button is ABtnPower:
-                print("Touch 1: {0}".format("Mode PowerAll"))
-        elif button.Host.DeviceAlias == 'TouchPanelB':
-            TLP2.HideAllPopups()
-            if button is BBtnRoom:
-                TLP2.ShowPopup('Room')
-                print("Touch 2: {0}".format("Mode Room"))
-            #
-            elif button is BBtnSwitch:
-                TLP2.ShowPopup('Full.Outputs')
-                print("Touch 2: {0}".format("Mode Switching"))
-            #
-            elif button is BBtnDisplay:
-                TLP2.ShowPopup('Full.Displays')
-                print("Touch 2: {0}".format("Mode Display"))
-            #
-            elif button is BBtnVC:
-                TLP2.ShowPopup('Full.VC')
-                print("Touch 2: {0}".format("Mode VideoConferencia"))
-            #
-            elif button is BBtnAudio:
-                print("Touch 2: {0}".format("Mode Audio"))
-            #
-            elif button is BBtnREC:
-                TLP2.ShowPopup('Full.Rec')
-                print("Touch 2: {0}".format("Mode REC"))
-            #
-            elif button is BBtnVoIP:
-                TLP2.ShowPopup('Full.VoIP')
-                print("Touch 2: {0}".format("Mode VoIP"))
-            #
-            elif button is BBtnInfo:
-                TLP2.ShowPopup('Full.Info')
-                print("Touch 2: {0}".format("Mode Info"))
-            #
-            elif button is BBtnPower:
-                print("Touch 2: {0}".format("Mode PowerAll"))
+            else:
+                TLP1.ShowPopup('Split.RecA')
+        #
+        elif button is ABtnVoIP:
+            TLP1.ShowPopup('Full.VoIP')
+            ALblMain.SetText('Control de VoIP')
+            print("Touch 1: {0}".format("Mode VoIP"))
+        #
+        elif button is ABtnInfo:
+            TLP1.ShowPopup('Full.Info')
+            ALblMain.SetText('Información de Dispositivos')
+            print("Touch 1: {0}".format("Mode Info"))
+        #
+        elif button is ABtnPower:
+            ALblMain.SetText('Apagar Sistema')
+            print("Touch 1: {0}".format("Mode PowerAll"))
+
+    elif button.Host.DeviceAlias == 'TouchPanelB':
+        TLP2.HideAllPopups()
+        if button is BBtnRoom:
+            TLP2.ShowPopup('Room')
+            print("Touch 2: {0}".format("Mode Room"))
+        #
+        elif button is BBtnSwitch:
+            TLP2.ShowPopup('Full.Outputs')
+            print("Touch 2: {0}".format("Mode Switching"))
+        #
+        elif button is BBtnDisplay:
+            TLP2.ShowPopup('Full.Displays')
+            print("Touch 2: {0}".format("Mode Display"))
+        #
+        elif button is BBtnVC:
+            TLP2.ShowPopup('Full.VC')
+            print("Touch 2: {0}".format("Mode VideoConferencia"))
+        #
+        elif button is BBtnAudio:
+            print("Touch 2: {0}".format("Mode Audio"))
+        #
+        elif button is BBtnREC:
+            TLP2.ShowPopup('Full.Rec')
+            print("Touch 2: {0}".format("Mode REC"))
+        #
+        elif button is BBtnVoIP:
+            TLP2.ShowPopup('Full.VoIP')
+            print("Touch 2: {0}".format("Mode VoIP"))
+        #
+        elif button is BBtnInfo:
+            TLP2.ShowPopup('Full.Info')
+            print("Touch 2: {0}".format("Mode Info"))
+        #
+        elif button is BBtnPower:
+            print("Touch 2: {0}".format("Mode PowerAll"))
     pass
 
 def FunctionActiveTie(output):
     '''This retrieve the real Output-Input Video Relation when the user push the Display button'''
-    activeTie = Matrix.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
+    activeTie = XTP.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
     GroupInputs.SetCurrent(None)
     ##
     if activeTie == '1':
@@ -681,263 +1341,408 @@ def FunctionActiveTie(output):
         GroupInputs.SetCurrent(AInput22)
     pass
 
-@event(Outputs, ButtonEventList)
+@event(Outputs, 'Pressed')
 def OutsSwitching(button, state):
     ## Mutually Exclusive
     GroupOutputs.SetCurrent(button)
     global output
     
     ## Button Functions
-    if state == 'Pressed':
-        if button.Host.DeviceAlias == 'TouchPanelA':
-            # XTP Slot 1-----------------------------------------------------
-            if button is AOut1:
-                output = '1'
-                print("Touch 1: {0}".format("Out Room 1: Projector"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut2:
-                output = '2'
-                print("Touch 1: {0}".format("Out Room 1: LCD Podium"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut3:
-                output = '3'
-                print("Touch 1: {0}".format("Out Room 1: LCD Lobby"))
-                ##Recall Function
-                FunctionActiveTie(output)
+    if button.Host.DeviceAlias == 'TouchPanelA':
+        # XTP Slot 1-----------------------------------------------------
+        if button is AOut1:
+            output = '1'
+            print("Touch 1: {0}".format("Out Room 1: Projector"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut2:
+            output = '2'
+            print("Touch 1: {0}".format("Out Room 1: LCD Podium"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut3:
+            output = '3'
+            print("Touch 1: {0}".format("Out Room 1: LCD Lobby"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        
+        #XTP Slot 2-----------------------------------------------------
+        elif button is AOut5:
+            output = '5'
+            print("Touch 1: {0}".format("Out Room 2: Projector"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut6:
+            output = '6'
+            print("Touch 1: {0}".format("Out Room 2: LCD Podium"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut7:
+            output = '7'
+            print("Touch 1: {0}".format("Out Room 2: LCD Lobby"))
+            ##Recall Function
+            FunctionActiveTie(output)
+
+        #XTP Slot 3-----------------------------------------------------
+        elif button is AOut9:
+            output = '9'
+            print("Touch 1: {0}".format("Out Room 1: Tricaster In 1"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut10:
+            output = '10'
+            print("Touch 1: {0}".format("Out Room 1: Tricaster In 2"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut11:
+            output = '11'
+            print("Touch 1: {0}".format("Out Room 1: Tricaster In 3"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut12:
+            output = '12'
+            print("Touch 1: {0}".format("Out Room 1: Tricaster In 4"))
+            ##Recall Function
+            FunctionActiveTie(output)
+
+        #XTP Slot 4-----------------------------------------------------
+        elif button is AOut13:
+            output = '13'
+            print("Touch 1: {0}".format("Out Room 2: Tricaster In 1"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut14:
+            output = '14'
+            print("Touch 1: {0}".format("Out Room 2: Tricaster In 2"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut15:
+            output = '15'
+            print("Touch 1: {0}".format("Out Room 2: Tricaster In 3"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut16:
+            output = '16'
+            print("Touch 1: {0}".format("Out Room 2: Tricaster In 4"))
+            ##Recall Function
+            FunctionActiveTie(output)
             
-            #XTP Slot 2-----------------------------------------------------
-            elif button is AOut5:
-                output = '5'
-                print("Touch 1: {0}".format("Out Room 2: Projector"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut6:
-                output = '6'
-                print("Touch 1: {0}".format("Out Room 2: LCD Podium"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut7:
-                output = '7'
-                print("Touch 1: {0}".format("Out Room 2: LCD Lobby"))
-                ##Recall Function
-                FunctionActiveTie(output)
+        #XTP Slot 5------------------------------------------------------
+        elif button is AOut17:
+            output = '17'
+            print("Touch 1: {0}".format("Out Room 1: Cisco Camera"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut18:
+            output = '18'
+            print("Touch 1: {0}".format("Out Room 1: Cisco Graphics"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut19:
+            output = '19'
+            print("Touch 1: {0}".format("Out Room 2: Cisco Camera"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut20:
+            output = '20'
+            print("Touch 1: {0}".format("Out Room 2: Cisco Graphics"))
+            ##Recall Function
+            FunctionActiveTie(output)
 
-            #XTP Slot 3-----------------------------------------------------
-            elif button is AOut9:
-                output = '9'
-                print("Touch 1: {0}".format("Out Room 1: Tricaster In 1"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut10:
-                output = '10'
-                print("Touch 1: {0}".format("Out Room 1: Tricaster In 2"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut11:
-                output = '11'
-                print("Touch 1: {0}".format("Out Room 1: Tricaster In 3"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut12:
-                output = '12'
-                print("Touch 1: {0}".format("Out Room 1: Tricaster In 4"))
-                ##Recall Function
-                FunctionActiveTie(output)
-
-            #XTP Slot 4-----------------------------------------------------
-            elif button is AOut13:
-                output = '13'
-                print("Touch 1: {0}".format("Out Room 2: Tricaster In 1"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut14:
-                output = '14'
-                print("Touch 1: {0}".format("Out Room 2: Tricaster In 2"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut15:
-                output = '15'
-                print("Touch 1: {0}".format("Out Room 2: Tricaster In 3"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut16:
-                output = '16'
-                print("Touch 1: {0}".format("Out Room 2: Tricaster In 4"))
-                ##Recall Function
-                FunctionActiveTie(output)
-                
-            #XTP Slot 5------------------------------------------------------
-            elif button is AOut17:
-                output = '17'
-                print("Touch 1: {0}".format("Out Room 1: Cisco Camera"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut18:
-                output = '18'
-                print("Touch 1: {0}".format("Out Room 1: Cisco Graphics"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut19:
-                output = '19'
-                print("Touch 1: {0}".format("Out Room 2: Cisco Camera"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut20:
-                output = '20'
-                print("Touch 1: {0}".format("Out Room 2: Cisco Graphics"))
-                ##Recall Function
-                FunctionActiveTie(output)
-
-            #XTP Slot 6------------------------------------------------------
-            elif button is AOut21:
-                output = '21'
-                print("Touch 1: {0}".format("Out Room 1: Recorder"))
-                ##Recall Function
-                FunctionActiveTie(output)
-            #
-            elif button is AOut22:
-                output = '22'
-                print("Touch 1: {0}".format("Out Room 2: Recorder"))
-                ##Recall Function
-                FunctionActiveTie(output)
-
-    #print('Active Output:' + output)
+        #XTP Slot 6------------------------------------------------------
+        elif button is AOut21:
+            output = '21'
+            print("Touch 1: {0}".format("Out Room 1: Recorder"))
+            ##Recall Function
+            FunctionActiveTie(output)
+        #
+        elif button is AOut22:
+            output = '22'
+            print("Touch 1: {0}".format("Out Room 2: Recorder"))
+            ##Recall Function
+            FunctionActiveTie(output)
     pass
 
-@event(Inputs, ButtonEventList)
+@event(Inputs, 'Pressed')
 def InSwitching(button, state):
     ## Data Init
     global output
     global input
-    
     ## Button Functions
-    if state == 'Pressed':
-        if button.Host.DeviceAlias == 'TouchPanelA':
-            # XTP Slot 1-----------------------------------------------------
-            if button is AInput1:
-                input = '1'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: Placa Left"))
-            #
-            elif button is AInput2:
-                input = '2'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: Placa Right"))
-            #
-            elif button is AInput3:
-                input = '3'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: Placa Stage"))
-            #
-            elif button is AInput4:
-                input = '4'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: Placa Back"))
+    if button.Host.DeviceAlias == 'TouchPanelA':
+        # XTP Slot 1-----------------------------------------------------
+        if button is AInput1:
+            input = '1'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: Placa Left"))
+        #
+        elif button is AInput2:
+            input = '2'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: Placa Right"))
+        #
+        elif button is AInput3:
+            input = '3'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: Placa Stage"))
+        #
+        elif button is AInput4:
+            input = '4'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: Placa Back"))
 
-            # XTP Slot 2-----------------------------------------------------
-            elif button is AInput5:
-                input = '5'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: Placa Left"))
-            #
-            elif button is AInput6:
-                input = '6'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: Placa Right"))
-            #
-            elif button is AInput7:
-                input = '7'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: Placa Stage"))
-            #
-            elif button is AInput8:
-                input = '8'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: Placa Back"))
-                
-            # XTP Slot 3-----------------------------------------------------
-            elif button is AInput9:
-                input = '9'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: PTZ Frontal"))
-            #
-            elif button is AInput10:
-                input = '10'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: PTZ Back"))
-            #
-            elif button is AInput11:
-                input = '11'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: PTZ Frontal"))
-            #
-            elif button is AInput12:
-                input = '12'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: PTZ Back"))
-                
-            # XTP Slot 4-----------------------------------------------------
-            elif button is AInput13:
-                input = '13'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 1: PC Cabina"))
-            #
-            elif button is AInput14:
-                input = '14'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Room 2: PC Cabina"))
-                
-            # XTP Slot 5-----------------------------------------------------
-            elif button is AInput17:
-                input = '17'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Core: Cisco 1 Out"))
-            #
-            elif button is AInput18:
-                input = '18'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Core: Cisco 2 Out"))
-            #
-            elif button is AInput19:
-                input = '19'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Core: ShareLink 1"))
-            #
-            elif button is AInput20:
-                input = '20'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Core: ShareLink 2"))
-                
-            # XTP Slot 6-----------------------------------------------------
-            elif button is AInput21:
-                input = '21'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Core: Tricaster 1 Out"))
-            #
-            elif button is AInput22:
-                input = '22'
-                Matrix.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-                print("Touch 1: {0}".format("In Core: Tricaster 2 Out"))
+        # XTP Slot 2-----------------------------------------------------
+        elif button is AInput5:
+            input = '5'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: Placa Left"))
+        #
+        elif button is AInput6:
+            input = '6'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: Placa Right"))
+        #
+        elif button is AInput7:
+            input = '7'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: Placa Stage"))
+        #
+        elif button is AInput8:
+            input = '8'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: Placa Back"))
+            
+        # XTP Slot 3-----------------------------------------------------
+        elif button is AInput9:
+            input = '9'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: PTZ Frontal"))
+        #
+        elif button is AInput10:
+            input = '10'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: PTZ Back"))
+        #
+        elif button is AInput11:
+            input = '11'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: PTZ Frontal"))
+        #
+        elif button is AInput12:
+            input = '12'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: PTZ Back"))
+            
+        # XTP Slot 4-----------------------------------------------------
+        elif button is AInput13:
+            input = '13'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 1: PC Cabina"))
+        #
+        elif button is AInput14:
+            input = '14'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Room 2: PC Cabina"))
+            
+        # XTP Slot 5-----------------------------------------------------
+        elif button is AInput17:
+            input = '17'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Core: Cisco 1 Out"))
+        #
+        elif button is AInput18:
+            input = '18'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Core: Cisco 2 Out"))
+        #
+        elif button is AInput19:
+            input = '19'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Core: ShareLink 1"))
+        #
+        elif button is AInput20:
+            input = '20'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Core: ShareLink 2"))
+            
+        # XTP Slot 6-----------------------------------------------------
+        elif button is AInput21:
+            input = '21'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Core: Tricaster 1 Out"))
+        #
+        elif button is AInput22:
+            input = '22'
+            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+            print("Touch 1: {0}".format("In Core: Tricaster 2 Out"))
+    pass
 
-    #print('Active Input:' + input)
+def Room1ScreenUp():
+    AScreenDw.SetState('Open')
+    AScreenUp.SetState('Close')
+    pass
+
+def Room1ScreenDown():
+    AScreenUp.SetState('Open')
+    AScreenDw.SetState('Close')
+    pass
+
+def Room1ElevatorUp():
+    AElevatDw.SetState('Open')
+    AElevatUp.SetState('Close')
+    pass
+
+def Room1ElevatorDown():
+    AElevatUp.SetState('Open')
+    AElevatDw.SetState('Close')
+    pass
+
+def Room2ScreenUp():
+    A2ScreenDw.SetState('Open')
+    A2ScreenUp.SetState('Close')
+    pass
+
+def Room2ScreenDown():
+    A2ScreenUp.SetState('Open')
+    A2ScreenDw.SetState('Close')
+    pass
+
+def Room2ElevatorUp():
+    A2ElevatDw.SetState('Open')
+    A2ElevatUp.SetState('Close')
+    pass
+
+def Room2ElevatorDown():
+    A2ElevatUp.SetState('Open')
+    A2ElevatDw.SetState('Close')
+    pass
+
+@event(ProjeccionA, 'Pressed')
+def ButtonObjectPressed(button, state):
+    if button is AProjAPwr:
+        if ProjA.ReadStatus('Power',None) == 'On':
+            print("Touch 1: {0}".format("Proyector 1: PowerOff"))
+            ProjA.Set('Power','Off')
+        else:
+            print("Touch 1: {0}".format("Proyector 1: PowerOn"))
+            ProjA.Set('Power','On')
+    #
+    elif button is AProjAFre:
+        if ProjA.ReadStatus('Freeze',None) == 'On':
+            print("Touch 1: {0}".format("Proyector 1: Freeze Off"))
+            ProjA.Set('Freeze','Off')
+        else:
+            print("Touch 1: {0}".format("Proyector 1: Freeze On"))
+            ProjA.Set('Freeze','On')
+    #
+    elif button is AScUp:
+        GroupScreenA.SetCurrent(AScUp)
+        Room1ScreenUp()
+        print("Touch 1: {0}".format("Screen 1: Up"))
+    #
+    elif button is AScDw:
+        GroupScreenA.SetCurrent(AScDw)
+        Room1ScreenDown()
+        print("Touch 1: {0}".format("Screen 1: Down"))
+    #
+    elif button is AElUp:
+        GroupElevatA.SetCurrent(AElUp)
+        Room1ElevatorUp()
+        print("Touch 1: {0}".format("Elevator 1: Up"))
+    #
+    elif button is AElDw:
+        GroupElevatA.SetCurrent(AElDw)
+        Room1ElevatorDown()
+        print("Touch 1: {0}".format("Elevator 1: Down"))
+    #
+    elif button is ALCD1:
+        if LCD1.ReadStatus('Power', None) == 'On':
+            LCD1.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD 1 Power Off"))
+        else:
+            LCD1.Set('Power','On')
+            print("Touch 1: {0}".format("LCD 1 Power On"))
+    pass
+
+@event(ProjeccionB, 'Pressed')
+def ButtonObjectPressed(button, state):
+    if button is AProjBPwr:
+        if ProjB.ReadStatus('Power',None) == 'On':
+            print("Touch 1: {0}".format("Proyector 2: PowerOff"))
+            ProjB.Set('Power','Off')
+        else:
+            print("Touch 1: {0}".format("Proyector 2: PowerOn"))
+            ProjB.Set('Power','On')
+    #
+    elif button is AProjBFre:
+        if ProjB.ReadStatus('Freeze',None) == 'On':
+            print("Touch 1: {0}".format("Proyector 2: Freeze Off"))
+            ProjB.Set('Freeze','Off')
+        else:
+            print("Touch 1: {0}".format("Proyector 2: Freeze On"))
+            ProjB.Set('Freeze','On')
+    #
+    elif button is A2ScUp:
+        GroupScreen2A.SetCurrent(A2ScUp)
+        Room2ScreenUp()
+        print("Touch 1: {0}".format("Screen 2: Up"))
+    #
+    elif button is A2ScDw:
+        GroupScreen2A.SetCurrent(A2ScDw)
+        Room2ScreenDown()
+        print("Touch 1: {0}".format("Screen 2: Down"))
+    #
+    elif button is A2ElUp:
+        GroupElevat2A.SetCurrent(A2ElUp)
+        Room2ElevatorUp()
+        print("Touch 1: {0}".format("Elevator 2: Up"))
+    #
+    elif button is A2ElDw:
+        GroupElevat2A.SetCurrent(A2ElDw)
+        Room2ElevatorDown()
+        print("Touch 1: {0}".format("Elevator 2: Down"))
+    pass
+
+@event(Rec, 'Pressed')
+def ButtonObjectPressed(button, state):
+    if button is Arecord:
+        RecA.Set('Record','Start')
+        print("Touch 1: {0}".format("SMP11-A: Rec"))
+    #
+    if button is Astop:
+        RecA.Set('Record','Stop')
+        print("Touch 1: {0}".format("SMP11-A: Stop"))
+    #
+    if button is Apause:
+        RecA.Set('Record','Pause')
+        print("Touch 1: {0}".format("SMP11-A: Pause"))
+    #
+    if button is A2record:
+        RecB.Set('Record','Start')
+        print("Touch 1: {0}".format("SMP11-B: Rec"))
+    #
+    if button is A2stop:
+        RecB.Set('Record','Stop')
+        print("Touch 1: {0}".format("SMP11-B: Stop"))
+    #
+    if button is A2pause:
+        RecB.Set('Record','Pause')
+        print("Touch 1: {0}".format("SMP11-B: Pause"))
     pass
 
 ## End Events Definitions-------------------------------------------------------
 
 Initialize()
-
