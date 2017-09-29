@@ -31,26 +31,33 @@ TLP2 = UIDevice('TouchPanelB')
 ## IP
 import extr_matrix_XTPIICrossPointSeries_v1_1_1_1  as DeviceA
 import chri_vp_D13HDHS_D13WUHS_v1_0_2_0            as DeviceB
-import chri_vp_D13HDHS_D13WUHS_v1_0_2_0_           as DeviceC
+import chri_vp_D13HDHS_D13WUHS_v1_0_2_0           as DeviceC
 import extr_sm_SMP_111_v1_1_0_0                    as DeviceD
-import extr_sm_SMP_111_v1_1_0_0_                   as DeviceE
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0A as DeviceF
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0B as DeviceG
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0C as DeviceH
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0D as DeviceI
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0E as DeviceJ
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0F as DeviceK
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0G as DeviceL
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0H as DeviceM
+import extr_sm_SMP_111_v1_1_0_0                   as DeviceE
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceF
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceG
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceH
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceI
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceJ
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceK
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceL
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceM
+import biam_dsp_TesiraSeries_v1_5_20_0            as DeviceN
+import sony_camera_BRC_H800_X1000_v1_0_0_0        as DeviceO
+import csco_vtc_SX_Series_CE81_v1_2_0_1           as DeviceP
+import csco_vtc_SX_Series_CE81_v1_2_0_1           as DeviceQ
+
 ##
 # MODULE TO DEVICE INSTANCES ---------------------------------------------------
-##
+# Video Server
 XTP   = DeviceA.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
+# Projectors
 ProjA = DeviceB.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
 ProjB = DeviceC.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
+# Recorders
 RecA  = DeviceD.EthernetClass('192.168.0.13', 23, Model='SMP 111')
 RecB  = DeviceE.EthernetClass('192.168.0.14', 23, Model='SMP 111')
-##
+# Displays
 LCD1  = DeviceF.EthernetClass('192.168.0.26', 1515, Model='LH55QMFPLGC/KR')
 LCD2  = DeviceG.EthernetClass('192.168.0.27', 1515, Model='LH55QMFPLGC/KR')
 LCD3  = DeviceH.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
@@ -59,16 +66,23 @@ LCDP1 = DeviceJ.EthernetClass('192.168.0.30', 1515, Model='LH55QMFPLGC/KR')
 LCDP2 = DeviceK.EthernetClass('192.168.0.31', 1515, Model='LH55QMFPLGC/KR')
 LCDL1 = DeviceL.EthernetClass('192.168.0.32', 1515, Model='LH55QMFPLGC/KR')
 LCDL2 = DeviceM.EthernetClass('192.168.0.33', 1515, Model='LH55QMFPLGC/KR')
-##
+# Audio Server
+Tesira = DeviceN.EthernetClass('192.168.0.38', 23, Model='Tesira SERVER-IO')
+# Cameras
+PTZ1 = DeviceO.EthernetClass('192.168.0.20', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
+# Videoconference Códec´s
+Cisco1 = DeviceP.EthernetClass('192.168.0.60', 23, Model='SX20 CE8.1.X')
+Cisco2 = DeviceQ.EthernetClass('192.168.0.61', 23, Model='SX20 CE8.1.X')
+
 # DEVICES INTERFACES -----------------------------------------------------------
-##
-## 12v Power Interface
+#
+# 12v Power Interface
 SWPowerPort1 = SWPowerInterface(IPCP, 'SPI1')
 SWPowerPort2 = SWPowerInterface(IPCP, 'SPI2')
 SWPowerPort3 = SWPowerInterface(IPCP, 'SPI3')
 SWPowerPort4 = SWPowerInterface(IPCP, 'SPI4')
-##
-## Relay
+#
+# Relay
 AScreenUp = RelayInterface(IPCP, 'RLY3')
 AScreenDw = RelayInterface(IPCP, 'RLY4')
 AElevatUp = RelayInterface(IPCP, 'RLY7')
@@ -300,9 +314,65 @@ ALCDInfoCab1 = Label(TLP1, 2509)
 ALCDInfoCab2 = Label(TLP1, 2510)
 ALCDInfoLob2 = Label(TLP1, 2511)
 
-
 # XTP II 3200
 ALANXtp      = Label(TLP1, 2524)
+
+# Mode VC ----------------------------------------------------------------------
+# Cisco 1 ---------------------
+ADial0      = Button(TLP1, 2130)
+ADial1      = Button(TLP1, 2131)
+ADial2      = Button(TLP1, 2132)
+ADial3      = Button(TLP1, 2133)
+ADial4      = Button(TLP1, 2134)
+ADial5      = Button(TLP1, 2135)
+ADial6      = Button(TLP1, 2136)
+ADial7      = Button(TLP1, 2137)
+ADial8      = Button(TLP1, 2138)
+ADial9      = Button(TLP1, 2139)
+ADialDot    = Button(TLP1, 2140)
+ADialHash   = Button(TLP1, 2141)
+ADialDelete = Button(TLP1, 2144, repeatTime=0.1)
+# Dialer
+
+# Call
+AHangup     = Button(TLP1, 2142)
+ACall       = Button(TLP1, 2143)
+
+# Content
+AContentOn  = Button(TLP1, 2145)
+AContentOff = Button(TLP1, 2146)
+
+# Label
+AVCDial     = Label(TLP1, 2147)
+AVCRemote   = Label(TLP1, 2148)
+
+# Cisco 2 ---------------------
+A2Dial0      = Button(TLP1, 2100)
+A2Dial1      = Button(TLP1, 2101)
+A2Dial2      = Button(TLP1, 2102)
+A2Dial3      = Button(TLP1, 2103)
+A2Dial4      = Button(TLP1, 2104)
+A2Dial5      = Button(TLP1, 2105)
+A2Dial6      = Button(TLP1, 2106)
+A2Dial7      = Button(TLP1, 2107)
+A2Dial8      = Button(TLP1, 2108)
+A2Dial9      = Button(TLP1, 2109)
+A2DialDot    = Button(TLP1, 2110)
+A2DialHash   = Button(TLP1, 2111)
+A2DialDelete = Button(TLP1, 2114, repeatTime=0.1)
+# Dialer
+
+# Call
+A2Hangup     = Button(TLP1, 2112)
+A2Call       = Button(TLP1, 2113)
+
+# Content
+A2ContentOn  = Button(TLP1, 2115)
+A2ContentOff = Button(TLP1, 2116)
+
+# Label
+A2VCDial     = Label(TLP1, 2117)
+A2VCRemote   = Label(TLP1, 2118)
 
 
 # TouchPanel B -----------------------------------------------------------------
@@ -373,6 +443,13 @@ Rec = [Arecord, Astop, Apause, A2record, A2stop, A2pause]
 GroupRecA = MESet([Arecord, Astop, Apause])
 GroupRecB = MESet([A2record, A2stop, A2pause])
 
+# Mode Videoconference
+VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
+VCButtons = [ACall, AHangup, AContentOn, AContentOff]
+#
+VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial7, A2Dial8, A2Dial9, A2DialDot, A2DialHash, A2DialDelete]
+VC2Buttons = [A2Call, A2Hangup, A2ContentOn, A2ContentOff]
+
 # Button State List
 ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 ## End Communication Interface Definition --------------------------------------
@@ -394,12 +471,26 @@ def Initialize():
     LCDL2.Connect()
     ##LCDP1.Connect()
     ##LCDP2.Connect()
+    Tesira.Connect()
+    PTZ1.Connect()
+    ##Cisco1.Connect()
+    ##Cisco2.Connect()
 
     ## XTP Matrix Data Init
     global output
     global input
     output = ''
     input = ''
+
+    ## Cisco1 Dial PAGE
+    global dialerVC  ## To access the Dial String variable in all program
+    dialerVC = ''    ## Clean the Dial String Variable
+    AVCDial.SetText('')
+
+    ## Cisco1 Dial PAGE
+    global dialerVC2  ## To access the Dial String variable in all program
+    dialerVC2 = ''    ## Clean the Dial String Variable
+    A2VCDial.SetText('')
 
     ##12v Interface (This brings power to all Relays)
     SWPowerPort1.SetState('On')
@@ -412,73 +503,73 @@ def Initialize():
 def subscribe_matrix():
     """This send Subscribe Commands to Device"""
     ## Socket Status
-    XTP.SubscribeStatus('ConnectionStatus', None, matrix_parsing)
+    XTP.SubscribeStatus('ConnectionStatus', None, XTP_parsing)
     ## Input Signal Status
-    XTP.SubscribeStatus('InputSignal', {'Input':'1'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'2'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'3'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'4'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'5'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'6'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'7'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'8'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'9'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'10'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'11'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'12'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'13'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'14'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'15'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'16'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'17'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'18'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'19'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'20'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'21'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'22'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'23'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'24'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'25'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'26'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'27'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'28'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'29'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'30'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'31'}, matrix_parsing)
-    XTP.SubscribeStatus('InputSignal', {'Input':'32'}, matrix_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'1'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'2'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'3'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'4'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'5'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'6'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'7'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'8'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'9'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'10'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'11'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'12'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'13'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'14'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'15'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'16'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'17'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'18'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'19'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'20'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'21'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'22'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'23'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'24'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'25'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'26'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'27'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'28'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'29'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'30'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'31'}, XTP_parsing)
+    XTP.SubscribeStatus('InputSignal', {'Input':'32'}, XTP_parsing)
     ## Output Signal Status
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'12', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'13', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'14', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'15', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'16', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'17', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'18', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'19', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, matrix_parsing)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, matrix_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'12', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'13', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'14', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'15', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'16', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'17', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'18', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'19', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, XTP_parsing)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, XTP_parsing)
     pass
 
 def subscribe_projectorA():
@@ -599,6 +690,52 @@ def subscribe_LCDP2():
     LCDP2.SubscribeStatus('Input', None, LcdP2_parsing)
     pass
 
+def subscribe_Tesira():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    Tesira.SubscribeStatus('ConnectionStatus', None, LcdP2_parsing)
+    ## Device Status
+    Tesira.SubscribeStatus('LastDialed', {'Instance Tag':'Dialer', 'Line':'1'}, Tesira_parsing)
+    Tesira.SubscribeStatus('LastDialed', {'Instance Tag':'Dialer', 'Line':'2'}, Tesira_parsing)
+    #
+    Tesira.SubscribeStatus('VoIPCallStatus', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}, Tesira_parsing)
+    Tesira.SubscribeStatus('VoIPCallStatus', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'}, Tesira_parsing)
+    #
+    Tesira.SubscribeStatus('VoIPCallerID', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}, Tesira_parsing)
+    Tesira.SubscribeStatus('VoIPCallerID', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'}, Tesira_parsing)
+    #
+    Tesira.SubscribeStatus('VoIPLineInUse', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}, Tesira_parsing)
+    Tesira.SubscribeStatus('VoIPLineInUse', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'}, Tesira_parsing)
+    pass
+
+def subscribe_PTZ1():
+    """This send Subscribe Commands to Device"""
+    PTZ1.SubscribeStatus('ConnectionStatus', None, PTZ1_parsing)
+    PTZ1.SubscribeStatus('Power', None, PTZ1_parsing)
+    pass
+
+def subscribe_Cisco1():
+    """This send Subscribe Commands to Device"""
+    Cisco1.SubscribeStatus('ConnectionStatus', None, Cisco1_parsing)
+    Cisco1.SubscribeStatus('CallStatus', {'Call':'1'}, Cisco1_parsing)
+    Cisco1.SubscribeStatus('Presentation', None, Cisco1_parsing)
+    Cisco1.SubscribeStatus('PresentationMode', None, Cisco1_parsing)
+    Cisco1.SubscribeStatus('RemoteNumber', {'Call':'1'}, Cisco1_parsing)
+    Cisco1.SubscribeStatus('SelfView', None, Cisco1_parsing)
+    Cisco1.SubscribeStatus('Standby', None, Cisco1_parsing)
+    pass
+
+def subscribe_Cisco2():
+    """This send Subscribe Commands to Device"""
+    Cisco2.SubscribeStatus('ConnectionStatus', None, Cisco2_parsing)
+    Cisco2.SubscribeStatus('CallStatus', {'Call':'1'}, Cisco2_parsing)
+    Cisco2.SubscribeStatus('Presentation', None, Cisco2_parsing)
+    Cisco2.SubscribeStatus('PresentationMode', None, Cisco2_parsing)
+    Cisco2.SubscribeStatus('RemoteNumber', {'Call':'1'}, Cisco2_parsing)
+    Cisco2.SubscribeStatus('SelfView', None, Cisco2_parsing)
+    Cisco2.SubscribeStatus('Standby', None, Cisco2_parsing)
+    pass
+
 # UPDATE FUNCTIONS -------------------------------------------------------------
 def update_matrix():
     """This send Update Commands to Device"""
@@ -717,11 +854,51 @@ def update_LCDP2():
     LCDP2.Update('Input')
     pass
 
+def update_Tesira():
+    """This send Update Commands to Device"""
+    Tesira.Update('LastDialed', {'Instance Tag':'Dialer', 'Line':'1'})
+    Tesira.Update('LastDialed', {'Instance Tag':'Dialer', 'Line':'2'})
+    #
+    Tesira.Update('VoIPCallStatus', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
+    Tesira.Update('VoIPCallStatus', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
+    #
+    Tesira.Update('VoIPCallerID', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
+    Tesira.Update('VoIPCallerID', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
+    #
+    Tesira.Update('VoIPLineInUse', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
+    Tesira.Update('VoIPLineInUse', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
+    pass
+
+def update_PTZ1():
+    """This send Update Commands to Device"""
+    PTZ1.Update('Power')
+    pass
+
+def update_Cisco1():
+    """This send Update Commands to Device"""
+    Cisco1.Update('CallStatus', {'Call':'1'})
+    Cisco1.Update('Presentation')
+    Cisco1.Update('PresentationMode')
+    Cisco1.Update('RemoteNumber', {'Call':'1'})
+    Cisco1.Update('SelfView')
+    Cisco1.Update('Standby')
+    pass
+
+def update_Cisco2():
+    """This send Update Commands to Device"""
+    Cisco2.Update('CallStatus', {'Call':'1'})
+    Cisco2.Update('Presentation')
+    Cisco2.Update('PresentationMode')
+    Cisco2.Update('RemoteNumber', {'Call':'1'})
+    Cisco2.Update('SelfView')
+    Cisco2.Update('Standby')
+    pass
+
 # DATA PARSING FUNCTIONS -------------------------------------------------------
 ## These functions receive the data of the devices in real time
 ## Each function activate feedback
 ## Each function works with the subscription methods of the Python modules
-def matrix_parsing(command, value, qualifier):
+def XTP_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
         print('> Module: ' + value + " | XTP II 3200")
@@ -1270,6 +1447,80 @@ def LcdP2_parsing(command, value, qualifier):
         print('--- Parsing LCD Podium 2: ' + command + ' ' + value)
     pass
 
+def Tesira_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | Tesira ServerIO")
+        #
+        if value == 'Connected':
+            Tesira_Data['ConexModule'] = True
+            #ALCDInfoPod2.SetText('Online')
+        else:
+            Tesira_Data['ConexModule'] = False
+            #ALCDPodium2.SetState(2)
+            #ALCDInfoPod1.SetText('...')
+            ## Disconnect the IP Socket
+            Tesira.Disconnect()
+    #
+    elif command == 'LastDialed':
+        print('> Module: ' + value + " | Tesira ServerIO")
+    pass
+
+def PTZ1_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | PTZ1")
+        #
+        if value == 'Connected':
+            PTZ1_Data['ConexModule'] = True
+            #ALCDInfoCab4.SetText('Online')
+        else:
+            PTZ1_Data['ConexModule'] = False
+            #ALCDCab2.SetState(2)
+            #ALCDInfoCab3.SetText('...')
+            ## Disconnect the IP Socket
+            PTZ1.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing PTZ1: ' + command + ' ' + value)
+        """if value == 'On':
+            ALCDCab2.SetState(1)
+        else:
+            ALCDCab2.SetState(0)"""
+    pass
+
+def Cisco1_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | Cisco 1")
+        #
+        if value == 'Connected':
+            Cisco1_Data['ConexModule'] = True
+            #ALCDInfoCab4.SetText('Online')
+        else:
+            Cisco1_Data['ConexModule'] = False
+            #ALCDCab2.SetState(2)
+            #ALCDInfoCab3.SetText('...')
+            ## Disconnect the IP Socket
+            Cisco1.Disconnect()
+    pass
+
+def Cisco2_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | Cisco 2")
+        #
+        if value == 'Connected':
+            Cisco2_Data['ConexModule'] = True
+            #ALCDInfoCab4.SetText('Online')
+        else:
+            Cisco2_Data['ConexModule'] = False
+            #ALCDCab2.SetState(2)
+            #ALCDInfoCab3.SetText('...')
+            ## Disconnect the IP Socket
+            Cisco2.Disconnect()
+    pass
+
 # EVENT FUNCTIONS --------------------------------------------------------------
 ## This functions report a 'Online' / 'Offline' status after to send a Connect()
 ## CAUTION: If you never make a Connect(), the Module never work with Subscriptions
@@ -1528,6 +1779,86 @@ def LCDP2_conex_event(interface, state):
         trying_LCDP2()
     pass
 
+@event(Tesira, 'Connected')
+@event(Tesira, 'Disconnected')
+def Tesira_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Tesira ServerIO")
+    #
+    if state == 'Connected':
+        Tesira_Data['ConexEvent'] = True
+        #ALCDInfoPod2.SetText('Online')
+        ## Send & Query Information
+        subscribe_Tesira()
+        update_Tesira()
+    else:
+        Tesira_Data['ConexEvent'] = False
+        #ALCDPodium2.SetState(2)
+        #ALCDInfoPod2.SetText('...')
+        trying_Tesira()
+    pass
+
+@event(PTZ1, 'Connected')
+@event(PTZ1, 'Disconnected')
+def PTZ1_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | PTZ1")
+    #
+    if state == 'Connected':
+        PTZ1_Data['ConexEvent'] = True
+        #ALCDInfoPod2.SetText('Online')
+        ## Send & Query Information
+        subscribe_PTZ1()
+        update_PTZ1()
+    else:
+        PTZ1_Data['ConexEvent'] = False
+        #ALCDPodium2.SetState(2)
+        #ALCDInfoPod2.SetText('...')
+        trying_PTZ1()
+    pass
+
+@event(Cisco1, 'Connected')
+@event(Cisco1, 'Disconnected')
+def Cisco1_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Cisco 1")
+    #
+    if state == 'Connected':
+        Cisco1_Data['ConexEvent'] = True
+        #ALCDInfoPod2.SetText('Online')
+        ## Send & Query Information
+        subscribe_Cisco1()
+        update_Cisco1()
+    else:
+        Cisco1_Data['ConexEvent'] = False
+        #ALCDPodium2.SetState(2)
+        #ALCDInfoPod2.SetText('...')
+        trying_Cisco1()
+    pass
+
+@event(Cisco2, 'Connected')
+@event(Cisco2, 'Disconnected')
+def Cisco2_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | Cisco 2")
+    #
+    if state == 'Connected':
+        Cisco2_Data['ConexEvent'] = True
+        #ALCDInfoPod2.SetText('Online')
+        ## Send & Query Information
+        subscribe_Cisco2()
+        update_Cisco2()
+    else:
+        Cisco2_Data['ConexEvent'] = False
+        #ALCDPodium2.SetState(2)
+        #ALCDInfoPod2.SetText('...')
+        trying_Cisco2()
+    pass
+
 # RECURSIVE FUNCTIONS ----------------------------------------------------------
 ## Help´s when the device was Off in the first Connect() method when the code starts
 def trying_matrix():
@@ -1634,10 +1965,42 @@ def trying_LCDP2():
     pass
 loop_trying_LCDP2 = Wait(5, trying_LCDP2)
 
+def trying_Tesira():
+    """Try to make a Connect() to device"""
+    if Tesira_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in Tesira')
+        Tesira.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_Tesira = Wait(5, trying_Tesira)
+
+def trying_PTZ1():
+    """Try to make a Connect() to device"""
+    if PTZ1_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in PTZ1')
+        PTZ1.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_PTZ1 = Wait(5, trying_PTZ1)
+
+def trying_Cisco1():
+    """Try to make a Connect() to device"""
+    if Cisco1_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in Cisco 1')
+        Cisco1.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_Cisco1 = Wait(5, trying_Cisco1)
+
+def trying_Cisco2():
+    """Try to make a Connect() to device"""
+    if Cisco2_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in Cisco 2')
+        Cisco2.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_Cisco2 = Wait(5, trying_Cisco2)
+
 # RECURSIVE LOOP FUNCTIONS -----------------------------------------------------
 ## This not affect any device
 ## This return True / False when no response is received from Module
-## If in 5 times the data is not reported (connectionCounter = 5) from the Update Command
+## If in 5 times the data is not reported (connectionCounter = 5) from Update Command
 ## Generate 'Connected' / 'Disconnected'
 def update_loop_matrix():
     """Continuos Update Commands to produce Module Connected / Disconnected"""
@@ -1717,6 +2080,30 @@ def update_loop_LCDP2():
     loop_update_LCDP2.Restart()
 loop_update_LCDP2 = Wait(12, update_loop_LCDP2)
 
+def update_loop_Tesira():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    Tesira.Update('Power')
+    loop_update_Tesira.Restart()
+loop_update_Tesira = Wait(12, update_loop_Tesira)
+
+def update_loop_PTZ1():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    PTZ1.Update('AutoExposure')
+    loop_update_PTZ1.Restart()
+loop_update_PTZ1 = Wait(12, update_loop_PTZ1)
+
+def update_loop_Cisco1():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    Cisco1.Update('Standby')
+    loop_update_Cisco1.Restart()
+loop_update_Cisco1 = Wait(12, update_loop_Cisco1)
+
+def update_loop_Cisco2():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    Cisco2.Update('Standby')
+    loop_update_Cisco2.Restart()
+loop_update_Cisco2 = Wait(12, update_loop_Cisco2)
+
 # DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store the real time information of room devices
 ## Room
@@ -1792,6 +2179,23 @@ LCDP2_Data = {
 Tesira_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
+}
+
+PTZ1_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+Cisco1_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+    'Dial' : None,
+}
+
+Cisco2_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+    'Dial' : None,
 }
 
 # ACTIONS - INDEX PAGE MODE ----------------------------------------------------
@@ -2465,25 +2869,133 @@ def ButtonObjectPressed(button, state):
         RecA.Set('Record','Start')
         print("Touch 1: {0}".format("SMP11-A: Rec"))
     #
-    if button is Astop:
+    elif button is Astop:
         RecA.Set('Record','Stop')
         print("Touch 1: {0}".format("SMP11-A: Stop"))
     #
-    if button is Apause:
+    elif button is Apause:
         RecA.Set('Record','Pause')
         print("Touch 1: {0}".format("SMP11-A: Pause"))
     #
-    if button is A2record:
+    elif button is A2record:
         RecB.Set('Record','Start')
         print("Touch 1: {0}".format("SMP11-B: Rec"))
     #
-    if button is A2stop:
+    elif button is A2stop:
         RecB.Set('Record','Stop')
         print("Touch 1: {0}".format("SMP11-B: Stop"))
     #
-    if button is A2pause:
+    elif button is A2pause:
         RecB.Set('Record','Pause')
         print("Touch 1: {0}".format("SMP11-B: Pause"))
+    pass
+
+# ACTIONS - CISCO 1 MODE -----------------------------------------------------
+
+## This function is called when the user press a Dial Button
+## This function add or remove data from the panel Dial Number
+def PrintDialerVC1(btn_name):
+    """User Actions: Touch VC Page"""
+    global dialerVC
+
+    if btn_name == 'Delete':         #If the user push 'Delete' button
+        dialerVC = dialerVC[:-1]     #Remove the last char of the string
+        Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
+        AVCDial.SetText(dialerVC)  #Send the string to GUI Label
+
+    else:                            #If the user push a [*#0-9] button
+        number = str(btn_name[4])    #Extract the valid character of BTN name
+        dialerVC += number           #Append the last char to the string
+        Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
+        AVCDial.SetText(dialerVC)  #Send the string to GUI Label
+    pass
+
+@event(VCDial, ButtonEventList)
+def vi_dial_events(button, state):
+    """User Actions: Touch VC Page"""
+    ## All the VoIP Dial Buttons pressed come in button variable
+    if state == 'Pressed' or state == 'Repeated':
+        print('Touch: VC %s' % (button.Name))
+        PrintDialerVC1(button.Name) #Recall a validation function
+        button.SetState(1)
+    else:
+        button.SetState(0)
+    pass
+
+@event(VCButtons, 'Pressed')
+def VC_Mode(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
+    if button is ACall:
+        Cisco1.Set('Hook', 'Dial', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
+        print("Touch 1: {0}".format("Cisco1: Call"))
+    #
+    elif button is AHangup:
+        Cisco1.Set('Hook', 'Disconnect 1', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
+        AVCDial.SetText('')
+        print("Touch 1: {0}".format("Cisco1: Hangup"))
+    #
+    elif button is AContentOn:
+        Cisco1.Set('Presentation', '1')
+        print("Touch 1: {0}".format("Cisco1: Content On"))
+    #
+    elif button is AContentOff:
+        Cisco1.Set('Presentation', 'Stop')
+        print("Touch 1: {0}".format("Cisco1: Content Off"))
+    pass
+
+# ACTIONS - CISCO 2 MODE -----------------------------------------------------
+
+## This function is called when the user press a Dial Button
+## This function add or remove data from the panel Dial Number
+def PrintDialerVC2(btn_name):
+    """User Actions: Touch VC Page"""
+    global dialerVC2
+
+    if btn_name == 'Delete':         #If the user push 'Delete' button
+        dialerVC2 = dialerVC2[:-1]     #Remove the last char of the string
+        Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
+        A2VCDial.SetText(dialerVC2)  #Send the string to GUI Label
+
+    else:                            #If the user push a [*#0-9] button
+        number = str(btn_name[4])    #Extract the valid character of BTN name
+        dialerVC2 += number           #Append the last char to the string
+        Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
+        A2VCDial.SetText(dialerVC2)  #Send the string to GUI Label
+    pass
+
+@event(VC2Dial, ButtonEventList)
+def VC2_dial_events(button, state):
+    """User Actions: Touch VC Page"""
+    ## All the VoIP Dial Buttons pressed come in button variable
+    if state == 'Pressed' or state == 'Repeated':
+        print('Touch: VC %s' % (button.Name))
+        PrintDialerVC2(button.Name) #Recall a validation function
+        button.SetState(1)
+    else:
+        button.SetState(0)
+    pass
+
+@event(VC2Buttons, 'Pressed')
+def VC_Mode(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
+    if button is A2Call:
+        Cisco2.Set('Hook', 'Dial', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
+        print("Touch 1: {0}".format("Cisco2: Call"))
+    #
+    elif button is A2Hangup:
+        Cisco2.Set('Hook', 'Disconnect 1', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
+        A2VCDial.SetText('')
+        print("Touch 1: {0}".format("Cisco2: Hangup"))
+    #
+    elif button is A2ContentOn:
+        Cisco2.Set('Presentation', '1')
+        print("Touch 1: {0}".format("Cisco2: Content On"))
+    #
+    elif button is A2ContentOff:
+        Cisco2.Set('Presentation', 'Stop')
+        print("Touch 1: {0}".format("Cisco2: Content Off"))
     pass
 
 ## End Events Definitions-------------------------------------------------------

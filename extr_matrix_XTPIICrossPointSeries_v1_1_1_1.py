@@ -6,7 +6,7 @@ class DeviceClass:
 
     def __init__(self):
         self.Unidirectional = 'False'
-        self.connectionCounter = 15
+        self.connectionCounter = 5
 
         self.devicePassword = None
         self.Debug = False

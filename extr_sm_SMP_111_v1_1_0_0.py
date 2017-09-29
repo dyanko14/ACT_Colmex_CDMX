@@ -9,7 +9,7 @@ class DeviceClass:
     def __init__(self):
 
         self.Unidirectional = 'False'
-        self.connectionCounter = 15
+        self.connectionCounter = 5
         self.DefaultResponseTimeout = 0.3
         self._compile_list = {}
         self.Subscription = {}
