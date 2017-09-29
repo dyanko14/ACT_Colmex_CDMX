@@ -27,24 +27,47 @@ IPCP = ProcessorDevice('IPCP550')
 TLP1 = UIDevice('TouchPanelA')
 TLP2 = UIDevice('TouchPanelB')
 ## Begin User Import -----------------------------------------------------------
-## IP Modules
-import extr_matrix_XTPIICrossPointSeries_v1_1_1_1 as DeviceA
-import chri_vp_D13HDHS_D13WUHS_v1_0_2_0 as DeviceB
-import chri_vp_D13HDHS_D13WUHS_v1_0_2_0_ as DeviceC
-import extr_sm_SMP_111_v1_1_0_0 as DeviceD
-import extr_sm_SMP_111_v1_1_0_0_ as DeviceE
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceF
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0_ as DeviceG
-
+# MODULES-----------------------------------------------------------------------
 ## IP
+import extr_matrix_XTPIICrossPointSeries_v1_1_1_1  as DeviceA
+import chri_vp_D13HDHS_D13WUHS_v1_0_2_0            as DeviceB
+import chri_vp_D13HDHS_D13WUHS_v1_0_2_0_           as DeviceC
+import extr_sm_SMP_111_v1_1_0_0                    as DeviceD
+import extr_sm_SMP_111_v1_1_0_0_                   as DeviceE
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0A as DeviceF
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0B as DeviceG
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0C as DeviceH
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0D as DeviceI
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0E as DeviceJ
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0F as DeviceK
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0G as DeviceL
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0H as DeviceM
+##
+# MODULE TO DEVICE INSTANCES ---------------------------------------------------
+##
 XTP   = DeviceA.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
-ProjA = DeviceB.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
-ProjB = DeviceC.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
+ProjA = DeviceB.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
+ProjB = DeviceC.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
 RecA  = DeviceD.EthernetClass('192.168.0.13', 23, Model='SMP 111')
 RecB  = DeviceE.EthernetClass('192.168.0.14', 23, Model='SMP 111')
-LCD3  = DeviceF.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
-LCD4  = DeviceG.EthernetClass('192.168.0.29', 1515, Model='LH55QMFPLGC/KR')
-
+##
+LCD1  = DeviceF.EthernetClass('192.168.0.26', 1515, Model='LH55QMFPLGC/KR')
+LCD2  = DeviceG.EthernetClass('192.168.0.27', 1515, Model='LH55QMFPLGC/KR')
+LCD3  = DeviceH.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
+LCD4  = DeviceI.EthernetClass('192.168.0.29', 1515, Model='LH55QMFPLGC/KR')
+LCDP1 = DeviceJ.EthernetClass('192.168.0.30', 1515, Model='LH55QMFPLGC/KR')
+LCDP2 = DeviceK.EthernetClass('192.168.0.31', 1515, Model='LH55QMFPLGC/KR')
+LCDL1 = DeviceL.EthernetClass('192.168.0.32', 1515, Model='LH55QMFPLGC/KR')
+LCDL2 = DeviceM.EthernetClass('192.168.0.33', 1515, Model='LH55QMFPLGC/KR')
+##
+# DEVICES INTERFACES -----------------------------------------------------------
+##
+## 12v Power Interface
+SWPowerPort1 = SWPowerInterface(IPCP, 'SPI1')
+SWPowerPort2 = SWPowerInterface(IPCP, 'SPI2')
+SWPowerPort3 = SWPowerInterface(IPCP, 'SPI3')
+SWPowerPort4 = SWPowerInterface(IPCP, 'SPI4')
+##
 ## Relay
 AScreenUp = RelayInterface(IPCP, 'RLY3')
 AScreenDw = RelayInterface(IPCP, 'RLY4')
@@ -54,27 +77,23 @@ A2ScreenUp = RelayInterface(IPCP, 'RLY1')
 A2ScreenDw = RelayInterface(IPCP, 'RLY2')
 A2ElevatUp = RelayInterface(IPCP, 'RLY5')
 A2ElevatDw = RelayInterface(IPCP, 'RLY6')
-
-## 12v Power Interface
-SWPowerPort1 = SWPowerInterface(IPCP, 'SPI1')
-SWPowerPort2 = SWPowerInterface(IPCP, 'SPI2')
-SWPowerPort3 = SWPowerInterface(IPCP, 'SPI3')
-SWPowerPort4 = SWPowerInterface(IPCP, 'SPI4')
-
-
+##
 ## End User Import -------------------------------------------------------------
 
 ## End Device/User Interface Definition ----------------------------------------
 ##
 ## Begin Communication Interface Definition ------------------------------------
+# BUTTONS DEFINITION -----------------------------------------------------------
 # TouchPanel A -----------------------------------------------------------------
-## Index
+# Mode Index -------------------------------------------------------------------
 ABtnIndex = Button(TLP1, 1)
-## Full Room ---------------------------------------------------
+
+# Mode Room --------------------------------------------------------------------
 ARoomSplit = Button(TLP1, 240)
 ARoomMixed = Button(TLP1, 241)
 
-## Full Main - Lateral Bar -------------------------------------
+# Mode Main --------------------------------------------------------------------
+# Mode Main - Lateral Bar
 ABtnRoom    = Button(TLP1, 10)
 ABtnSwitch  = Button(TLP1, 11)
 ABtnDisplay = Button(TLP1, 12)
@@ -84,157 +103,205 @@ ABtnREC     = Button(TLP1, 15)
 ABtnVoIP    = Button(TLP1, 16)
 ABtnInfo    = Button(TLP1, 17)
 ABtnPower   = Button(TLP1, 18)
-## Full Main - Up Bar
+
+# Mode Main - Up Bar
 ALblMain    = Label(TLP1, 20)
 ABtnRoom2   = Button(TLP1, 21)
 ABtnRoom1   = Button(TLP1, 22)
-## Full Switching---------------------------------------------
-## Outputs
-## XTP Out Slot 1
+
+# Mode Switching ---------------------------------------------------------------
+# Outputs ----------------------------------------------------------------------
+# XTP Out Slot 1
 AOut1  = Button(TLP1, 101) ##Room1 Projector
 AOut2  = Button(TLP1, 102) ##Room1 LCD Confidence
 AOut3  = Button(TLP1, 103) ##Room1 LCD Podium
-## XTP Out Slot 2
+
+# XTP Out Slot 2
 AOut5  = Button(TLP1, 105) ##Room2 Projector
 AOut6  = Button(TLP1, 106) ##Room2 LCD Confidence
 AOut7  = Button(TLP1, 107) ##Room2 LCD Podium
-## XTP Out Slot 3
+
+# XTP Out Slot 3
 AOut9  = Button(TLP1, 109) ##Core Tricaster 1 - Input 1
 AOut10 = Button(TLP1, 110) ##Core Tricaster 1 - Input 2
 AOut11 = Button(TLP1, 111) ##Core Tricaster 1 - Input 3
 AOut12 = Button(TLP1, 112) ##Core Tricaster 1 - Input 4
-## XTP Out Slot 4
+
+# XTP Out Slot 4
 AOut13 = Button(TLP1, 113) ##Core Tricaster 2 - Input 1
 AOut14 = Button(TLP1, 114) ##Core Tricaster 2 - Input 2
 AOut15 = Button(TLP1, 115) ##Core Tricaster 2 - Input 3
 AOut16 = Button(TLP1, 116) ##Core Tricaster 2 - Input 4
-## XTP Out Slot 5
+
+# XTP Out Slot 5
 AOut17 = Button(TLP1, 117) ##Core Cisco 1 - Input Camera
 AOut18 = Button(TLP1, 118) ##Core Cisco 1 - Input Graphics
 AOut19 = Button(TLP1, 119) ##Core Cisco 2 - Input Camera
 AOut20 = Button(TLP1, 120) ##Core Cisco 2 - Input Graphics
-## XTP Out Slot 6
+
+# XTP Out Slot 6
 AOut21 = Button(TLP1, 121) ##Core Recorder 1
 AOut22 = Button(TLP1, 122) ##Core Recorder 2
-## Inputs
-## XTP Slot 1
+
+# Inputs -----------------------------------------------------------------------
+# XTP Slot 1
 AInput1    = Button(TLP1, 201) ##Room1 PC Left
 AInput2    = Button(TLP1, 202) ##Room1 PC Right
 AInput3    = Button(TLP1, 203) ##Room1 PC Stage
 AInput4    = Button(TLP1, 204) ##Room1 PC Right
-## XTP Slot 2
+
+# XTP Slot 2
 AInput5    = Button(TLP1, 205) ##Room2 PC Left
 AInput6    = Button(TLP1, 206) ##Room2 PC Right
 AInput7    = Button(TLP1, 207) ##Room2 PC Stage
 AInput8    = Button(TLP1, 208) ##Room2 PC Back
-## XTP Slot 3
+
+# XTP Slot 3
 AInput9    = Button(TLP1, 209) ##Room1 PTZ1
 AInput10   = Button(TLP1, 210) ##Room1 PTZ2
 AInput11   = Button(TLP1, 211) ##Room2 PTZ1
 AInput12   = Button(TLP1, 212) ##Room2 PTZ2
-## XTP Slot 4
+
+# XTP Slot 4
 AInput13   = Button(TLP1, 213) ##Room1 PC Cabin
 AInput14   = Button(TLP1, 214) ##Room2 PC Cabin
 ##...
 ##...
-## XTP Slot 5
+
+# XTP Slot 5
 AInput17   = Button(TLP1, 215) ##Core Cisco 1 Out
 AInput18   = Button(TLP1, 216) ##Core Cisco 2 Out
 AInput19   = Button(TLP1, 217) ##Core ShareLink 1
 AInput20   = Button(TLP1, 218) ##Core ShareLink 2
-## XTP Slot 6
+
+# XTP Slot 6
 AInput21   = Button(TLP1, 219) ##Core Tricaster 1 - Out 1
 AInput22   = Button(TLP1, 220) ##Core Tricaster 2 - Out 1
+# Input Signal Status
 
-## Input Signal Status
-## XTP Slot 1
+# XTP Slot 1
 ASignal1    = Button(TLP1, 130) ##Room1 PC Left
 ASignal2    = Button(TLP1, 131) ##Room1 PC Right
 ASignal3    = Button(TLP1, 132) ##Room1 PC Stage
 ASignal4    = Button(TLP1, 133) ##Room1 PC Right
-## XTP Slot 2
+
+# XTP Slot 2
 ASignal5    = Button(TLP1, 134) ##Room2 PC Left
 ASignal6    = Button(TLP1, 135) ##Room2 PC Right
 ASignal7    = Button(TLP1, 136) ##Room2 PC Stage
 ASignal8    = Button(TLP1, 137) ##Room2 PC Back
-## XTP Slot 3
+
+# XTP Slot 3
 ASignal9    = Button(TLP1, 138) ##Room1 PTZ1
 ASignal10   = Button(TLP1, 139) ##Room1 PTZ2
 ASignal11   = Button(TLP1, 140) ##Room2 PTZ1
 ASignal12   = Button(TLP1, 141) ##Room2 PTZ2
-## XTP Slot 4
+
+# XTP Slot 4
 ASignal13   = Button(TLP1, 142) ##Room1 PC Cabin
 ASignal14   = Button(TLP1, 143) ##Room2 PC Cabin
 ##...
 ##...
-## XTP Slot 5
+
+# XTP Slot 5
 ASignal17   = Button(TLP1, 144) ##Core Cisco 1 Out
 ASignal18   = Button(TLP1, 145) ##Core Cisco 2 Out
 ASignal19   = Button(TLP1, 146) ##Core ShareLink 1
 ASignal20   = Button(TLP1, 147) ##Core ShareLink 2
-## XTP Slot 6
+
+# XTP Slot 6
 ASignal21   = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
 ASignal22   = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
-## Full Display ---------------------------------------------------
+
+# Mode Display -----------------------------------------------------------------
+# Room 1 - Projection
 AProjAPwr   = Button(TLP1, 30)
 AScUp       = Button(TLP1, 31)
 AScDw       = Button(TLP1, 32)
 AElUp       = Button(TLP1, 33)
 AElDw       = Button(TLP1, 34)
 
+# Room 1 - LCD
+ALCDCab1    = Button(TLP1, 42)
+ALCDCab2    = Button(TLP1, 41)
+ALCDCab3    = Button(TLP1, 40)
+ALCDLobby   = Button(TLP1, 43)
+ALCDPodium1 = Button(TLP1, 48)
+
+# Room 2 - Projection
 AProjBPwr   = Button(TLP1, 35)
 A2ScUp      = Button(TLP1, 36)
 A2ScDw      = Button(TLP1, 37)
 A2ElUp      = Button(TLP1, 38)
 A2ElDw      = Button(TLP1, 39)
 
-ALCDCab1    = Button(TLP1, 42)
-ALCDCab2    = Button(TLP1, 41)
-ALCDCab3    = Button(TLP1, 40)
-ALCDLobby   = Button(TLP1, 43)
-
-A2LCDCab1   = Button(TLP1, 44)
+# Room 2 - LCD
+A2LCDCab1   = Button(TLP1, 46)
 A2LCDCab2   = Button(TLP1, 45)
-A2LCDCab3   = Button(TLP1, 46)
+A2LCDCab3   = Button(TLP1, 44)
 A2LCDLobby  = Button(TLP1, 47)
+ALCDPodium2 = Button(TLP1, 49)
 
-## Full Rec ---------------------------------------------------
+# Mode Recording ---------------------------------------------------------------
+# Recorder A - Record
 Astop      = Button(TLP1, 60)
 Arecord    = Button(TLP1, 61)
 Apause     = Button(TLP1, 62)
 Atime      = Label(TLP1, 63)
-##
+
+# Recorder A - Info
 ARecSource  = Label(TLP1, 64)
 ARecDestine = Label(TLP1, 65)
 ARecResolut = Label(TLP1, 66)
 ARecMode    = Label(TLP1, 67)
 ARecDisk    = Label(TLP1, 68)
 ARecHDCP    = Label(TLP1, 69)
-##
+
+# Recorder B - Record
 A2stop      = Button(TLP1, 70)
 A2record    = Button(TLP1, 71)
 A2pause     = Button(TLP1, 72)
 A2time      = Label(TLP1, 73)
-##
+
+# Recorder B - Info
 A2RecSource  = Label(TLP1, 74)
 A2RecDestine = Label(TLP1, 75)
 A2RecResolut = Label(TLP1, 76)
 A2RecMode    = Label(TLP1, 77)
 A2RecDisk    = Label(TLP1, 78)
 A2RecHDCP    = Label(TLP1, 79)
-## Status ---------------------------------------------------
+
+# Mode Status ------------------------------------------------------------------
+# Projector A
 ALANProjA    = Label(TLP1, 2512)
 AInfoProjA   = Label(TLP1, 2513)
 
+# Projector B
 ALANProjB    = Label(TLP1, 2500)
 AInfoProjB   = Label(TLP1, 2501)
 
+# Recorder A
 ALANRecA     = Label(TLP1, 2515)
 AinfoRecA    = Label(TLP1, 2516)
 
+# Recorder B
 ALANRecB     = Label(TLP1, 2503)
 AinfoRecB    = Label(TLP1, 2504)
 
+# Displays A
+ALCDInfoPod1 = Label(TLP1, 2520)
+ALCDInfoCab3 = Label(TLP1, 2521)
+ALCDInfoCab4 = Label(TLP1, 2522)
+ALCDInfoLob1 = Label(TLP1, 2523)
+
+# Displays B
+ALCDInfoPod2 = Label(TLP1, 2508)
+ALCDInfoCab1 = Label(TLP1, 2509)
+ALCDInfoCab2 = Label(TLP1, 2510)
+ALCDInfoLob2 = Label(TLP1, 2511)
+
+
+# XTP II 3200
 ALANXtp      = Label(TLP1, 2524)
 
 
@@ -257,39 +324,56 @@ BBtnRoom1   = Button(TLP2, 21)
 BBtnRoom2   = Button(TLP2, 22)
 
 
-
-# Button Grouping -----------------------------------------------------------------
-ModeRoom = [ARoomSplit, ARoomMixed]
-GroupRoom = MESet(ModeRoom)
-
+# BUTTON GROUPING --------------------------------------------------------------
+# Mode Index
 Index = [ABtnIndex, BBtnIndex]
 
-Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio, ABtnREC, ABtnVoIP, ABtnInfo, ABtnPower,
-         BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnAudio, BBtnREC, BBtnVoIP, BBtnInfo, BBtnPower]
-GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio, ABtnREC, ABtnVoIP, ABtnInfo, ABtnPower])
+# Mode Room
+ModeRoom = [ARoomSplit, ARoomMixed]
+#
+GroupRoom = MESet(ModeRoom)
 
-Outputs = [AOut1, AOut2, AOut3, AOut5, AOut6, AOut7, AOut9, AOut10, AOut11, AOut12,
-           AOut13, AOut14, AOut15, AOut16, AOut17, AOut18, AOut19, AOut20, AOut21, AOut22]      
+# Mode Main
+Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio, ABtnREC,
+         ABtnVoIP, ABtnInfo, ABtnPower,
+         BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnAudio, BBtnREC,
+         BBtnVoIP, BBtnInfo, BBtnPower]
+#
+GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio,
+                    ABtnREC,ABtnVoIP, ABtnInfo, ABtnPower])
+
+# Mode Video Switching
+Outputs = [AOut1, AOut2, AOut3, AOut5, AOut6,AOut7, AOut9, AOut10, AOut11,
+           AOut12, AOut13, AOut14, AOut15, AOut16, AOut17, AOut18, AOut19,
+           AOut20, AOut21, AOut22]
+#
+Inputs = [AInput1, AInput2, AInput3, AInput4, AInput5, AInput6, AInput7, 
+          AInput8, AInput9, AInput10, AInput11, AInput12, AInput13,
+          AInput14, AInput17, AInput18, AInput19, AInput20, AInput21, 
+          AInput22]
+#
+GroupInputs = MESet(Inputs)
 GroupOutputs = MESet(Outputs)
 
-Inputs = [AInput1, AInput2, AInput3, AInput4, AInput5, AInput6, AInput7, AInput8,
-          AInput9, AInput10, AInput11, AInput12, AInput13, AInput14, AInput17,
-          AInput18, AInput19, AInput20, AInput21, AInput22]
-GroupInputs = MESet(Inputs)
-ProjeccionA = [AProjAPwr, AScUp, AScDw, AElUp, AElDw, ALCDCab1, ALCDCab2, ALCDCab3, ALCDLobby]
-ProjeccionB = [AProjBPwr, A2ScUp, A2ScDw, A2ElUp, A2ElDw, A2LCDCab1, A2LCDCab2, A2LCDCab3, A2LCDLobby]
-
+# Mode Projection
+ProjeccionA = [AProjAPwr, AScUp, AScDw, AElUp, AElDw, ALCDCab1, ALCDCab2,
+               ALCDCab3, ALCDLobby, ALCDPodium1]
+ProjeccionB = [AProjBPwr, A2ScUp, A2ScDw, A2ElUp, A2ElDw, A2LCDCab1, A2LCDCab2,
+               A2LCDCab3, A2LCDLobby, ALCDPodium2]
+#
 GroupScreenA = MESet([AScUp, AScDw])
 GroupElevatA = MESet([AElUp, AElDw])
-
+#
 GroupScreen2A = MESet([A2ScUp, A2ScDw])
 GroupElevat2A = MESet([A2ElUp, A2ElDw])
 
+# Mode Recording
 Rec = [Arecord, Astop, Apause, A2record, A2stop, A2pause]
+#
 GroupRecA = MESet([Arecord, Astop, Apause])
 GroupRecB = MESet([A2record, A2stop, A2pause])
 
-
+# Button State List
 ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 ## End Communication Interface Definition --------------------------------------
 
@@ -302,8 +386,14 @@ def Initialize():
     ProjB.Connect()
     RecA.Connect()
     RecB.Connect()
+    LCD1.Connect()
+    LCD2.Connect()
     LCD3.Connect()
     LCD4.Connect()
+    LCDL1.Connect()
+    LCDL2.Connect()
+    ##LCDP1.Connect()
+    ##LCDP2.Connect()
 
     ## XTP Matrix Data Init
     global output
@@ -318,7 +408,7 @@ def Initialize():
     SWPowerPort4.SetState('On')
     pass
 
-## SUBSCRIBE FUNCTIONS ---------------------------------------------------------
+# SUBSCRIBE FUNCTIONS ----------------------------------------------------------
 def subscribe_matrix():
     """This send Subscribe Commands to Device"""
     ## Socket Status
@@ -437,6 +527,24 @@ def subscribe_recB():
     RecB.SubscribeStatus('CurrentRecordingDuration', None, recB_parsing)
     pass
 
+def subscribe_LCD1():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCD1.SubscribeStatus('ConnectionStatus', None, Lcd1_parsing)
+    ## Device Status
+    LCD1.SubscribeStatus('Power', None, Lcd1_parsing)
+    LCD1.SubscribeStatus('Input', None, Lcd1_parsing)
+    pass
+
+def subscribe_LCD2():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCD2.SubscribeStatus('ConnectionStatus', None, Lcd2_parsing)
+    ## Device Status
+    LCD2.SubscribeStatus('Power', None, Lcd2_parsing)
+    LCD2.SubscribeStatus('Input', None, Lcd2_parsing)
+    pass
+
 def subscribe_LCD3():
     """This send Subscribe Commands to Device"""
     ## Socket Status
@@ -454,7 +562,44 @@ def subscribe_LCD4():
     LCD4.SubscribeStatus('Power', None, Lcd4_parsing)
     LCD4.SubscribeStatus('Input', None, Lcd4_parsing)
     pass
-## UPDATE FUNCTIONS ------------------------------------------------------------
+
+def subscribe_LCDL1():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCDL1.SubscribeStatus('ConnectionStatus', None, LcdL1_parsing)
+    ## Device Status
+    LCDL1.SubscribeStatus('Power', None, LcdL1_parsing)
+    LCDL1.SubscribeStatus('Input', None, LcdL1_parsing)
+    pass
+
+def subscribe_LCDL2():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCDL2.SubscribeStatus('ConnectionStatus', None, LcdL2_parsing)
+    ## Device Status
+    LCDL2.SubscribeStatus('Power', None, LcdL2_parsing)
+    LCDL2.SubscribeStatus('Input', None, LcdL2_parsing)
+    pass
+
+def subscribe_LCDP1():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCDP1.SubscribeStatus('ConnectionStatus', None, LcdP1_parsing)
+    ## Device Status
+    LCDP1.SubscribeStatus('Power', None, LcdP1_parsing)
+    LCDP1.SubscribeStatus('Input', None, LcdP1_parsing)
+    pass
+
+def subscribe_LCDP2():
+    """This send Subscribe Commands to Device"""
+    ## Socket Status
+    LCDP2.SubscribeStatus('ConnectionStatus', None, LcdP2_parsing)
+    ## Device Status
+    LCDP2.SubscribeStatus('Power', None, LcdP2_parsing)
+    LCDP2.SubscribeStatus('Input', None, LcdP2_parsing)
+    pass
+
+# UPDATE FUNCTIONS -------------------------------------------------------------
 def update_matrix():
     """This send Update Commands to Device"""
     XTP.Update('InputSignal',{'Input':'1'})
@@ -524,6 +669,18 @@ def update_recB():
     RecB.Update('CurrentRecordingDuration')
     pass
 
+def update_LCD1():
+    """This send Update Commands to Device"""
+    LCD1.Update('Power')
+    LCD1.Update('Input')
+    pass
+
+def update_LCD2():
+    """This send Update Commands to Device"""
+    LCD2.Update('Power')
+    LCD2.Update('Input')
+    pass
+
 def update_LCD3():
     """This send Update Commands to Device"""
     LCD3.Update('Power')
@@ -536,7 +693,31 @@ def update_LCD4():
     LCD4.Update('Input')
     pass
 
-## DATA PARSING FUNCTIONS ------------------------------------------------------
+def update_LCDL1():
+    """This send Update Commands to Device"""
+    LCDL1.Update('Power')
+    LCDL1.Update('Input')
+    pass
+
+def update_LCDL2():
+    """This send Update Commands to Device"""
+    LCDL2.Update('Power')
+    LCDL2.Update('Input')
+    pass
+
+def update_LCDP1():
+    """This send Update Commands to Device"""
+    LCDP1.Update('Power')
+    LCDP1.Update('Input')
+    pass
+
+def update_LCDP2():
+    """This send Update Commands to Device"""
+    LCDP2.Update('Power')
+    LCDP2.Update('Input')
+    pass
+
+# DATA PARSING FUNCTIONS -------------------------------------------------------
 ## These functions receive the data of the devices in real time
 ## Each function activate feedback
 ## Each function works with the subscription methods of the Python modules
@@ -749,10 +930,8 @@ def projectorA_parsing(command, value, qualifier):
         AInfoProjA.SetText(value)
         #
         if value == 'On':
-            ProjectorA_Data['Power'] == True
             AProjAPwr.SetState(1)
         else:
-            ProjectorA_Data['Power'] == False
             AProjAPwr.SetState(0)
     pass
 
@@ -776,10 +955,8 @@ def projectorB_parsing(command, value, qualifier):
         AInfoProjB.SetText(value)
         #
         if value == 'On':
-            ProjectorB_Data['Power'] == True
             AProjBPwr.SetState(1)
         else:
-            ProjectorB_Data['Power'] == False
             AProjBPwr.SetState(0)
     pass
 
@@ -885,15 +1062,70 @@ def recB_parsing(command, value, qualifier):
         A2time.SetText(value)
     pass
 
+def Lcd1_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD 1")
+        #
+        if value == 'Connected':
+            LCD1_Data['ConexModule'] = True
+            ALCDInfoCab1.SetText('Online')
+        else:
+            LCD1_Data['ConexModule'] = False
+            A2LCDCab2.SetState(2)
+            ALCDInfoCab1.SetText('...')
+            ## Disconnect the IP Socket
+            LCD1.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD1: ' + command + ' ' + value)
+        if value == 'On':
+            A2LCDCab2.SetState(1)
+        else:
+            A2LCDCab2.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD1: ' + command + ' ' + value)
+    pass
+
+def Lcd2_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD 2")
+        #
+        if value == 'Connected':
+            LCD2_Data['ConexModule'] = True
+            ALCDInfoCab2.SetText('Online')
+        else:
+            LCD2_Data['ConexModule'] = False
+            A2LCDCab3.SetState(2)
+            ALCDInfoCab2.SetText('...')
+            ## Disconnect the IP Socket
+            LCD2.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD2: ' + command + ' ' + value)
+        if value == 'On':
+            A2LCDCab3.SetState(1)
+        else:
+            A2LCDCab3.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD2: ' + command + ' ' + value)
+    pass
+
 def Lcd3_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('> Module: ' + value + " | LCD Left Cabina 1")
+        print('> Module: ' + value + " | LCD 3")
         #
         if value == 'Connected':
             LCD3_Data['ConexModule'] = True
+            ALCDInfoCab3.SetText('Online')
         else:
             LCD3_Data['ConexModule'] = False
+            ALCDCab1.SetState(2)
+            ALCDInfoCab3.SetText('...')
             ## Disconnect the IP Socket
             LCD3.Disconnect()
     #
@@ -911,12 +1143,15 @@ def Lcd3_parsing(command, value, qualifier):
 def Lcd4_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
     if command == 'ConnectionStatus':
-        print('> Module: ' + value + " | LCD Center Cabina 1")
+        print('> Module: ' + value + " | LCD 4")
         #
         if value == 'Connected':
             LCD4_Data['ConexModule'] = True
+            ALCDInfoCab4.SetText('Online')
         else:
             LCD4_Data['ConexModule'] = False
+            ALCDCab2.SetState(2)
+            ALCDInfoCab3.SetText('...')
             ## Disconnect the IP Socket
             LCD4.Disconnect()
     #
@@ -931,7 +1166,111 @@ def Lcd4_parsing(command, value, qualifier):
         print('--- Parsing LCD4: ' + command + ' ' + value)
     pass
 
-## EVENT FUNCTIONS ----------------------------------------------------------------
+def LcdL1_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD Lobby 1")
+        #
+        if value == 'Connected':
+            LCDL1_Data['ConexModule'] = True
+            ALCDInfoLob1.SetText('Online')
+        else:
+            LCDL1_Data['ConexModule'] = False
+            ALCDLobby.SetState(2)
+            ALCDInfoLob1.SetText('...')
+            ## Disconnect the IP Socket
+            LCDL1.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Lobby 1: ' + command + ' ' + value)
+        if value == 'On':
+            ALCDLobby.SetState(1)
+        else:
+            ALCDLobby.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD Lobby 1: ' + command + ' ' + value)
+    pass
+
+def LcdL2_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD Lobby 2")
+        #
+        if value == 'Connected':
+            LCDL2_Data['ConexModule'] = True
+            ALCDInfoLob2.SetText('Online')
+        else:
+            LCDL2_Data['ConexModule'] = False
+            A2LCDLobby.SetState(2)
+            ALCDInfoLob1.SetText('...')
+            ## Disconnect the IP Socket
+            LCDL2.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Lobby 2: ' + command + ' ' + value)
+        if value == 'On':
+            A2LCDLobby.SetState(1)
+        else:
+            A2LCDLobby.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD Lobby 2: ' + command + ' ' + value)
+    pass
+
+def LcdP1_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD Podium 1")
+        #
+        if value == 'Connected':
+            LCDP1_Data['ConexModule'] = True
+            ALCDInfoPod1.SetText('Online')
+        else:
+            LCDP1_Data['ConexModule'] = False
+            ALCDPodium1.SetState(2)
+            ALCDInfoPod1.SetText('...')
+            ## Disconnect the IP Socket
+            LCDP1.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Podium 1: ' + command + ' ' + value)
+        if value == 'On':
+            ALCDPodium1.SetState(1)
+        else:
+            ALCDPodium1.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD Podium 1: ' + command + ' ' + value)
+    pass
+
+def LcdP2_parsing(command, value, qualifier):
+    """Retrieve the Real Information of the Device"""
+    if command == 'ConnectionStatus':
+        print('> Module: ' + value + " | LCD Podium 2")
+        #
+        if value == 'Connected':
+            LCDP2_Data['ConexModule'] = True
+            ALCDInfoPod2.SetText('Online')
+        else:
+            LCDP2_Data['ConexModule'] = False
+            ALCDPodium2.SetState(2)
+            ALCDInfoPod1.SetText('...')
+            ## Disconnect the IP Socket
+            LCDP2.Disconnect()
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Podium 2: ' + command + ' ' + value)
+        if value == 'On':
+            ALCDPodium2.SetState(1)
+        else:
+            ALCDPodium2.SetState(0)
+    #
+    elif command == 'Input':
+        print('--- Parsing LCD Podium 2: ' + command + ' ' + value)
+    pass
+
+# EVENT FUNCTIONS --------------------------------------------------------------
 ## This functions report a 'Online' / 'Offline' status after to send a Connect()
 ## CAUTION: If you never make a Connect(), the Module never work with Subscriptions
 @event(XTP, 'Connected')
@@ -1029,20 +1368,63 @@ def SMP111_B_conex_event(interface, state):
         trying_recB()
     pass
 
+@event(LCD1, 'Connected')
+@event(LCD1, 'Disconnected')
+def LCD1_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD 1")
+    #
+    if state == 'Connected':
+        LCD1_Data['ConexEvent'] = True
+        ALCDInfoCab1.SetText('Online')
+        ## Send & Query Information
+        subscribe_LCD1()
+        update_LCD1()
+    else:
+        LCD1_Data['ConexEvent'] = False
+        A2LCDCab2.SetState(2)
+        ALCDInfoCab1.SetText('...')
+        trying_LCD1()
+    pass
+
+@event(LCD2, 'Connected')
+@event(LCD2, 'Disconnected')
+def LCD2_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD 2")
+    #
+    if state == 'Connected':
+        LCD2_Data['ConexEvent'] = True
+        ALCDInfoCab2.SetText('Online')
+        ## Send & Query Information
+        subscribe_LCD2()
+        update_LCD2()
+    else:
+        LCD2_Data['ConexEvent'] = False
+        A2LCDCab3.SetState(2)
+        ALCDInfoCab2.SetText('...')
+        trying_LCD2()
+    pass
+
 @event(LCD3, 'Connected')
 @event(LCD3, 'Disconnected')
 def LCD3_conex_event(interface, state):
     """This reports the physical connection status of the device"""
     #
-    print('> Socket: ' + state + " | LCD Left Cabin 1")
+    print('> Socket: ' + state + " | LCD 3")
     #
     if state == 'Connected':
         LCD3_Data['ConexEvent'] = True
+        ALCDInfoCab3.SetText('Online')
         ## Send & Query Information
         subscribe_LCD3()
         update_LCD3()
     else:
         LCD3_Data['ConexEvent'] = False
+        ALCDCab1.SetState(2)
+        ALCDInfoCab3.SetText('...')
         trying_LCD3()
     pass
 
@@ -1051,19 +1433,102 @@ def LCD3_conex_event(interface, state):
 def LCD4_conex_event(interface, state):
     """This reports the physical connection status of the device"""
     #
-    print('> Socket: ' + state + " | LCD Center Cabin 1")
+    print('> Socket: ' + state + " | LCD 4")
     #
     if state == 'Connected':
         LCD4_Data['ConexEvent'] = True
+        ALCDInfoCab4.SetText('Online')
         ## Send & Query Information
         subscribe_LCD4()
         update_LCD4()
     else:
         LCD4_Data['ConexEvent'] = False
+        ALCDCab2.SetState(2)
+        ALCDInfoCab4.SetText('Online')
         trying_LCD4()
     pass
 
-## RECURSIVE FUNCTIONS ------------------------------------------------------------
+@event(LCDL1, 'Connected')
+@event(LCDL1, 'Disconnected')
+def LCDL1_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD Lobby 1")
+    #
+    if state == 'Connected':
+        LCDL1_Data['ConexEvent'] = True
+        ALCDInfoLob1.SetText('Online')
+        ## Send & Query Information
+        subscribe_LCDL1()
+        update_LCDL1()
+    else:
+        LCDL1_Data['ConexEvent'] = False
+        ALCDLobby.SetState(2)
+        ALCDInfoLob1.SetText('...')
+        trying_LCDL1()
+    pass
+
+@event(LCDL2, 'Connected')
+@event(LCDL2, 'Disconnected')
+def LCDL2_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD Lobby 2")
+    #
+    if state == 'Connected':
+        LCDL2_Data['ConexEvent'] = True
+        ALCDInfoLob2.SetText('Online')
+        ## Send & Query Information
+        subscribe_LCDL2()
+        update_LCDL2()
+    else:
+        LCDL2_Data['ConexEvent'] = False
+        A2LCDLobby.SetState(1)
+        ALCDInfoLob2.SetText('...')
+        trying_LCDL2()
+    pass
+
+@event(LCDP1, 'Connected')
+@event(LCDP1, 'Disconnected')
+def LCDP1_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD Podium 1")
+    #
+    if state == 'Connected':
+        LCDP1_Data['ConexEvent'] = True
+        ALCDInfoPod1.SetText('Online')
+        ## Send & Query Information
+        subscribe_LCDP1()
+        update_LCDP1()
+    else:
+        LCDP1_Data['ConexEvent'] = False
+        ALCDPodium1.SetState(2)
+        ALCDInfoPod1.SetText('...')
+        trying_LCDP1()
+    pass
+
+@event(LCDP2, 'Connected')
+@event(LCDP2, 'Disconnected')
+def LCDP2_conex_event(interface, state):
+    """This reports the physical connection status of the device"""
+    #
+    print('> Socket: ' + state + " | LCD Podium 2")
+    #
+    if state == 'Connected':
+        LCDP2_Data['ConexEvent'] = True
+        ALCDInfoPod2.SetText('Online')
+        ## Send & Query Information
+        subscribe_LCDP2()
+        update_LCDP2()
+    else:
+        LCDP2_Data['ConexEvent'] = False
+        ALCDPodium2.SetState(2)
+        ALCDInfoPod2.SetText('...')
+        trying_LCDP2()
+    pass
+
+# RECURSIVE FUNCTIONS ----------------------------------------------------------
 ## Help´s when the device was Off in the first Connect() method when the code starts
 def trying_matrix():
     """Try to make a Connect() to device"""
@@ -1105,6 +1570,22 @@ def trying_recB():
     pass
 loop_trying_recB = Wait(5, trying_recB)
 
+def trying_LCD1():
+    """Try to make a Connect() to device"""
+    if LCD1_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCD1')
+        LCD1.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCD1 = Wait(5, trying_LCD1)
+
+def trying_LCD2():
+    """Try to make a Connect() to device"""
+    if LCD2_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCD2')
+        LCD2.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCD2 = Wait(5, trying_LCD2)
+
 def trying_LCD3():
     """Try to make a Connect() to device"""
     if LCD3_Data['ConexEvent'] == False:
@@ -1120,7 +1601,40 @@ def trying_LCD4():
         LCD4.Connect(4) ## Have 4 seconds to try to connect
     pass
 loop_trying_LCD4 = Wait(5, trying_LCD4)
-## RECURSIVE LOOP FUNCTIONS -----------------------------------------------------------
+
+def trying_LCDL1():
+    """Try to make a Connect() to device"""
+    if LCDL1_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCDL1')
+        LCDL1.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCDL1 = Wait(5, trying_LCDL1)
+
+def trying_LCDL2():
+    """Try to make a Connect() to device"""
+    if LCDL2_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCDL2')
+        LCDL2.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCDL2 = Wait(5, trying_LCDL2)
+
+def trying_LCDP1():
+    """Try to make a Connect() to device"""
+    if LCDP1_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCDP1')
+        LCDP1.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCDP1 = Wait(5, trying_LCDP1)
+
+def trying_LCDP2():
+    """Try to make a Connect() to device"""
+    if LCDP2_Data['ConexEvent'] == False:
+        print('Tryng to make a Connect() in LCDP2')
+        LCDP2.Connect(4) ## Have 4 seconds to try to connect
+    pass
+loop_trying_LCDP2 = Wait(5, trying_LCDP2)
+
+# RECURSIVE LOOP FUNCTIONS -----------------------------------------------------
 ## This not affect any device
 ## This return True / False when no response is received from Module
 ## If in 5 times the data is not reported (connectionCounter = 5) from the Update Command
@@ -1155,6 +1669,18 @@ def update_loop_recB():
     loop_update_recB.Restart()
 loop_update_recB = Wait(12, update_loop_recB)
 
+def update_loop_LCD1():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCD1.Update('Power')
+    loop_update_LCD1.Restart()
+loop_update_LCD1 = Wait(12, update_loop_LCD1)
+
+def update_loop_LCD2():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCD2.Update('Power')
+    loop_update_LCD2.Restart()
+loop_update_LCD2 = Wait(12, update_loop_LCD2)
+
 def update_loop_LCD3():
     """Continuos Update Commands to produce Module Connected / Disconnected"""
     LCD3.Update('Power')
@@ -1167,7 +1693,31 @@ def update_loop_LCD4():
     loop_update_LCD4.Restart()
 loop_update_LCD4 = Wait(12, update_loop_LCD4)
 
-## DATA DICTIONARIES -----------------------------------------------------------
+def update_loop_LCDL1():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCDL1.Update('Power')
+    loop_update_LCDL1.Restart()
+loop_update_LCDL1 = Wait(12, update_loop_LCDL1)
+
+def update_loop_LCDL2():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCDL2.Update('Power')
+    loop_update_LCDL2.Restart()
+loop_update_LCDL2 = Wait(12, update_loop_LCDL2)
+
+def update_loop_LCDP1():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCDP1.Update('Power')
+    loop_update_LCDP1.Restart()
+loop_update_LCDP1 = Wait(12, update_loop_LCDP1)
+
+def update_loop_LCDP2():
+    """Continuos Update Commands to produce Module Connected / Disconnected"""
+    LCDP2.Update('Power')
+    loop_update_LCDP2.Restart()
+loop_update_LCDP2 = Wait(12, update_loop_LCDP2)
+
+# DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store the real time information of room devices
 ## Room
 Room_Data = {
@@ -1182,13 +1732,11 @@ Matrix_Data = {
 ProjectorA_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
-    'Power'  : None,
 }
 
 ProjectorB_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
-    'Power'  : None,
 }
 
 RecA_Data = {
@@ -1197,6 +1745,16 @@ RecA_Data = {
 }
 
 RecB_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCD1_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCD2_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
 }
@@ -1210,8 +1768,33 @@ LCD4_Data = {
     'ConexModule': None,
     'ConexEvent' : None,
 }
-## Event Definitions -----------------------------------------------------------
-## Index Page
+
+LCDL1_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCDL2_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCDP1_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+LCDP2_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+Tesira_Data = {
+    'ConexModule': None,
+    'ConexEvent' : None,
+}
+
+# ACTIONS - INDEX PAGE MODE ----------------------------------------------------
 @event(Index, 'Pressed')
 def Index(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
@@ -1224,31 +1807,47 @@ def Index(button, state):
         print("Touch 2: {0}".format("Index"))
     pass
 
+def FunctionOpenRoom():
+    """This prepare the room to be used in mode Mixed"""
+    ## Store the data in dictionary
+    Room_Data['Mixed'] = False
+    ## Activate button feedback
+    ABtnRoom1.SetState(1)
+    ABtnRoom2.SetState(0)
+    ## Touchpanel actions
+    TLP1.ShowPage('Main')
+    ## Notify to console
+    print("Touch 1: {0}".format("Room Split"))
+    pass
+
+def FunctionCloseRoom():
+    ## Store the data in dictionary
+    Room_Data['Mixed'] = True
+    ## Activate button feedback
+    ABtnRoom1.SetState(1)
+    ABtnRoom2.SetState(1)
+    ## Touchpanel actions
+    TLP2.ShowPage('Main')
+    ## Notify to console
+    print("Touch 1: {0}".format("Room Mixed"))
+    pass
+
+# ACTIONS - ROOM CONFIGURATION MODE --------------------------------------------
 ## Room Page
 @event(ModeRoom, 'Pressed')
 def Index(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
-    #
     if button.Host.DeviceAlias == 'TouchPanelA':
-        #
         #Mutually Exclusive
         GroupRoom.SetCurrent(button)
         #
         if button is ARoomSplit:
-            Room_Data['Mixed'] = False
-            ABtnRoom1.SetState(1)
-            ABtnRoom2.SetState(0)
-            TLP1.ShowPage('Main')
-            print("Touch 1: {0}".format("Room Split"))
-        #
-        elif button is ARoomMixed:
-            Room_Data['Mixed'] = True
-            ABtnRoom1.SetState(1)
-            ABtnRoom2.SetState(1)
-            TLP2.ShowPage('Main')
-            print("Touch 1: {0}".format("Room Mixed"))
+            FunctionOpenRoom()
+        else:
+            FunctionCloseRoom()
     pass
 
+# ACTIONS - MAIN OPERATION MODE ------------------------------------------------
 @event(Main, 'Pressed')
 def FullMain(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
@@ -1266,7 +1865,7 @@ def FullMain(button, state):
             ALblMain.SetText('Switcheo de Video')
             print("Touch 1: {0}".format("Mode Switching"))
             #
-            if Room_Data['Mixed'] == True:
+            if GroupRoom.GetCurrent() == ARoomMixed:
                 TLP1.ShowPopup('Full.Outputs')
                 TLP1.ShowPopup('Full.Inputs')
             else:
@@ -1274,9 +1873,13 @@ def FullMain(button, state):
                 TLP1.ShowPopup('Full.Inputs')
         #
         elif button is ABtnDisplay:
-            TLP1.ShowPopup('Full.Displays')
             ALblMain.SetText('Control de Display')
             print("Touch 1: {0}".format("Mode Display"))
+            #
+            if GroupRoom.GetCurrent() == ARoomMixed:
+                TLP1.ShowPopup('Full.Displays')
+            else:
+                TLP1.ShowPopup('Split.DisplaysA')
         #
         elif button is ABtnVC:
             TLP1.ShowPopup('Full.VC')
@@ -1308,7 +1911,7 @@ def FullMain(button, state):
             ALblMain.SetText('Control de Grabación')
             print("Touch 1: {0}".format("Mode REC"))
             #
-            if Room_Data['Mixed'] == True:
+            if GroupRoom.GetCurrent() == ARoomMixed:
                 TLP1.ShowPopup('Full.Rec')
             else:
                 TLP1.ShowPopup('Split.RecA')
@@ -1364,6 +1967,7 @@ def FullMain(button, state):
             print("Touch 2: {0}".format("Mode PowerAll"))
     pass
 
+# ACTIONS - MATRIX TIE INFO FUNCTIONS ------------------------------------------
 def FunctionActiveTie(output):
     '''This retrieve the real Output-Input Video Relation when the user push the Display button'''
     activeTie = XTP.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
@@ -1416,6 +2020,7 @@ def FunctionActiveTie(output):
         GroupInputs.SetCurrent(AInput22)
     pass
 
+# ACTIONS - SWITCHING VIDEO OUTPUTS MODE ---------------------------------------
 @event(Outputs, 'Pressed')
 def OutsSwitching(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
@@ -1553,6 +2158,7 @@ def OutsSwitching(button, state):
             FunctionActiveTie(output)
     pass
 
+# ACTIONS - SWITCHING VIDEO INPUTS MODE ----------------------------------------
 @event(Inputs, 'Pressed')
 def InSwitching(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
@@ -1669,6 +2275,7 @@ def InSwitching(button, state):
             print("Touch 1: {0}".format("In Core: Tricaster 2 Out"))
     pass
 
+# ACTIONS - RELAYS FUNCTIONS ---------------------------------------------------
 def Room1ScreenUp():
     """Control of Relays"""
     AScreenDw.SetState('Open')
@@ -1717,6 +2324,7 @@ def Room2ElevatorDown():
     A2ElevatDw.SetState('Close')
     pass
 
+# ACTIONS - DISPLAYS A MODE ----------------------------------------------------
 @event(ProjeccionA, 'Pressed')
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
@@ -1764,8 +2372,25 @@ def ButtonObjectPressed(button, state):
         else:
             LCD4.Set('Power','On')
             print("Touch 1: {0}".format("LCD 4 Power On"))
+    #
+    elif button is ALCDLobby:
+        if LCDL1.ReadStatus('Power', None) == 'On':
+            LCDL1.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD L1 Power Off"))
+        else:
+            LCDL1.Set('Power','On')
+            print("Touch 1: {0}".format("LCD L1 Power On"))
+    #
+    elif button is ALCDPodium1:
+        if LCDP1.ReadStatus('Power', None) == 'On':
+            LCDP1.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD P1 Power Off"))
+        else:
+            LCDP1.Set('Power','On')
+            print("Touch 1: {0}".format("LCD P1 Power On"))
     pass
 
+# ACTIONS - DISPLAYS B MODE ----------------------------------------------------
 @event(ProjeccionB, 'Pressed')
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
@@ -1797,8 +2422,41 @@ def ButtonObjectPressed(button, state):
         GroupElevat2A.SetCurrent(A2ElDw)
         Room2ElevatorDown()
         print("Touch 1: {0}".format("Elevator 2: Down"))
+    #
+    elif button is A2LCDCab2:
+        if LCD1.ReadStatus('Power', None) == 'On':
+            LCD1.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD 1 Power Off"))
+        else:
+            LCD1.Set('Power','On')
+            print("Touch 1: {0}".format("LCD 1 Power On"))
+    #
+    elif button is A2LCDCab3:
+        if LCD2.ReadStatus('Power', None) == 'On':
+            LCD2.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD 2 Power Off"))
+        else:
+            LCD2.Set('Power','On')
+            print("Touch 1: {0}".format("LCD 2 Power On"))
+    #
+    elif button is A2LCDLobby:
+        if LCDL2.ReadStatus('Power', None) == 'On':
+            LCDL2.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD L2 Power Off"))
+        else:
+            LCDL2.Set('Power','On')
+            print("Touch 1: {0}".format("LCD L2 Power On"))
+    #
+    elif button is ALCDPodium2:
+        if LCDP2.ReadStatus('Power', None) == 'On':
+            LCDP2.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD P2 Power Off"))
+        else:
+            LCDP2.Set('Power','On')
+            print("Touch 1: {0}".format("LCD P2 Power On"))
     pass
 
+# ACTIONS - RECORDING MODE -----------------------------------------------------
 @event(Rec, 'Pressed')
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
