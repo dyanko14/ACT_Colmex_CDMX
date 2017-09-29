@@ -317,6 +317,65 @@ ALCDInfoLob2 = Label(TLP1, 2511)
 # XTP II 3200
 ALANXtp      = Label(TLP1, 2524)
 
+# Mode Audio VoIP ----------------------------------------------------------------------
+# Line 1 ---------------------
+AViDial0      = Button(TLP1, 2030)
+AViDial1      = Button(TLP1, 2031)
+AViDial2      = Button(TLP1, 2032)
+AViDial3      = Button(TLP1, 2033)
+AViDial4      = Button(TLP1, 2034)
+AViDial5      = Button(TLP1, 2035)
+AViDial6      = Button(TLP1, 2036)
+AViDial7      = Button(TLP1, 2037)
+AViDial8      = Button(TLP1, 2038)
+AViDial9      = Button(TLP1, 2039)
+AViDialDot    = Button(TLP1, 2040)
+AViDialHash   = Button(TLP1, 2041)
+AViDialDelete = Button(TLP1, 2044, repeatTime=0.1)
+# Dialer
+
+# Call
+AViHangup     = Button(TLP1, 2042)
+AViCall       = Button(TLP1, 2043)
+
+# Call Options
+AViRedial  = Button(TLP1, 2045)
+AViDTMF = Button(TLP1, 2046)
+
+# Label
+AViDial     = Label(TLP1, 2047)
+AViRemote   = Label(TLP1, 2048)
+
+# Mode Audio VoIP ----------------------------------------------------------------------
+# Line 2 ---------------------
+AVi2Dial0      = Button(TLP1, 2000)
+AVi2Dial1      = Button(TLP1, 2001)
+AVi2Dial2      = Button(TLP1, 2002)
+AVi2Dial3      = Button(TLP1, 2003)
+AVi2Dial4      = Button(TLP1, 2004)
+AVi2Dial5      = Button(TLP1, 2005)
+AVi2Dial6      = Button(TLP1, 2006)
+AVi2Dial7      = Button(TLP1, 2007)
+AVi2Dial8      = Button(TLP1, 2008)
+AVi2Dial9      = Button(TLP1, 2009)
+AVi2DialDot    = Button(TLP1, 2010)
+AVi2DialHash   = Button(TLP1, 2011)
+AVi2DialDelete = Button(TLP1, 2014, repeatTime=0.1)
+# Dialer
+
+# Call
+AVi2Hangup     = Button(TLP1, 2012)
+AVi2Call       = Button(TLP1, 2013)
+
+# Call Options
+AVi2Redial  = Button(TLP1, 2015)
+AVi2DTMF = Button(TLP1, 2016)
+
+# Label
+AVi2Dial     = Label(TLP1, 2017)
+AVi2Remote   = Label(TLP1, 2018)
+
+
 # Mode VC ----------------------------------------------------------------------
 # Cisco 1 ---------------------
 ADial0      = Button(TLP1, 2130)
@@ -443,6 +502,13 @@ Rec = [Arecord, Astop, Apause, A2record, A2stop, A2pause]
 GroupRecA = MESet([Arecord, Astop, Apause])
 GroupRecB = MESet([A2record, A2stop, A2pause])
 
+# Mode Audio VoIP
+VoIPDial = [AViDial0, AViDial1, AViDial2, AViDial3, AViDial4, AViDial5, AViDial6, AViDial7, AViDial8, AViDial9, AViDialDot, AViDialHash, AViDialDelete]
+VoIPButtons = [AViCall, AViHangup, AViRedial, AViDTMF]
+#
+VoIP2Dial = [AVi2Dial0, AVi2Dial1, AVi2Dial2, AVi2Dial3, AVi2Dial4, AVi2Dial5, AVi2Dial6, AVi2Dial7, AVi2Dial8, AVi2Dial9, AVi2DialDot, AVi2DialHash, AVi2DialDelete]
+VoIP2Buttons = [AVi2Call, AVi2Hangup, AVi2Redial, AVi2DTMF]
+
 # Mode Videoconference
 VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
 VCButtons = [ACall, AHangup, AContentOn, AContentOff]
@@ -491,6 +557,16 @@ def Initialize():
     global dialerVC2  ## To access the Dial String variable in all program
     dialerVC2 = ''    ## Clean the Dial String Variable
     A2VCDial.SetText('')
+
+    ## Audio VoIP1 Dial PAGE
+    global dialerVoIP  ## To access the Dial String variable in all program
+    dialerVoIP = ''    ## Clean the Dial String Variable
+    AViDial.SetText('')
+
+    ## Audio VoIP2 Dial PAGE
+    global dialerVoIP2  ## To access the Dial String variable in all program
+    dialerVoIP2 = ''    ## Clean the Dial String Variable
+    AVi2Dial.SetText('')
 
     ##12v Interface (This brings power to all Relays)
     SWPowerPort1.SetState('On')
@@ -2198,6 +2274,16 @@ Cisco2_Data = {
     'Dial' : None,
 }
 
+VoIP1_Data = {
+    'Dial' : None,
+    'DTMF' : False,
+}
+
+VoIP2_Data = {
+    'Dial' : None,
+    'DTMF' : False,
+}
+
 # ACTIONS - INDEX PAGE MODE ----------------------------------------------------
 @event(Index, 'Pressed')
 def Index(button, state):
@@ -2997,6 +3083,133 @@ def VC_Mode(button, state):
         Cisco2.Set('Presentation', 'Stop')
         print("Touch 1: {0}".format("Cisco2: Content Off"))
     pass
+
+# ACTIONS - AUDIO VOIP LINE 1 MODE ------------------------------------------------
+
+## This function is called when the user press a Dial Button
+## This function add or remove data from the panel Dial Number
+def PrintDialerVoIP1(btn_name):
+    """User Actions: Touch VC Page"""
+    global dialerVoIP
+
+    if btn_name == 'Delete':             #If the user push 'Delete' button
+        dialerVoIP = dialerVoIP[:-1]     #Remove the last char of the string
+        VoIP1_Data['Dial'] = dialerVoIP  #Asign the string to the data dictionary
+        AViDial.SetText(dialerVoIP)      #Send the string to GUI Label
+
+    else:                                   #If the user push a [*#0-9] button
+        if VoIP1_Data['DTMF'] == False:
+            number = str(btn_name[4])       #Extract the valid character of BTN name
+            dialerVoIP += number            #Append the last char to the string
+            VoIP1_Data['Dial'] = dialerVoIP #Asign the string to the data dictionary
+            AViDial.SetText(dialerVoIP)     #Send the string to GUI Label
+        else:
+            Tesira.Set('DTMF', number, {'Instance Tag':'Dialer', 'Line':'1'})
+    pass
+
+@event(VoIPDial, ButtonEventList)
+def VoIP1_dial_events(button, state):
+    """User Actions: Touch VC Page"""
+    ## All the VoIP Dial Buttons pressed come in button variable
+    if state == 'Pressed' or state == 'Repeated':
+        print('Touch: VoIP L1 %s' % (button.Name))
+        PrintDialerVoIP1(button.Name) #Recall a validation function
+        button.SetState(1)
+    else:
+        button.SetState(0)
+    pass
+
+@event(VoIPButtons, 'Pressed')
+def VC_Mode(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
+    if button is AViCall:
+        Tesira.Set('VoIPHook', 'Dial', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1', 'Number':VoIP1_Data['Dial']})
+        print("Touch 1: {0}".format("VoIP L1: Call"))
+    #
+    elif button is AViHangup:
+        Tesira.Set('VoIPHook', 'End', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
+        AViDial.SetText('')
+        print("Touch 1: {0}".format("VoIP L1: Hangup"))
+    #
+    elif button is AViRedial:
+        Tesira.Set('VoIPHook', 'Redial', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
+        print("Touch 1: {0}".format("VoIP L1: Redial"))
+    #
+    elif button is AViDTMF:
+        if VoIP1_Data['DTMF'] == False:
+            VoIP1_Data['DTMF'] = True
+            AViDTMF.SetState(1)
+            print("Touch 1: {0}".format("VoIP L1: DTMF On"))
+        else:
+            VoIP1_Data['DTMF'] = False
+            AViDTMF.SetState(0)
+            print("Touch 1: {0}".format("VoIP L1: DTMF Off"))
+    pass
+
+# ACTIONS - AUDIO VOIP LINE 2 MODE ------------------------------------------------
+
+## This function is called when the user press a Dial Button
+## This function add or remove data from the panel Dial Number
+def PrintDialerVoIP2(btn_name):
+    """User Actions: Touch VC Page"""
+    global dialerVoIP2
+
+    if btn_name == 'Delete':             #If the user push 'Delete' button
+        dialerVoIP2 = dialerVoIP2[:-1]     #Remove the last char of the string
+        VoIP2_Data['Dial'] = dialerVoIP2  #Asign the string to the data dictionary
+        AVi2Dial.SetText(dialerVoIP2)      #Send the string to GUI Label
+
+    else:                                   #If the user push a [*#0-9] button
+        if VoIP2_Data['DTMF'] == False:
+            number = str(btn_name[4])       #Extract the valid character of BTN name
+            dialerVoIP2 += number            #Append the last char to the string
+            VoIP2_Data['Dial'] = dialerVoIP2 #Asign the string to the data dictionary
+            AVi2Dial.SetText(dialerVoIP2)     #Send the string to GUI Label
+        else:
+            Tesira.Set('DTMF', number, {'Instance Tag':'Dialer', 'Line':'2'})
+    pass
+
+@event(VoIP2Dial, ButtonEventList)
+def VoIP2_dial_events(button, state):
+    """User Actions: Touch VC Page"""
+    ## All the VoIP Dial Buttons pressed come in button variable
+    if state == 'Pressed' or state == 'Repeated':
+        print('Touch: VoIP L2 %s' % (button.Name))
+        PrintDialerVoIP2(button.Name) #Recall a validation function
+        button.SetState(1)
+    else:
+        button.SetState(0)
+    pass
+
+@event(VoIP2Buttons, 'Pressed')
+def VoIP2_Mode(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
+    if button is AVi2Call:
+        Tesira.Set('VoIPHook', 'Dial', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1', 'Number':VoIP1_Data['Dial']})
+        print("Touch 1: {0}".format("VoIP L2: Call"))
+    #
+    elif button is AVi2Hangup:
+        Tesira.Set('VoIPHook', 'End', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
+        AViDial.SetText('')
+        print("Touch 1: {0}".format("VoIP L2: Hangup"))
+    #
+    elif button is AVi2Redial:
+        Tesira.Set('VoIPHook', 'Redial', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
+        print("Touch 1: {0}".format("VoIP L2: Redial"))
+    #
+    elif button is AVi2DTMF:
+        if VoIP2_Data['DTMF'] == False:
+            VoIP2_Data['DTMF'] = True
+            AVi2DTMF.SetState(1)
+            print("Touch 1: {0}".format("VoIP L2: DTMF On"))
+        else:
+            VoIP2_Data['DTMF'] = False
+            AVi2DTMF.SetState(0)
+            print("Touch 1: {0}".format("VoIP L2: DTMF Off"))
+    pass
+
 
 ## End Events Definitions-------------------------------------------------------
 
