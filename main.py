@@ -29,50 +29,40 @@ TLP2 = UIDevice('TouchPanelB')
 ## Begin User Import -----------------------------------------------------------
 # MODULES-----------------------------------------------------------------------
 ## IP
-import extr_matrix_XTPIICrossPointSeries_v1_1_1_1  as DeviceA
-import chri_vp_D13HDHS_D13WUHS_v1_0_2_0            as DeviceB
-import chri_vp_D13HDHS_D13WUHS_v1_0_2_0           as DeviceC
-import extr_sm_SMP_111_v1_1_0_0                    as DeviceD
-import extr_sm_SMP_111_v1_1_0_0                   as DeviceE
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceF
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceG
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceH
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceI
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceJ
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceK
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceL
-import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as DeviceM
-import biam_dsp_TesiraSeries_v1_5_20_0            as DeviceN
-import sony_camera_BRC_H800_X1000_v1_0_0_0        as DeviceO
-import csco_vtc_SX_Series_CE81_v1_2_0_1           as DeviceP
-import csco_vtc_SX_Series_CE81_v1_2_0_1           as DeviceQ
+import extr_matrix_XTPIICrossPointSeries_v1_1_1_1 as ModuleXTP
+import chri_vp_D13HDHS_D13WUHS_v1_0_2_0           as ModuleChristie
+import extr_sm_SMP_111_v1_1_0_0                   as ModuleSMP111
+import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as ModuleSamsung
+import biam_dsp_TesiraSeries_v1_5_20_0            as ModuleTesira
+import sony_camera_BRC_H800_X1000_v1_0_0_0        as ModulePTZ
+import csco_vtc_SX_Series_CE81_v1_2_0_1           as ModuleCisco
 
 ##
 # MODULE TO DEVICE INSTANCES ---------------------------------------------------
 # Video Server
-XTP   = DeviceA.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
+XTP   = ModuleXTP.EthernetClass('192.168.0.10', 23, Model='XTP II CrossPoint 3200')
 # Projectors
-ProjA = DeviceB.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
-ProjB = DeviceC.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
+ProjA = ModuleChristie.EthernetClass('192.168.0.19', 3002, Model='D13WU-HS')
+ProjB = ModuleChristie.EthernetClass('192.168.0.18', 3002, Model='D13WU-HS')
 # Recorders
-RecA  = DeviceD.EthernetClass('192.168.0.13', 23, Model='SMP 111')
-RecB  = DeviceE.EthernetClass('192.168.0.14', 23, Model='SMP 111')
+RecA  = ModuleSMP111.EthernetClass('192.168.0.13', 23, Model='SMP 111')
+RecB  = ModuleSMP111.EthernetClass('192.168.0.14', 23, Model='SMP 111')
 # Displays
-LCD1  = DeviceF.EthernetClass('192.168.0.26', 1515, Model='LH55QMFPLGC/KR')
-LCD2  = DeviceG.EthernetClass('192.168.0.27', 1515, Model='LH55QMFPLGC/KR')
-LCD3  = DeviceH.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
-LCD4  = DeviceI.EthernetClass('192.168.0.29', 1515, Model='LH55QMFPLGC/KR')
-LCDP1 = DeviceJ.EthernetClass('192.168.0.30', 1515, Model='LH55QMFPLGC/KR')
-LCDP2 = DeviceK.EthernetClass('192.168.0.31', 1515, Model='LH55QMFPLGC/KR')
-LCDL1 = DeviceL.EthernetClass('192.168.0.32', 1515, Model='LH55QMFPLGC/KR')
-LCDL2 = DeviceM.EthernetClass('192.168.0.33', 1515, Model='LH55QMFPLGC/KR')
+LCD1  = ModuleSamsung.EthernetClass('192.168.0.26', 1515, Model='LH55QMFPLGC/KR')
+LCD2  = ModuleSamsung.EthernetClass('192.168.0.27', 1515, Model='LH55QMFPLGC/KR')
+LCD3  = ModuleSamsung.EthernetClass('192.168.0.28', 1515, Model='LH55QMFPLGC/KR')
+LCD4  = ModuleSamsung.EthernetClass('192.168.0.29', 1515, Model='LH55QMFPLGC/KR')
+LCDP1 = ModuleSamsung.EthernetClass('192.168.0.30', 1515, Model='LH55QMFPLGC/KR')
+LCDP2 = ModuleSamsung.EthernetClass('192.168.0.31', 1515, Model='LH55QMFPLGC/KR')
+LCDL1 = ModuleSamsung.EthernetClass('192.168.0.32', 1515, Model='LH55QMFPLGC/KR')
+LCDL2 = ModuleSamsung.EthernetClass('192.168.0.33', 1515, Model='LH55QMFPLGC/KR')
 # Audio Server
-Tesira = DeviceN.EthernetClass('192.168.0.38', 23, Model='Tesira SERVER-IO')
+Tesira = ModuleTesira.EthernetClass('192.168.0.38', 23, Model='Tesira SERVER-IO')
 # Cameras
-PTZ1 = DeviceO.EthernetClass('192.168.0.20', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
+PTZ1 = ModulePTZ.EthernetClass('192.168.0.20', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
 # Videoconference Códec´s
-Cisco1 = DeviceP.EthernetClass('192.168.0.60', 23, Model='SX20 CE8.1.X')
-Cisco2 = DeviceQ.EthernetClass('192.168.0.61', 23, Model='SX20 CE8.1.X')
+Cisco1 = ModuleCisco.EthernetClass('192.168.0.60', 23, Model='SX20 CE8.1.X')
+Cisco2 = ModuleCisco.EthernetClass('192.168.0.61', 23, Model='SX20 CE8.1.X')
 
 # DEVICES INTERFACES -----------------------------------------------------------
 #
