@@ -14,6 +14,7 @@ from extronlib.interface import (ContactInterface, DigitalIOInterface, \
     VolumeInterface)
 from extronlib.ui import Button, Knob, Label, Level
 from extronlib.system import Clock, MESet, Wait
+import collections
 
 print(Version())
 
@@ -519,16 +520,16 @@ def Initialize():
     ProjB.Connect()
     RecA.Connect()
     RecB.Connect()
-    LCD1.Connect()
-    LCD2.Connect()
+    LCD1.Connect(timeout=5)
+    """LCD2.Connect()
     LCD3.Connect()
     LCD4.Connect()
     LCDL1.Connect()
-    LCDL2.Connect()
+    LCDL2.Connect()"""
     ##LCDP1.Connect()
     ##LCDP2.Connect()
     Tesira.Connect()
-    PTZ1.Connect()
+    """PTZ1.Connect()"""
     ##Cisco1.Connect()
     ##Cisco2.Connect()
 
@@ -684,14 +685,7 @@ def subscribe_recB():
     RecB.SubscribeStatus('CurrentRecordingDuration', None, recB_parsing)
     pass
 
-def subscribe_LCD1():
-    """This send Subscribe Commands to Device"""
-    ## Socket Status
-    LCD1.SubscribeStatus('ConnectionStatus', None, Lcd1_parsing)
-    ## Device Status
-    LCD1.SubscribeStatus('Power', None, Lcd1_parsing)
-    LCD1.SubscribeStatus('Input', None, Lcd1_parsing)
-    pass
+
 
 def subscribe_LCD2():
     """This send Subscribe Commands to Device"""
@@ -872,11 +866,6 @@ def update_recB():
     RecB.Update('CurrentRecordingDuration')
     pass
 
-def update_LCD1():
-    """This send Update Commands to Device"""
-    LCD1.Update('Power')
-    LCD1.Update('Input')
-    pass
 
 def update_LCD2():
     """This send Update Commands to Device"""
@@ -1305,31 +1294,6 @@ def recB_parsing(command, value, qualifier):
         A2time.SetText(value)
     pass
 
-def Lcd1_parsing(command, value, qualifier):
-    """Retrieve the Real Information of the Device"""
-    if command == 'ConnectionStatus':
-        print('> Module: ' + value + " | LCD 1")
-        #
-        if value == 'Connected':
-            LCD1_Data['ConexModule'] = True
-            ALCDInfoCab1.SetText('Online')
-        else:
-            LCD1_Data['ConexModule'] = False
-            A2LCDCab2.SetState(2)
-            ALCDInfoCab1.SetText('...')
-            ## Disconnect the IP Socket
-            LCD1.Disconnect()
-    #
-    elif command == 'Power':
-        print('--- Parsing LCD1: ' + command + ' ' + value)
-        if value == 'On':
-            A2LCDCab2.SetState(1)
-        else:
-            A2LCDCab2.SetState(0)
-    #
-    elif command == 'Input':
-        print('--- Parsing LCD1: ' + command + ' ' + value)
-    pass
 
 def Lcd2_parsing(command, value, qualifier):
     """Retrieve the Real Information of the Device"""
@@ -1685,26 +1649,6 @@ def SMP111_B_conex_event(interface, state):
         trying_recB()
     pass
 
-@event(LCD1, 'Connected')
-@event(LCD1, 'Disconnected')
-def LCD1_conex_event(interface, state):
-    """This reports the physical connection status of the device"""
-    #
-    print('> Socket: ' + state + " | LCD 1")
-    #
-    if state == 'Connected':
-        LCD1_Data['ConexEvent'] = True
-        ALCDInfoCab1.SetText('Online')
-        ## Send & Query Information
-        subscribe_LCD1()
-        update_LCD1()
-    else:
-        LCD1_Data['ConexEvent'] = False
-        A2LCDCab2.SetState(2)
-        ALCDInfoCab1.SetText('...')
-        trying_LCD1()
-    pass
-
 @event(LCD2, 'Connected')
 @event(LCD2, 'Disconnected')
 def LCD2_conex_event(interface, state):
@@ -1967,14 +1911,6 @@ def trying_recB():
     pass
 loop_trying_recB = Wait(5, trying_recB)
 
-def trying_LCD1():
-    """Try to make a Connect() to device"""
-    if LCD1_Data['ConexEvent'] == False:
-        print('Tryng to make a Connect() in LCD1')
-        LCD1.Connect(4) ## Have 4 seconds to try to connect
-    pass
-loop_trying_LCD1 = Wait(5, trying_LCD1)
-
 def trying_LCD2():
     """Try to make a Connect() to device"""
     if LCD2_Data['ConexEvent'] == False:
@@ -2098,11 +2034,6 @@ def update_loop_recB():
     loop_update_recB.Restart()
 loop_update_recB = Wait(12, update_loop_recB)
 
-def update_loop_LCD1():
-    """Continuos Update Commands to produce Module Connected / Disconnected"""
-    LCD1.Update('Power')
-    loop_update_LCD1.Restart()
-loop_update_LCD1 = Wait(12, update_loop_LCD1)
 
 def update_loop_LCD2():
     """Continuos Update Commands to produce Module Connected / Disconnected"""
@@ -2169,6 +2100,69 @@ def update_loop_Cisco2():
     Cisco2.Update('Standby')
     loop_update_Cisco2.Restart()
 loop_update_Cisco2 = Wait(12, update_loop_Cisco2)
+
+
+
+LCD1_Query_Delay = 0.3
+
+LCD1_Query_List = {
+    ('Power', None),
+    ('Input', None),
+}
+
+LCD1Queue = collections.deque(LCD1_Query_List)
+
+def QueryLCD1():
+    LCD1.Update(*LCD1Queue[0])
+    LCD1Queue.rotate(-1)
+    LCDPollingWait.Restart()
+    print('Queryng LCD1')
+    pass
+LCDPollingWait = Wait(LCD1_Query_Delay, QueryLCD1)
+
+# Handling TCP Connection of LCD 1
+def AttemptConnectLCD1():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect to the LCD1')
+    result = LCD1.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWait.Restart()
+    pass
+reconnectWait = Wait(15, AttemptConnectLCD1)
+
+def ReceiveLCD1ConnectionStatus(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    print('LCD1 module ConnectionStatus is', value)
+    if value == 'Disconnected':
+        ALCDInfoCab1.SetText('Online')
+        LCD1.Disconnect()
+        reconnectWait.Restart()
+        LCDPollingWait.Cancel()
+    else:
+        ALCDInfoCab1.SetText('Fail')
+    pass
+
+LCD1.SubscribeStatus('ConnectionStatus', None, ReceiveLCD1ConnectionStatus)
+
+@event(LCD1, 'Disconnected')
+@event(LCD1, 'Connected')
+def LCD1PhysicalConnectionEvent(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectMatrix"""
+    if state == 'Connected':
+        reconnectWait.Cancel()
+        ALCDInfoCab1.SetText('Online')
+    else:
+        ALCDInfoCab1.SetText('Fail')
+    pass
 
 # DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store the real time information of room devices
