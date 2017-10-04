@@ -46,8 +46,8 @@ XTP   = ModuleXTP.EthernetClass('172.16.241.5', 23, Model='XTP II CrossPoint 320
 XTP.devicePassword = 'SWExtronXTP'
 
 # Projectors
-ProjA = ModuleChristie.EthernetClass('172.16.240.200', 3002, Model='D13WU-HS')
-ProjB = ModuleChristie.EthernetClass('172.16.240.201', 3002, Model='D13WU-HS')
+ProjA = ModuleChristie.EthernetClass('172.16.240.201', 3002, Model='D13WU-HS')
+ProjB = ModuleChristie.EthernetClass('172.16.240.200', 3002, Model='D13WU-HS')
 
 # Recorders
 RecA  = ModuleSMP111.EthernetClass('172.16.241.6', 23, Model='SMP 111')
@@ -310,6 +310,12 @@ AInfoLCDCab2 = Button(TLP1, 309)
 AInfoLCDCab3 = Button(TLP1, 310)
 AInfoLCDCab4 = Button(TLP1, 311)
 
+AInfoCisco   = Button(TLP1, 312)
+AInfo2Cisco  = Button(TLP1, 313)
+AInfo2Cisco  = Button(TLP1, 314)
+
+
+
 # Mode Audio VoIP ----------------------------------------------------------------------
 # Line 1 ---------------------
 AViDial0      = Button(TLP1, 2030)
@@ -389,6 +395,10 @@ ADialDelete = Button(TLP1, 2144, repeatTime=0.1)
 # Call
 AHangup     = Button(TLP1, 2142)
 ACall       = Button(TLP1, 2143)
+
+# Answer
+AAnswer1    = Button(TLP1, 400)
+ADiscard1   = Button(TLP1, 401)
 
 # Content
 AContentOn  = Button(TLP1, 2145)
@@ -504,7 +514,8 @@ VoIP2Buttons = [AVi2Call, AVi2Hangup, AVi2Redial, AVi2DTMF]
 
 # Mode Videoconference
 VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
-VCButtons = [ACall, AHangup, AContentOn, AContentOff]
+VCButtons = [ACall, AHangup, AContentOn, AContentOff, AAnswer1, ADiscard1]
+GroupContentA = MESet([AContentOn, AContentOff])
 #
 VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial7, A2Dial8, A2Dial9, A2DialDot, A2DialHash, A2DialDelete]
 VC2Buttons = [A2Call, A2Hangup, A2ContentOn, A2ContentOff]
@@ -523,20 +534,13 @@ def Initialize():
     ProjA.Connect(timeout = 5)
     ProjB.Connect(timeout = 5)
     """RecA.Connect()
-    RecB.Connect()
-    LCD1.Connect()
-    LCD2.Connect()"""
+    RecB.Connect()"""
+    LCDCab1.Connect(timeout = 5)
+    LCDCab2.Connect(timeout = 5)
     LCDCab3.Connect(timeout = 5)
     LCDCab4.Connect(timeout = 5)
+    Cisco1.Connect(timeout = 5)
     
-    """LCDL1.Connect()
-    LCDL2.Connect()
-    LCDP1.Connect()
-    LCDP2.Connect()
-    Tesira.Connect()
-    Cisco1.Connect()
-    Cisco2.Connect()"""
-
     ## XTP Matrix Data Init
     global output
     global input
@@ -1052,7 +1056,6 @@ def ReceiveProjectorA(command, value, qualifier):
     #
     pass
 
-
 ProjA.SubscribeStatus('ConnectionStatus', None, ReceiveProjectorA)
 ProjA.SubscribeStatus('Power', None, ReceiveProjectorA)
 ProjA.SubscribeStatus('Input', None, ReceiveProjectorA)
@@ -1139,7 +1142,6 @@ def ReceiveProjectorB(command, value, qualifier):
     #
     pass
 
-
 ProjB.SubscribeStatus('ConnectionStatus', None, ReceiveProjectorB)
 ProjB.SubscribeStatus('Power', None, ReceiveProjectorB)
 ProjB.SubscribeStatus('Input', None, ReceiveProjectorB)
@@ -1160,6 +1162,183 @@ def ProjB_PhysicalConex(interface, state):
         print('Socket Disconnected: Projector B')
     pass
 
+# RECONEX / QUERY LIST ---------------------------------------------------------
+CISCO1_QUERY_LIST = [
+    ('Presentation', {'Instance':'1'}),
+    ('PresentationMode', None),
+    ('CallStatus', {'Call':'1'}),
+    ('CallStatusType', {'Call':'1'}),
+    ('DisplayName', {'Call':'1'}),
+    ('IPAddress', None),
+    ('RemoteNumber', {'Call':'1'}),
+]
+#
+Cisco1_Queue = collections.deque(CISCO1_QUERY_LIST)
+
+# RECONEX / QUERY RECALL ------------------------------------------------------
+def QueryCisco1():
+    """This send Query commands to device every 01.s"""
+    Cisco1.Update(*Cisco1_Queue[0])
+    Cisco1_Queue.rotate(-1)
+    Cisco1_PollingWait.Restart()
+
+Cisco1_PollingWait = Wait(1, QueryCisco1)
+
+# RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
+def AttemptConnectCisco1():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect Projector B')
+    result = Cisco1.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitCisco1.Restart()
+
+reconnectWaitCisco1 = Wait(15, AttemptConnectCisco1)
+
+def ReceiveCisco1(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module Cisco1: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            Cisco1.Disconnect()
+            reconnectWaitCisco1.Restart()
+            AInfoCisco.SetState(0)
+        else:
+            AInfoCisco.SetState(1)
+    #
+    elif command == 'Presentation':
+        AInfo2Cisco.SetText(value)
+        print('--- Parsing Cisco 1: (Presentation ' +  value + ' )')
+        if value == '2':
+            GroupContentA.SetCurrent(AContentOn)
+        elif value == 'Stop':
+            GroupContentA.SetCurrent(AContentOff)
+    #
+    elif command == 'PresentationMode':
+        print('--- Parsing Cisco 1: (PresentationMode ' +  value + ' )')
+    #
+    elif command == 'CallStatus':
+        print('--- Parsing Cisco 1: (CallStatus ' +  value + ' )')
+        if value == 'Ringing':
+            TLP1.ShowPopup('Cisco1.Call')
+        else:
+            TLP1.HidePopup('Cisco1.Call')
+    #
+    elif command == 'CallStatusType':
+        print('--- Parsing Cisco 1: (CallStatusType ' +  value + ' )')
+    #
+    elif command == 'DisplayName':
+        print('--- Parsing Cisco 1: (DisplayName ' +  value + ' )')
+        AVCRemote.SetText(value)
+    #
+    elif command == 'IPAddress':
+        print('--- Parsing Cisco 1: (IPAddress ' +  value + ' )')
+    #
+    elif command == 'RemoteNumber':
+        print('--- Parsing Cisco 1: (RemoteNumber ' +  value + ' )')
+    pass
+
+Cisco1.SubscribeStatus('ConnectionStatus', None, ReceiveCisco1)
+Cisco1.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco1)
+Cisco1.SubscribeStatus('PresentationMode', None, ReceiveCisco1)
+Cisco1.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco1)
+Cisco1.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco1)
+Cisco1.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco1)
+Cisco1.SubscribeStatus('IPAddress', None, ReceiveCisco1)
+Cisco1.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco1)
+
+@event(Cisco1, 'Disconnected')
+@event(Cisco1, 'Connected')
+def Cisco1_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoCisco.SetState(1)
+        reconnectWaitCisco1.Cancel()
+    else:
+        print('Socket Disconnected: Cisco1')
+        AInfoCisco.SetState(0)
+    pass
+
+# RECONEX / QUERY LIST ---------------------------------------------------------
+LCDCab1_QUERY_LIST = [
+    ('Power', None),
+]
+#
+LCDCab1_Queue = collections.deque(LCDCab1_QUERY_LIST)
+
+# RECONEX / QUERY RECALL ------------------------------------------------------
+def QueryLCDCab1():
+    """This send Query commands to device every 01.s"""
+    LCDCab1.Update(*LCDCab1_Queue[0])
+    LCDCab1_Queue.rotate(-1)
+    LCDCab1_PollingWait.Restart()
+
+LCDCab1_PollingWait = Wait(1, QueryLCDCab1)
+
+# RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
+def AttemptConnectLCDCab1():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect Projector B')
+    result = LCDCab1.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitLCDCab1.Restart()
+
+reconnectWaitLCDCab1 = Wait(15, AttemptConnectLCDCab1)
+
+def ReceiveLCDCab1(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module LCD Cab1: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            LCDCab1.Disconnect()
+            reconnectWaitLCDCab1.Restart()
+            AInfoLCDCab1.SetState(0)
+        else:
+            AInfoLCDCab1.SetState(1)
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Cab1: (Power ' +  value + ' )')
+        if value == 'On':
+            A2LCDCab2.SetState(1)
+        else:
+            A2LCDCab2.SetState(0)
+    pass
+
+LCDCab1.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab1)
+LCDCab1.SubscribeStatus('Power', None, ReceiveLCDCab1)
+
+@event(LCDCab1, 'Disconnected')
+@event(LCDCab1, 'Connected')
+def LCDCab1_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoLCDCab1.SetState(1)
+        reconnectWaitLCDCab1.Cancel()
+    else:
+        AInfoLCDCab1.SetState(0)
+        print('Socket Disconnected: LCD Cab1')
+    pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
 LCDCab2_QUERY_LIST = [
@@ -1386,86 +1565,11 @@ Room_Data = {
     'Mixed' : None
 }
 ## IP
-Matrix_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-ProjectorA_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-ProjectorB_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-RecA_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-RecB_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCD1_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCD2_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCD3_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCD4_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCDL1_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCDL2_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCDP1_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-LCDP2_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-Tesira_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
-}
-
-
 Cisco1_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
     'Dial' : None,
 }
 
 Cisco2_Data = {
-    'ConexModule': None,
-    'ConexEvent' : None,
     'Dial' : None,
 }
 
@@ -2117,11 +2221,11 @@ def ButtonObjectPressed(button, state):
         print("Touch 1: {0}".format("Elevator 2: Down"))
     #
     elif button is A2LCDCab2:
-        if LCD1.ReadStatus('Power', None) == 'On':
-            LCD1.Set('Power','Off')
+        if LCDCab1.ReadStatus('Power', None) == 'On':
+            LCDCab1.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 1 Power Off"))
         else:
-            LCD1.Set('Power','On')
+            LCDCab1.Set('Power','On')
             print("Touch 1: {0}".format("LCD 1 Power On"))
     #
     elif button is A2LCDCab3:
@@ -2222,17 +2326,27 @@ def VC_Mode(button, state):
         print("Touch 1: {0}".format("Cisco1: Call"))
     #
     elif button is AHangup:
-        Cisco1.Set('Hook', 'Disconnect 1', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
+        Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
         AVCDial.SetText('')
         print("Touch 1: {0}".format("Cisco1: Hangup"))
     #
     elif button is AContentOn:
-        Cisco1.Set('Presentation', 'Start', {'Instance': '1'})
+        GroupContentA.SetCurrent(AContentOn)
+        Cisco1.Set('Presentation', '2', {'Instance': '1'})
         print("Touch 1: {0}".format("Cisco1: Content On"))
     #
     elif button is AContentOff:
+        GroupContentA.SetCurrent(AContentOff)
         Cisco1.Set('Presentation', 'Stop', {'Instance': '1'})
         print("Touch 1: {0}".format("Cisco1: Content Off"))
+    #
+    elif button is AAnswer1:
+        Cisco1.Set('Hook', 'Accept', {'Number':'','Protocol': 'H323'})
+        print("Touch 1: {0}".format("Cisco1: Answer"))
+    #
+    elif button is ADiscard1:
+        Cisco1.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
+        print("Touch 1: {0}".format("Cisco1: Reject"))
     pass
 
 # ACTIONS - CISCO 2 MODE -----------------------------------------------------
@@ -2276,7 +2390,7 @@ def VC_Mode(button, state):
         print("Touch 1: {0}".format("Cisco2: Call"))
     #
     elif button is A2Hangup:
-        Cisco2.Set('Hook', 'Disconnect 1', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
+        Cisco2.Set('Hook', 'Disconnect 1')
         A2VCDial.SetText('')
         print("Touch 1: {0}".format("Cisco2: Hangup"))
     #
