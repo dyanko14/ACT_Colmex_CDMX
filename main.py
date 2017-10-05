@@ -314,7 +314,9 @@ AInfoCisco   = Button(TLP1, 312)
 AInfo2Cisco  = Button(TLP1, 313)
 AInfo2Cisco  = Button(TLP1, 314)
 
-
+AInfoCisco2   = Button(TLP1, 315)
+AInfo2Cisco2  = Button(TLP1, 316)
+AInfo2Cisco2  = Button(TLP1, 317)
 
 # Mode Audio VoIP ----------------------------------------------------------------------
 # Line 1 ---------------------
@@ -440,7 +442,6 @@ A2ContentOff = Button(TLP1, 2116)
 A2VCDial     = Label(TLP1, 2117)
 A2VCRemote   = Label(TLP1, 2118)
 
-
 # TouchPanel B -----------------------------------------------------------------
 ## Index
 BBtnIndex = Button(TLP2, 1)
@@ -538,8 +539,8 @@ def Initialize():
     Tesira.Connect(timeout = 5)
     ProjA.Connect(timeout = 5)
     ProjB.Connect(timeout = 5)
-    """RecA.Connect()
-    RecB.Connect()"""
+    RecA.Connect(timeout = 5)
+    """RecB.Connect()"""
     LCDCab1.Connect(timeout = 5)
     LCDCab2.Connect(timeout = 5)
     LCDCab3.Connect(timeout = 5)
@@ -620,10 +621,7 @@ XTP_QUERY_LIST = [
 XTP_Queue = collections.deque(XTP_QUERY_LIST)
 
 TESIRA_QUERY_LIST = [
-    ('LastDialed', {'Instance Tag':'Dialer', 'Line':'1'}),
-    """('VoIPCallStatus', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}),
-    ('VoIPCallerID', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}),
-    ('VoIPLineInUse', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}),"""
+    ('LogicState', {'Instance Tag':'Room', 'Channel':'1'}),
 ]
 Tesira_Queue = collections.deque(TESIRA_QUERY_LIST)
 
@@ -660,6 +658,18 @@ CISCO2_QUERY_LIST = [
     ('RemoteNumber', {'Call':'1'}),
 ]
 Cisco2_Queue = collections.deque(CISCO2_QUERY_LIST)
+
+RECA_QUERY_LIST = [
+    ('Record', None),
+    ('RecordDestination', None),
+    ('RecordingMode', None),
+    ('HDCPStatus', None),
+    ('VideoResolution', {'Stream':'Record'}),
+    ('RemainingFreeDiskSpace',{'Drive':'Primary'}),
+    ('RemainingFreeDiskSpace',{'Drive':'Secondary'}),
+    ('CurrentRecordingDuration', None),
+]
+RecA_Queue = collections.deque(RECA_QUERY_LIST)
 
 LCDCab1_QUERY_LIST = [
     ('Power', None),
@@ -736,6 +746,15 @@ def QueryCisco2():
     Cisco2_PollingWait.Restart()
     #
 Cisco2_PollingWait = Wait(1, QueryCisco2)
+
+def QueryRecA():
+    """This send Query commands to device every 01.s"""
+    #
+    RecA.Update(*RecA_Queue[0])
+    RecA.rotate(-1)
+    RecA_PollingWait.Restart()
+    #
+RecA_PollingWait = Wait(1, QueryRecA)
 
 def QueryLCDCab1():
     """This send Query commands to device every 01.s"""
@@ -840,6 +859,17 @@ def AttemptConnectCisco2():
         reconnectWaitCisco2.Restart()
     pass
 reconnectWaitCisco2 = Wait(15, AttemptConnectCisco2)
+
+def AttemptConnectRecA():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect Projector B')
+    result = RecA.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitRecA.Restart()
+    pass
+reconnectWaitRecA = Wait(15, AttemptConnectRecA)
 
 def AttemptConnectLCDCab1():
     """Attempt to create a TCP connection to the LCD
@@ -1037,7 +1067,7 @@ def ReceiveXTP(command, value, qualifier):
                 ASignal22.SetState(0)
 
     elif command == 'OutputTieStatus':
-        print('--- Parsing Matrix: (Out ' +  qualifier['Output'] + ' In ' + value + ' ' + qualifier['Tie Type'] + ')')
+        #print('--- Parsing Matrix: (Out ' +  qualifier['Output'] + ' In ' + value + ' ' + qualifier['Tie Type'] + ')')
         if value == '1':
             GroupInputs.SetCurrent(AInput1)
         elif value == '2':
@@ -1086,9 +1116,6 @@ def ReceiveTesira(command, value, qualifier):
        Attempt to re-stablish the TCP connection to the device by calling
        Disconnect on the module instance and restarting reconnectWait
     """
-    print(qualifier)
-    print(value)
-
     if command == 'ConnectionStatus':
         print('Module Tesira: ' + value)
         #
@@ -1099,6 +1126,17 @@ def ReceiveTesira(command, value, qualifier):
             AInfoTesira.SetState(0)
         else:
             AInfoTesira.SetState(1)
+    #
+    elif command == 'LogicState':
+        if qualifier['Instance Tag'] == 'Room' and qualifier['Channel'] == '1':
+            if value == 'True':
+                Room_Data['Mixed'] = True
+                Tesira.Set('PresetRecall', '1')
+                GroupRoom.SetCurrent(ARoomMixed)
+            else:
+                Room_Data['Mixed'] = False
+                Tesira.Set('PresetRecall', '2')
+                GroupRoom.SetCurrent(ARoomSplit)
     pass
 
 def ReceiveProjectorA(command, value, qualifier):
@@ -1223,9 +1261,9 @@ def ReceiveCisco2(command, value, qualifier):
             ## Recall the Re-Connection Routines
             Cisco2.Disconnect()
             reconnectWaitCisco2.Restart()
-            AInfoCisco.SetState(0)
+            AInfoCisco2.SetState(0)
         else:
-            AInfoCisco.SetState(1)
+            AInfoCisco2.SetState(1)
     #
     elif command == 'Presentation':
         AInfo2Cisco.SetText(value)
@@ -1257,6 +1295,61 @@ def ReceiveCisco2(command, value, qualifier):
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 2: (RemoteNumber ' +  value + ' )')
+    pass
+
+def ReceiveRecA(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module Rec A: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            RecA.Disconnect()
+            reconnectWaitRecA.Restart()
+            #AInfoRe.SetState(0)
+        else:
+            print('XD')
+            #AInfoLCDCab1.SetState(1)
+    #
+    elif command == 'Record':
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        AinfoRecA.SetText(value)
+        if value == 'Start':
+            GroupRecA.SetCurrent(Arecord)
+        elif value == 'Pause':
+            GroupRecA.SetCurrent(Apause)
+        elif value == 'Stop':
+            GroupRecA.SetCurrent(Astop)
+    #
+    elif command == 'RecordDestination':
+        ARecDestine.SetText(value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
+    #
+    elif command == 'RecordingMode':
+        ARecMode.SetText(value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
+    #
+    elif command == 'VideoResolution':
+        ARecResolut.SetText(value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
+    #
+    elif command == 'HDCPStatus':
+        ARecHDCP.SetText(value)
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
+    #
+    elif command == 'RemainingFreeDiskSpace':
+        if qualifier['Drive'] == 'Primary':
+            value = int(value / 1024)
+            ARecDisk.SetText('Disk Free: ' + str(value) + 'GB')
+            print('--- Parsing Recorder A: ' + command + ' ' + str(value))
+    #
+    elif command == 'CurrentRecordingDuration':
+        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        Atime.SetText(value)
     pass
 
 def ReceiveLCDCab1(command, value, qualifier):
@@ -1361,117 +1454,157 @@ def ReceiveLCDCab4(command, value, qualifier):
 
 # RECONEX / SUBSCRIPTIONS ------------------------------------------
 # This Commands make a real data mach from Device to Processor
-XTP.SubscribeStatus('ConnectionStatus', None, ReceiveXTP)
-##
-XTP.SubscribeStatus('InputSignal', {'Input':'1'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'2'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'3'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'4'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'5'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'6'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'7'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'8'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'9'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'10'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'11'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'12'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'13'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'14'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'15'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'16'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'17'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'18'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'19'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'20'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'21'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'22'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'23'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'24'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'25'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'26'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'27'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'28'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'29'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'30'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'31'}, ReceiveXTP)
-XTP.SubscribeStatus('InputSignal', {'Input':'32'}, ReceiveXTP)
-##
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'12', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'13', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'14', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'15', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'16', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'17', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'18', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'19', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, ReceiveXTP)
-XTP.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, ReceiveXTP)
+def SubscribeXTP():
+    XTP.SubscribeStatus('ConnectionStatus', None, ReceiveXTP)
+    ##
+    XTP.SubscribeStatus('InputSignal', {'Input':'1'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'2'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'3'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'4'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'5'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'6'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'7'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'8'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'9'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'10'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'11'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'12'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'13'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'14'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'15'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'16'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'17'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'18'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'19'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'20'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'21'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'22'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'23'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'24'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'25'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'26'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'27'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'28'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'29'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'30'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'31'}, ReceiveXTP)
+    XTP.SubscribeStatus('InputSignal', {'Input':'32'}, ReceiveXTP)
+    ##
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'12', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'13', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'14', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'15', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'16', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'17', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'18', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'19', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, ReceiveXTP)
+    XTP.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, ReceiveXTP)
+    pass
+SubscribeXTP()
 #
-Tesira.SubscribeStatus('ConnectionStatus', None, ReceiveTesira)
-"""Tesira.SubscribeStatus('LastDialed', {'Instance Tag':'Dialer', 'Line':'1'}, ReceiveTesira)
-Tesira.SubscribeStatus('VoIPCallStatus', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}, ReceiveTesira)
-Tesira.SubscribeStatus('VoIPCallerID', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}, ReceiveTesira)
-Tesira.SubscribeStatus('VoIPLineInUse', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'}, ReceiveTesira)"""
+def SubscribeTesira():
+    Tesira.SubscribeStatus('ConnectionStatus', None, ReceiveTesira)
+    Tesira.SubscribeStatus('LogicState', {'Instance Tag':'Room', 'Channel':'1'}, ReceiveTesira)
+    pass
+SubscribeTesira()
 #
-ProjA.SubscribeStatus('ConnectionStatus', None, ReceiveProjectorA)
-ProjA.SubscribeStatus('Power', None, ReceiveProjectorA)
-ProjA.SubscribeStatus('Input', None, ReceiveProjectorA)
+def SubscribeProjectorA():
+    ProjA.SubscribeStatus('ConnectionStatus', None, ReceiveProjectorA)
+    ProjA.SubscribeStatus('Power', None, ReceiveProjectorA)
+    ProjA.SubscribeStatus('Input', None, ReceiveProjectorA)
+    pass
+SubscribeProjectorA()
 #
-ProjB.SubscribeStatus('ConnectionStatus', None, ReceiveProjectorB)
-ProjB.SubscribeStatus('Power', None, ReceiveProjectorB)
-ProjB.SubscribeStatus('Input', None, ReceiveProjectorB)
+def SubscribeProjectorB():
+    ProjB.SubscribeStatus('ConnectionStatus', None, ReceiveProjectorB)
+    ProjB.SubscribeStatus('Power', None, ReceiveProjectorB)
+    ProjB.SubscribeStatus('Input', None, ReceiveProjectorB)
+    pass
+SubscribeProjectorB()
 #
-Cisco1.SubscribeStatus('ConnectionStatus', None, ReceiveCisco1)
-Cisco1.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco1)
-Cisco1.SubscribeStatus('PresentationMode', None, ReceiveCisco1)
-Cisco1.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco1)
-Cisco1.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco1)
-Cisco1.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco1)
-Cisco1.SubscribeStatus('IPAddress', None, ReceiveCisco1)
-Cisco1.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco1)
+def SubscribeCisco1():
+    Cisco1.SubscribeStatus('ConnectionStatus', None, ReceiveCisco1)
+    Cisco1.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco1)
+    Cisco1.SubscribeStatus('PresentationMode', None, ReceiveCisco1)
+    Cisco1.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco1)
+    Cisco1.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco1)
+    Cisco1.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco1)
+    Cisco1.SubscribeStatus('IPAddress', None, ReceiveCisco1)
+    Cisco1.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco1)
+    pass
+SubscribeCisco1()
 #
-Cisco2.SubscribeStatus('ConnectionStatus', None, ReceiveCisco2)
-Cisco2.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco2)
-Cisco2.SubscribeStatus('PresentationMode', None, ReceiveCisco2)
-Cisco2.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco2)
-Cisco2.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco2)
-Cisco2.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco2)
-Cisco2.SubscribeStatus('IPAddress', None, ReceiveCisco2)
-Cisco2.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco2)
+def SubscribeCisco2():
+    Cisco2.SubscribeStatus('ConnectionStatus', None, ReceiveCisco2)
+    Cisco2.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco2)
+    Cisco2.SubscribeStatus('PresentationMode', None, ReceiveCisco2)
+    Cisco2.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco2)
+    Cisco2.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco2)
+    Cisco2.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco2)
+    Cisco2.SubscribeStatus('IPAddress', None, ReceiveCisco2)
+    Cisco2.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco2)
+    pass
+SubscribeCisco2()
 #
-LCDCab1.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab1)
-LCDCab1.SubscribeStatus('Power', None, ReceiveLCDCab1)
+def SubscribeRecA():
+    RecA.SubscribeStatus('ConnectionStatus', None, ReceiveRecA)
+    RecA.SubscribeStatus('Record', None, ReceiveRecA)
+    RecA.SubscribeStatus('RecordDestination', None, ReceiveRecA)
+    RecA.SubscribeStatus('RecordingMode', None, ReceiveRecA)
+    RecA.SubscribeStatus('HDCPStatus', None, ReceiveRecA)
+    RecA.SubscribeStatus('VideoResolution', {'Stream':'Record'}, ReceiveRecA)
+    RecA.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Primary'}, ReceiveRecA)
+    RecA.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Secondary'}, ReceiveRecA)
+    RecA.SubscribeStatus('CurrentRecordingDuration', None, ReceiveRecA)
+    pass
+SubscribeRecA()
 #
-LCDCab2.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab2)
-LCDCab2.SubscribeStatus('Power', None, ReceiveLCDCab2)
+def SubscribeLCD1():
+    LCDCab1.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab1)
+    LCDCab1.SubscribeStatus('Power', None, ReceiveLCDCab1)
+    pass
+SubscribeLCD1()
 #
-LCDCab3.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab3)
-LCDCab3.SubscribeStatus('Power', None, ReceiveLCDCab3)
+def SubscribeLCD2():
+    LCDCab2.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab2)
+    LCDCab2.SubscribeStatus('Power', None, ReceiveLCDCab2)
+    pass
+SubscribeLCD2()
 #
-LCDCab4.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab4)
-LCDCab4.SubscribeStatus('Power', None, ReceiveLCDCab4)
+def SubscribeLCD3():
+    LCDCab3.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab3)
+    LCDCab3.SubscribeStatus('Power', None, ReceiveLCDCab3)
+    pass
+SubscribeLCD3()
+#
+def SubscribeLCD4():
+    LCDCab4.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab4)
+    LCDCab4.SubscribeStatus('Power', None, ReceiveLCDCab4)
+    pass
+SubscribeLCD4()
 
 # RECONEX / SOCKET ------------------------------------------
 # This reports a physical connection socket of every Device
@@ -1558,11 +1691,26 @@ def Cisco2_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoCisco.SetState(1)
+        AInfoCisco2.SetState(1)
         reconnectWaitCisco2.Cancel()
     else:
         print('Socket Disconnected: Cisco2')
-        AInfoCisco.SetState(0)
+        AInfoCisco2.SetState(0)
+    pass
+
+@event(RecA, 'Disconnected')
+@event(RecA, 'Connected')
+def RecA_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        #AInfoLCDCab1.SetState(1)
+        reconnectWaitRecA.Cancel()
+    else:
+        #AInfoLCDCab1.SetState(0)
+        print('Socket Disconnected: Rec A')
     pass
 
 @event(LCDCab1, 'Disconnected')
@@ -1663,10 +1811,12 @@ def Index(button, state):
         print("Touch 2: {0}".format("Index"))
     pass
 
-def FunctionOpenRoom():
+def FunctionMixRoom():
     """This prepare the room to be used in mode Mixed"""
     ## Store the data in dictionary
+    Tesira.Set('LogicState', 'False', {'Instance Tag':'Room', 'Channel':'1'})
     Room_Data['Mixed'] = False
+    Tesira.Set('PresetRecall', '1')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
     ABtnRoom2.SetState(0)
@@ -1676,9 +1826,11 @@ def FunctionOpenRoom():
     print("Touch 1: {0}".format("Room Split"))
     pass
 
-def FunctionCloseRoom():
+def FunctionSplitRoom():
     ## Store the data in dictionary
+    Tesira.Set('LogicState', 'True', {'Instance Tag':'Room', 'Channel':'1'})
     Room_Data['Mixed'] = True
+    Tesira.Set('PresetRecall', '2')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
     ABtnRoom2.SetState(1)
@@ -1698,9 +1850,9 @@ def Index(button, state):
         GroupRoom.SetCurrent(button)
         #
         if button is ARoomSplit:
-            FunctionOpenRoom()
+            FunctionMixRoom()
         else:
-            FunctionCloseRoom()
+            FunctionSplitRoom()
     pass
 
 # ACTIONS - MAIN OPERATION MODE ------------------------------------------------
