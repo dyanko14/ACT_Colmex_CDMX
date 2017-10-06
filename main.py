@@ -44,19 +44,21 @@ import csco_vtc_SX_Series_CE82_v1_1_0_2           as ModuleCisco
 # Video Server
 XTP   = ModuleXTP.EthernetClass('172.16.241.5', 23, Model='XTP II CrossPoint 3200')
 XTP.devicePassword = 'SWExtronXTP'
-
+#
 # Projectors
 ProjA = ModuleChristie.EthernetClass('172.16.240.201', 3002, Model='D13WU-HS')
 ProjB = ModuleChristie.EthernetClass('172.16.240.200', 3002, Model='D13WU-HS')
-
+#
 # Recorders
 RecA  = ModuleSMP111.EthernetClass('172.16.241.6', 23, Model='SMP 111')
 RecA.devicePassword = 'R3cSala1'
-
+#
 RecB  = ModuleSMP111.EthernetClass('172.16.241.7', 23, Model='SMP 111')
 RecB.devicePassword = 'R3cSala2'
-
+#
 # Displays
+Monitor1 = IRInterface(IPCP, 'IRS1', 'Samsung.eir')
+Monitor2 = IRInterface(IPCP, 'IRS2', 'Samsung.eir')
 LCDCab1 = ModuleSamsung.EthernetClass('172.16.241.24', 1515, Model='LH55QMFPLGC/KR')
 LCDCab2 = ModuleSamsung.EthernetClass('172.16.241.25', 1515, Model='LH55QMFPLGC/KR')
 LCDCab3 = ModuleSamsung.EthernetClass('172.16.241.26', 1515, Model='LH55QMFPLGC/KR')
@@ -65,18 +67,18 @@ LCDPod1 = ModuleSamsung.EthernetClass('172.16.241.28', 1515, Model='LH55QMFPLGC/
 LCDPod2 = ModuleSamsung.EthernetClass('172.16.241.29', 1515, Model='LH55QMFPLGC/KR')
 LCDLob1 = ModuleSamsung.EthernetClass('172.16.241.30', 1515, Model='LH55QMFPLGC/KR')
 LCDLob2 = ModuleSamsung.EthernetClass('172.16.241.31', 1515, Model='LH55QMFPLGC/KR')
-
+#
 # Audio Server
 Tesira = ModuleTesira.EthernetClass('172.16.241.100', 23, Model='Tesira SERVER-IO')
-
+#
 # Cameras
 PTZ1 = ModulePTZ.EthernetClass('172.16.240.15', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
-
+#
 # Videoconference Códecs
 Cisco1 = ModuleCisco.EthernetClass('172.16.240.87', 23, Model='SX20 CE8.2.X')
 Cisco1.deviceUsername = 'admin'
 Cisco1.devicePassword = 'auditc0lm3xS1'
-
+#
 Cisco2 = ModuleCisco.EthernetClass('172.16.240.88', 23, Model='SX20 CE8.2.X')
 Cisco2.deviceUsername = 'admin'
 Cisco2.devicePassword = 'auditc0lm3xS2'
@@ -90,10 +92,10 @@ SWPowerPort3 = SWPowerInterface(IPCP, 'SPI3')
 SWPowerPort4 = SWPowerInterface(IPCP, 'SPI4')
 #
 # Relay
-AScreenUp = RelayInterface(IPCP, 'RLY3')
-AScreenDw = RelayInterface(IPCP, 'RLY4')
-AElevatUp = RelayInterface(IPCP, 'RLY7')
-AElevatDw = RelayInterface(IPCP, 'RLY8')
+AScreenUp  = RelayInterface(IPCP, 'RLY3')
+AScreenDw  = RelayInterface(IPCP, 'RLY4')
+AElevatUp  = RelayInterface(IPCP, 'RLY7')
+AElevatDw  = RelayInterface(IPCP, 'RLY8')
 A2ScreenUp = RelayInterface(IPCP, 'RLY1')
 A2ScreenDw = RelayInterface(IPCP, 'RLY2')
 A2ElevatUp = RelayInterface(IPCP, 'RLY5')
@@ -119,7 +121,6 @@ ABtnRoom    = Button(TLP1, 10)
 ABtnSwitch  = Button(TLP1, 11)
 ABtnDisplay = Button(TLP1, 12)
 ABtnVC      = Button(TLP1, 13)
-ABtnAudio   = Button(TLP1, 14)
 ABtnREC     = Button(TLP1, 15)
 ABtnVoIP    = Button(TLP1, 16)
 ABtnInfo    = Button(TLP1, 17)
@@ -318,64 +319,13 @@ AInfoCisco2   = Button(TLP1, 315)
 AInfo2Cisco2  = Button(TLP1, 316)
 AInfo2Cisco2  = Button(TLP1, 317)
 
-# Mode Audio VoIP ----------------------------------------------------------------------
-# Line 1 ---------------------
-AViDial0      = Button(TLP1, 2030)
-AViDial1      = Button(TLP1, 2031)
-AViDial2      = Button(TLP1, 2032)
-AViDial3      = Button(TLP1, 2033)
-AViDial4      = Button(TLP1, 2034)
-AViDial5      = Button(TLP1, 2035)
-AViDial6      = Button(TLP1, 2036)
-AViDial7      = Button(TLP1, 2037)
-AViDial8      = Button(TLP1, 2038)
-AViDial9      = Button(TLP1, 2039)
-AViDialDot    = Button(TLP1, 2040)
-AViDialHash   = Button(TLP1, 2041)
-AViDialDelete = Button(TLP1, 2044, repeatTime=0.1)
-# Dialer
+AInfoRecA     = Button(TLP1, 318)
+AInfo2RecA    = Button(TLP1, 319)
+AInfoRecB     = Button(TLP1, 320)
+AInfo2RecB    = Button(TLP1, 321)
 
-# Call
-AViHangup     = Button(TLP1, 2042)
-AViCall       = Button(TLP1, 2043)
-
-# Call Options
-AViRedial  = Button(TLP1, 2045)
-AViDTMF = Button(TLP1, 2046)
-
-# Label
-AViDial     = Label(TLP1, 2047)
-AViRemote   = Label(TLP1, 2048)
-
-# Mode Audio VoIP ----------------------------------------------------------------------
-# Line 2 ---------------------
-AVi2Dial0      = Button(TLP1, 2000)
-AVi2Dial1      = Button(TLP1, 2001)
-AVi2Dial2      = Button(TLP1, 2002)
-AVi2Dial3      = Button(TLP1, 2003)
-AVi2Dial4      = Button(TLP1, 2004)
-AVi2Dial5      = Button(TLP1, 2005)
-AVi2Dial6      = Button(TLP1, 2006)
-AVi2Dial7      = Button(TLP1, 2007)
-AVi2Dial8      = Button(TLP1, 2008)
-AVi2Dial9      = Button(TLP1, 2009)
-AVi2DialDot    = Button(TLP1, 2010)
-AVi2DialHash   = Button(TLP1, 2011)
-AVi2DialDelete = Button(TLP1, 2014, repeatTime=0.1)
-# Dialer
-
-# Call
-AVi2Hangup     = Button(TLP1, 2012)
-AVi2Call       = Button(TLP1, 2013)
-
-# Call Options
-AVi2Redial  = Button(TLP1, 2015)
-AVi2DTMF = Button(TLP1, 2016)
-
-# Label
-AVi2Dial     = Label(TLP1, 2017)
-AVi2Remote   = Label(TLP1, 2018)
-
+AInfoLCDLob1  = Button(TLP1, 322)
+AInfoLCDLob2  = Button(TLP1, 323)
 
 # Mode VC ----------------------------------------------------------------------
 # Cisco 1 ---------------------
@@ -410,7 +360,7 @@ AContentOff = Button(TLP1, 2146)
 AVCDial     = Label(TLP1, 2147)
 AVCRemote   = Label(TLP1, 2148)
 
-# Cisco 2 ---------------------
+# Cisco 2 -----------------------
 A2Dial0      = Button(TLP1, 2100)
 A2Dial1      = Button(TLP1, 2101)
 A2Dial2      = Button(TLP1, 2102)
@@ -460,7 +410,6 @@ BLblMain    = Label(TLP2, 20)
 BBtnRoom1   = Button(TLP2, 21)
 BBtnRoom2   = Button(TLP2, 22)
 
-
 # BUTTON GROUPING --------------------------------------------------------------
 # Mode Index
 Index = [ABtnIndex, BBtnIndex]
@@ -471,12 +420,12 @@ ModeRoom = [ARoomSplit, ARoomMixed]
 GroupRoom = MESet(ModeRoom)
 
 # Mode Main
-Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio, ABtnREC,
+Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC,
          ABtnVoIP, ABtnInfo, ABtnPower,
          BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnAudio, BBtnREC,
          BBtnVoIP, BBtnInfo, BBtnPower]
 #
-GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnAudio,
+GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC,
                     ABtnREC,ABtnVoIP, ABtnInfo, ABtnPower])
 
 # Mode Video Switching
@@ -510,13 +459,6 @@ Rec = [Arecord, Astop, Apause, A2record, A2stop, A2pause]
 GroupRecA = MESet([Arecord, Astop, Apause])
 GroupRecB = MESet([A2record, A2stop, A2pause])
 
-# Mode Audio VoIP
-VoIPDial = [AViDial0, AViDial1, AViDial2, AViDial3, AViDial4, AViDial5, AViDial6, AViDial7, AViDial8, AViDial9, AViDialDot, AViDialHash, AViDialDelete]
-VoIPButtons = [AViCall, AViHangup, AViRedial, AViDTMF]
-#
-VoIP2Dial = [AVi2Dial0, AVi2Dial1, AVi2Dial2, AVi2Dial3, AVi2Dial4, AVi2Dial5, AVi2Dial6, AVi2Dial7, AVi2Dial8, AVi2Dial9, AVi2DialDot, AVi2DialHash, AVi2DialDelete]
-VoIP2Buttons = [AVi2Call, AVi2Hangup, AVi2Redial, AVi2DTMF]
-
 # Mode Videoconference
 VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
 VCButtons = [ACall, AHangup, AContentOn, AContentOff, AAnswer1, ADiscard1]
@@ -540,11 +482,13 @@ def Initialize():
     ProjA.Connect(timeout = 5)
     ProjB.Connect(timeout = 5)
     RecA.Connect(timeout = 5)
-    """RecB.Connect()"""
+    RecB.Connect(timeout = 5)
     LCDCab1.Connect(timeout = 5)
     LCDCab2.Connect(timeout = 5)
     LCDCab3.Connect(timeout = 5)
     LCDCab4.Connect(timeout = 5)
+    LCDLob1.Connect(timeout = 5)
+    LCDLob2.Connect(timeout = 5)
     Cisco1.Connect(timeout = 5)
     Cisco2.Connect(timeout = 5)
     
@@ -564,22 +508,31 @@ def Initialize():
     dialerVC2 = ''    ## Clean the Dial String Variable
     A2VCDial.SetText('')
 
-    ## Audio VoIP1 Dial PAGE
-    global dialerVoIP  ## To access the Dial String variable in all program
-    dialerVoIP = ''    ## Clean the Dial String Variable
-    AViDial.SetText('')
-
-    ## Audio VoIP2 Dial PAGE
-    global dialerVoIP2  ## To access the Dial String variable in all program
-    dialerVoIP2 = ''    ## Clean the Dial String Variable
-    AVi2Dial.SetText('')
-
     ##12v Interface (This brings power to all Relays)
     SWPowerPort1.SetState('On')
     SWPowerPort2.SetState('On')
     SWPowerPort3.SetState('On')
     SWPowerPort4.SetState('On')
 
+    ## Audio Routing
+    ## XTP Input Slot 1
+    XTP.Set('MatrixTieCommand', None, {'Input':'1', 'Output':'9', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'2', 'Output':'10', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'3', 'Output':'11', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'4', 'Output':'12', 'Tie Type':'Audio'})
+    ## XTP Input Slot 2
+    XTP.Set('MatrixTieCommand', None, {'Input':'5', 'Output':'13', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'6', 'Output':'14', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'7', 'Output':'15', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'8', 'Output':'16', 'Tie Type':'Audio'})
+    ## XTP Input Slot 3
+    XTP.Set('MatrixTieCommand', None, {'Input':'13', 'Output':'17', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'14', 'Output':'18', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'19', 'Output':'19', 'Tie Type':'Audio'})
+    XTP.Set('MatrixTieCommand', None, {'Input':'20', 'Output':'20', 'Tie Type':'Audio'})
+
+    ## Notify to console
+    print('System Initialize')
     pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
@@ -666,10 +619,20 @@ RECA_QUERY_LIST = [
     ('HDCPStatus', None),
     ('VideoResolution', {'Stream':'Record'}),
     ('RemainingFreeDiskSpace',{'Drive':'Primary'}),
-    ('RemainingFreeDiskSpace',{'Drive':'Secondary'}),
     ('CurrentRecordingDuration', None),
 ]
 RecA_Queue = collections.deque(RECA_QUERY_LIST)
+
+RECB_QUERY_LIST = [
+    ('Record', None),
+    ('RecordDestination', None),
+    ('RecordingMode', None),
+    ('HDCPStatus', None),
+    ('VideoResolution', {'Stream':'Record'}),
+    ('RemainingFreeDiskSpace',{'Drive':'Primary'}),
+    ('CurrentRecordingDuration', None),
+]
+RecB_Queue = collections.deque(RECB_QUERY_LIST)
 
 LCDCab1_QUERY_LIST = [
     ('Power', None),
@@ -690,6 +653,16 @@ LCDCab4_QUERY_LIST = [
     ('Power', None),
 ]
 LCDCab4_Queue = collections.deque(LCDCab4_QUERY_LIST)
+
+LCDLob1_QUERY_LIST = [
+    ('Power', None),
+]
+LCDLob1_Queue = collections.deque(LCDLob1_QUERY_LIST)
+
+LCDLob2_QUERY_LIST = [
+    ('Power', None),
+]
+LCDLob2_Queue = collections.deque(LCDLob2_QUERY_LIST)
 
 # RECONEX / QUERY RECALL ------------------------------------------------------
 # This is a recursive function to send Query Command to Device certain time
@@ -751,10 +724,19 @@ def QueryRecA():
     """This send Query commands to device every 01.s"""
     #
     RecA.Update(*RecA_Queue[0])
-    RecA.rotate(-1)
+    RecA_Queue.rotate(-1)
     RecA_PollingWait.Restart()
     #
 RecA_PollingWait = Wait(1, QueryRecA)
+
+def QueryRecB():
+    """This send Query commands to device every 01.s"""
+    #
+    RecB.Update(*RecB_Queue[0])
+    RecB_Queue.rotate(-1)
+    RecB_PollingWait.Restart()
+    #
+RecB_PollingWait = Wait(1, QueryRecB)
 
 def QueryLCDCab1():
     """This send Query commands to device every 01.s"""
@@ -791,6 +773,24 @@ def QueryLCDCab4():
     LCDCab4_PollingWait.Restart()
     #
 LCDCab4_PollingWait = Wait(1, QueryLCDCab4)
+
+def QueryLCDLob1():
+    """This send Query commands to device every 03.s"""
+    #
+    LCDLob1.Update(*LCDLob1_Queue[0])
+    LCDLob1_Queue.rotate(-1)
+    LCDLob1_PollingWait.Restart()
+    #
+LCDLob1_PollingWait = Wait(1, QueryLCDLob1)
+
+def QueryLCDLob2():
+    """This send Query commands to device every 03.s"""
+    #
+    LCDLob2.Update(*LCDLob2_Queue[0])
+    LCDLob2_Queue.rotate(-1)
+    LCDLob2_PollingWait.Restart()
+    #
+LCDLob2_PollingWait = Wait(1, QueryLCDLob2)
 
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Try to connect automatically a Device
@@ -842,7 +842,7 @@ def AttemptConnectCisco1():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect Cisco 1')
     result = Cisco1.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitCisco1.Restart()
@@ -853,7 +853,7 @@ def AttemptConnectCisco2():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect Cisco 2')
     result = Cisco2.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitCisco2.Restart()
@@ -864,18 +864,29 @@ def AttemptConnectRecA():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect Recorder A')
     result = RecA.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitRecA.Restart()
     pass
 reconnectWaitRecA = Wait(15, AttemptConnectRecA)
 
+def AttemptConnectRecB():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect Recorder B')
+    result = RecB.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitRecB.Restart()
+    pass
+reconnectWaitRecB = Wait(15, AttemptConnectRecB)
+
 def AttemptConnectLCDCab1():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect LCD 1')
     result = LCDCab1.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab1.Restart()
@@ -886,7 +897,7 @@ def AttemptConnectLCDCab2():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect LCD 2')
     result = LCDCab2.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab2.Restart()
@@ -897,7 +908,7 @@ def AttemptConnectLCDCab3():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect LCD 3')
     result = LCDCab3.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab3.Restart()
@@ -908,12 +919,34 @@ def AttemptConnectLCDCab4():
     """Attempt to create a TCP connection to the LCD
        IF it fails, retry in 15 seconds
     """
-    print('Attempting to connect Projector B')
+    print('Attempting to connect LCD 4')
     result = LCDCab4.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab4.Restart()
     pass
 reconnectWaitLCDCab4 = Wait(15, AttemptConnectLCDCab4)
+
+def AttemptConnectLCDLob1():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect LCD Lob1')
+    result = LCDLob1.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitLCDLob1.Restart()
+    pass
+reconnectWaitLCDLob1 = Wait(15, AttemptConnectLCDLob1)
+
+def AttemptConnectLCDLob2():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect LCD Lob2')
+    result = LCDLob2.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitLCDLob2.Restart()
+    pass
+reconnectWaitLCDLob2 = Wait(15, AttemptConnectLCDLob2)
 
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Functions parse the Incoming Data of every Device
@@ -935,11 +968,6 @@ def ReceiveXTP(command, value, qualifier):
             AInfoXTP.SetState(1)
     #
     elif command == 'InputSignal':
-        if value == 'Active':
-            print('--- Parsing Matrix: (Input ' + qualifier['Input'] + ' Ok)' )
-        else:
-            print('--- Parsing Matrix: (Input ' + qualifier['Input'] + ' ...)')
-        #
         # XTP Slot 1-------------------
         if qualifier['Input'] == '1':
             if value == 'Active':
@@ -1161,8 +1189,12 @@ def ReceiveProjectorA(command, value, qualifier):
         print('--- Parsing Projector A: (Power ' +  value + ' )')
         if value == 'On':
             AProjAPwr.SetState(1)
+            Room1ElevatorDown()
+            Room1ScreenDown()
         else:
             AProjAPwr.SetState(0)
+            Room1ElevatorUp()
+            Room1ScreenUp()
     #
     elif command == 'Input':
         AInfo3ProjA.SetText(value)
@@ -1191,8 +1223,12 @@ def ReceiveProjectorB(command, value, qualifier):
         print('--- Parsing Projector B: (Power ' +  value + ' )')
         if value == 'On':
             AProjBPwr.SetState(1)
+            Room2ElevatorDown()
+            Room2ScreenDown()
         else:
             AProjBPwr.SetState(0)
+            Room2ElevatorUp()
+            Room2ScreenUp()
     #
     elif command == 'Input':
         AInfo3ProjB.SetText(value)
@@ -1310,14 +1346,13 @@ def ReceiveRecA(command, value, qualifier):
             ## Recall the Re-Connection Routines
             RecA.Disconnect()
             reconnectWaitRecA.Restart()
-            #AInfoRe.SetState(0)
+            AInfoRecA.SetState(0)
         else:
-            print('XD')
-            #AInfoLCDCab1.SetState(1)
+            AInfoRecA.SetState(1)
     #
     elif command == 'Record':
-        print('--- Parsing Recorder A: ' + command + ' ' + value)
-        AinfoRecA.SetText(value)
+        #print('--- Parsing Recorder A: ' + command + ' ' + value)
+        AInfo2RecA.SetText(value)
         if value == 'Start':
             GroupRecA.SetCurrent(Arecord)
         elif value == 'Pause':
@@ -1327,29 +1362,83 @@ def ReceiveRecA(command, value, qualifier):
     #
     elif command == 'RecordDestination':
         ARecDestine.SetText(value)
-        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
         ARecMode.SetText(value)
-        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
         ARecResolut.SetText(value)
-        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
         ARecHDCP.SetText(value)
-        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
             ARecDisk.SetText('Disk Free: ' + str(value) + 'GB')
-            print('--- Parsing Recorder A: ' + command + ' ' + str(value))
+            #print('--- Parsing Recorder A: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
-        print('--- Parsing Recorder A: ' + command + ' ' + value)
+        #print('--- Parsing Recorder A: ' + command + ' ' + value)
         Atime.SetText(value)
+    pass
+
+def ReceiveRecB(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module Rec B: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            RecB.Disconnect()
+            reconnectWaitRecB.Restart()
+            AInfoRecB.SetState(0)
+        else:
+            AInfoRecB.SetState(1)
+    #
+    elif command == 'Record':
+        #print('--- Parsing Recorder B: ' + command + ' ' + value)
+        AInfo2RecB.SetText(value)
+        if value == 'Start':
+            GroupRecB.SetCurrent(A2record)
+        elif value == 'Pause':
+            GroupRecB.SetCurrent(A2pause)
+        elif value == 'Stop':
+            GroupRecB.SetCurrent(A2stop)
+    #
+    elif command == 'RecordDestination':
+        A2RecDestine.SetText(value)
+        #print('--- Parsing Recorder B: ' + command + ' ' + value)
+    #
+    elif command == 'RecordingMode':
+        A2RecMode.SetText(value)
+        #print('--- Parsing Recorder B: ' + command + ' ' + value)
+    #
+    elif command == 'VideoResolution':
+        A2RecResolut.SetText(value)
+        #print('--- Parsing Recorder B: ' + command + ' ' + value)
+    #
+    elif command == 'HDCPStatus':
+        A2RecHDCP.SetText(value)
+        #print('--- Parsing Recorder B: ' + command + ' ' + value)
+    #
+    elif command == 'RemainingFreeDiskSpace':
+        if qualifier['Drive'] == 'Primary':
+            value = int(value / 1024)
+            A2RecDisk.SetText('Disk Free: ' + str(value) + 'GB')
+            #print('--- Parsing Recorder B: ' + command + ' ' + str(value))
+    #
+    elif command == 'CurrentRecordingDuration':
+        #print('--- Parsing Recorder B: ' + command + ' ' + value)
+        A2time.SetText(value)
     pass
 
 def ReceiveLCDCab1(command, value, qualifier):
@@ -1450,6 +1539,56 @@ def ReceiveLCDCab4(command, value, qualifier):
             ALCDCab2.SetState(1)
         else:
             ALCDCab2.SetState(0)
+    pass
+
+def ReceiveLCDLob1(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module LCD Lob1: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            LCDLob1.Disconnect()
+            reconnectWaitLCDLob1.Restart()
+            AInfoLCDLob1.SetState(0)
+        else:
+            AInfoLCDLob1.SetState(1)
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Lob1: (Power ' +  value + ' )')
+        if value == 'On':
+            ALCDLobby.SetState(1)
+        else:
+            ALCDLobby.SetState(0)
+    pass
+
+def ReceiveLCDLob2(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module LCD Lob2: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            LCDLob2.Disconnect()
+            reconnectWaitLCDLob2.Restart()
+            AInfoLCDLob2.SetState(0)
+        else:
+            AInfoLCDLob2.SetState(1)
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Lob2: (Power ' +  value + ' )')
+        if value == 'On':
+            A2LCDLobby.SetState(1)
+        else:
+            A2LCDLobby.SetState(0)
     pass
 
 # RECONEX / SUBSCRIPTIONS ------------------------------------------
@@ -1577,10 +1716,21 @@ def SubscribeRecA():
     RecA.SubscribeStatus('HDCPStatus', None, ReceiveRecA)
     RecA.SubscribeStatus('VideoResolution', {'Stream':'Record'}, ReceiveRecA)
     RecA.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Primary'}, ReceiveRecA)
-    RecA.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Secondary'}, ReceiveRecA)
     RecA.SubscribeStatus('CurrentRecordingDuration', None, ReceiveRecA)
     pass
 SubscribeRecA()
+#
+def SubscribeRecB():
+    RecB.SubscribeStatus('ConnectionStatus', None, ReceiveRecB)
+    RecB.SubscribeStatus('Record', None, ReceiveRecB)
+    RecB.SubscribeStatus('RecordDestination', None, ReceiveRecB)
+    RecB.SubscribeStatus('RecordingMode', None, ReceiveRecB)
+    RecB.SubscribeStatus('HDCPStatus', None, ReceiveRecB)
+    RecB.SubscribeStatus('VideoResolution', {'Stream':'Record'}, ReceiveRecB)
+    RecB.SubscribeStatus('RemainingFreeDiskSpace',{'Drive':'Primary'}, ReceiveRecB)
+    RecB.SubscribeStatus('CurrentRecordingDuration', None, ReceiveRecB)
+    pass
+SubscribeRecB()
 #
 def SubscribeLCD1():
     LCDCab1.SubscribeStatus('ConnectionStatus', None, ReceiveLCDCab1)
@@ -1605,7 +1755,18 @@ def SubscribeLCD4():
     LCDCab4.SubscribeStatus('Power', None, ReceiveLCDCab4)
     pass
 SubscribeLCD4()
-
+#
+def SubscribeLob1():
+    LCDLob1.SubscribeStatus('ConnectionStatus', None, ReceiveLCDLob1)
+    LCDLob1.SubscribeStatus('Power', None, ReceiveLCDLob1)
+    pass
+SubscribeLob1()
+#
+def SubscribeLob2():
+    LCDLob2.SubscribeStatus('ConnectionStatus', None, ReceiveLCDLob2)
+    LCDLob2.SubscribeStatus('Power', None, ReceiveLCDLob2)
+    pass
+SubscribeLob2()
 # RECONEX / SOCKET ------------------------------------------
 # This reports a physical connection socket of every Device
 @event(XTP, 'Disconnected')
@@ -1706,10 +1867,25 @@ def RecA_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        #AInfoLCDCab1.SetState(1)
+        AInfoRecA.SetState(1)
         reconnectWaitRecA.Cancel()
     else:
-        #AInfoLCDCab1.SetState(0)
+        AInfoRecA.SetState(0)
+        print('Socket Disconnected: Rec A')
+    pass
+
+@event(RecB, 'Disconnected')
+@event(RecB, 'Connected')
+def RecB_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoRecB.SetState(1)
+        reconnectWaitRecB.Cancel()
+    else:
+        AInfoRecB.SetState(0)
         print('Socket Disconnected: Rec A')
     pass
 
@@ -1773,6 +1949,35 @@ def LCDCab4_PhysicalConex(interface, state):
         print('Socket Disconnected: LCD Cab4')
     pass
 
+@event(LCDLob1, 'Disconnected')
+@event(LCDLob1, 'Connected')
+def LCDLob1_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoLCDLob1.SetState(1)
+        reconnectWaitLCDLob1.Cancel()
+    else:
+        AInfoLCDLob1.SetState(0)
+        print('Socket Disconnected: LCD Lob1')
+    pass
+
+@event(LCDLob2, 'Disconnected')
+@event(LCDLob2, 'Connected')
+def LCDLob2_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoLCDLob2.SetState(1)
+        reconnectWaitLCDLob2.Cancel()
+    else:
+        AInfoLCDLob2.SetState(0)
+        print('Socket Disconnected: LCD Lob2')
+    pass
 # DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store general information
 ## Room
@@ -1786,16 +1991,6 @@ Cisco1_Data = {
 
 Cisco2_Data = {
     'Dial' : None,
-}
-
-VoIP1_Data = {
-    'Dial' : None,
-    'DTMF' : False,
-}
-
-VoIP2_Data = {
-    'Dial' : None,
-    'DTMF' : False,
 }
 
 # ACTIONS - INDEX PAGE MODE ----------------------------------------------------
@@ -1894,27 +2089,6 @@ def FullMain(button, state):
             ALblMain.SetText('Control de Videoconferencia')
             print("Touch 1: {0}".format("Mode VideoConferencia"))
         #
-        elif button is ABtnAudio:
-            ## Audio Routing
-            ## XTP Input Slot 1
-            XTP.Set('MatrixTieCommand', None, {'Input':'1', 'Output':'9', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'2', 'Output':'10', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'3', 'Output':'11', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'4', 'Output':'12', 'Tie Type':'Audio'})
-            ## XTP Input Slot 2
-            XTP.Set('MatrixTieCommand', None, {'Input':'5', 'Output':'13', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'6', 'Output':'14', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'7', 'Output':'15', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'8', 'Output':'16', 'Tie Type':'Audio'})
-            ## XTP Input Slot 3
-            XTP.Set('MatrixTieCommand', None, {'Input':'13', 'Output':'17', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'14', 'Output':'18', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'19', 'Output':'19', 'Tie Type':'Audio'})
-            XTP.Set('MatrixTieCommand', None, {'Input':'20', 'Output':'20', 'Tie Type':'Audio'})
-            ##
-            ALblMain.SetText('Control de Sala')
-            print("Touch 1: {0}".format("Mode Audio"))
-        #
         elif button is ABtnREC:
             ALblMain.SetText('Control de GrabaciÃ³n')
             print("Touch 1: {0}".format("Mode REC"))
@@ -1923,11 +2097,6 @@ def FullMain(button, state):
                 TLP1.ShowPopup('Full.Rec')
             else:
                 TLP1.ShowPopup('Split.RecA')
-        #
-        elif button is ABtnVoIP:
-            TLP1.ShowPopup('Full.VoIP')
-            ALblMain.SetText('Control de VoIP')
-            print("Touch 1: {0}".format("Mode VoIP"))
         #
         elif button is ABtnInfo:
             TLP1.ShowPopup('Full.Info')
@@ -1962,10 +2131,6 @@ def FullMain(button, state):
         elif button is BBtnREC:
             TLP2.ShowPopup('Full.Rec')
             print("Touch 2: {0}".format("Mode REC"))
-        #
-        elif button is BBtnVoIP:
-            TLP2.ShowPopup('Full.VoIP')
-            print("Touch 2: {0}".format("Mode VoIP"))
         #
         elif button is BBtnInfo:
             TLP2.ShowPopup('Full.Info')
@@ -2295,13 +2460,15 @@ def InSwitching(button, state):
 def Room1ScreenUp():
     """Control of Relays"""
     AScreenDw.SetState('Open')
-    AScreenUp.SetState('Close')
+    #AScreenUp.SetState('Close')
+    AScreenUp.Pulse(20)
     pass
 
 def Room1ScreenDown():
     """Control of Relays"""
     AScreenUp.SetState('Open')
-    AScreenDw.SetState('Close')
+    #AScreenDw.SetState('Close')
+    AScreenDw.Pulse(20)
     pass
 
 def Room1ElevatorUp():
@@ -2319,13 +2486,15 @@ def Room1ElevatorDown():
 def Room2ScreenUp():
     """Control of Relays"""
     A2ScreenDw.SetState('Open')
-    A2ScreenUp.SetState('Close')
+    #A2ScreenUp.SetState('Close')
+    A2ScreenUp.Pulse(20)
     pass
 
 def Room2ScreenDown():
     """Control of Relays"""
     A2ScreenUp.SetState('Open')
-    A2ScreenDw.SetState('Close')
+    #A2ScreenDw.SetState('Close')
+    A2ScreenDw.Pulse(20)
     pass
 
 def Room2ElevatorUp():
@@ -2348,10 +2517,16 @@ def ButtonObjectPressed(button, state):
     if button is AProjAPwr:
         if ProjA.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 1: PowerOff"))
+            AProjAPwr.SetState(0)
             ProjA.Set('Power','Off')
+            Room1ElevatorUp()
+            Room1ScreenUp()
         else:
             print("Touch 1: {0}".format("Proyector 1: PowerOn"))
+            AProjAPwr.SetState(1)
             ProjA.Set('Power','On')
+            Room1ElevatorDown()
+            Room1ScreenDown()
     #
     elif button is AScUp:
         GroupScreenA.SetCurrent(AScUp)
@@ -2375,27 +2550,33 @@ def ButtonObjectPressed(button, state):
     #
     elif button is ALCDCab1:
         if LCDCab3.ReadStatus('Power', None) == 'On':
+            ALCDCab1.SetState(0)
             LCDCab3.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 3 Power Off"))
         else:
+            ALCDCab1.SetState(1)
             LCDCab3.Set('Power','On')
             print("Touch 1: {0}".format("LCD 3 Power On"))
     #
     elif button is ALCDCab2:
         if LCDCab4.ReadStatus('Power', None) == 'On':
+            ALCDCab2.SetState(0)
             LCDCab4.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 4 Power Off"))
         else:
+            ALCDCab2.SetState(1)
             LCDCab4.Set('Power','On')
             print("Touch 1: {0}".format("LCD Cab4 Power On"))
     #
     elif button is ALCDLobby:
-        if LCDL1.ReadStatus('Power', None) == 'On':
-            LCDL1.Set('Power','Off')
-            print("Touch 1: {0}".format("LCD L1 Power Off"))
+        if LCDLob1.ReadStatus('Power', None) == 'On':
+            ALCDLobby.SetState(0)
+            LCDLob1.Set('Power','Off')
+            print("Touch 1: {0}".format("LCD Lob1 Power Off"))
         else:
-            LCDL1.Set('Power','On')
-            print("Touch 1: {0}".format("LCD L1 Power On"))
+            ALCDLobby.SetState(1)
+            LCDLob1.Set('Power','On')
+            print("Touch 1: {0}".format("LCD Lob1 Power On"))
     #
     elif button is ALCDPodium1:
         if LCDP1.ReadStatus('Power', None) == 'On':
@@ -2404,6 +2585,11 @@ def ButtonObjectPressed(button, state):
         else:
             LCDP1.Set('Power','On')
             print("Touch 1: {0}".format("LCD P1 Power On"))
+    #
+    elif button is ALCDCab3:
+        Monitor1.PlayContinuous('POWER')
+        Monitor1.Stop()
+        print("Touch 1: {0}".format("Monitor Cab1 Power IR"))
     pass
 
 # ACTIONS - DISPLAYS B MODE ----------------------------------------------------
@@ -2414,10 +2600,16 @@ def ButtonObjectPressed(button, state):
     if button is AProjBPwr:
         if ProjB.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 2: PowerOff"))
+            AProjBPwr.SetState(0)
             ProjB.Set('Power','Off')
+            Room2ElevatorUp()
+            Room2ScreenUp()
         else:
             print("Touch 1: {0}".format("Proyector 2: PowerOn"))
+            AProjBPwr.SetState(1)
             ProjB.Set('Power','On')
+            Room2ElevatorDown()
+            Room2ScreenDown()
     #
     elif button is A2ScUp:
         GroupScreen2A.SetCurrent(A2ScUp)
@@ -2441,35 +2633,46 @@ def ButtonObjectPressed(button, state):
     #
     elif button is A2LCDCab2:
         if LCDCab1.ReadStatus('Power', None) == 'On':
+            A2LCDCab2.SetState(0)
             LCDCab1.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 1 Power Off"))
         else:
+            A2LCDCab2.SetState(1)
             LCDCab1.Set('Power','On')
             print("Touch 1: {0}".format("LCD 1 Power On"))
     #
     elif button is A2LCDCab3:
         if LCDCab2.ReadStatus('Power', None) == 'On':
+            A2LCDCab3.SetState(0)
             LCDCab2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 2 Power Off"))
         else:
+            A2LCDCab3.SetState(1)
             LCDCab2.Set('Power','On')
             print("Touch 1: {0}".format("LCD 2 Power On"))
     #
     elif button is A2LCDLobby:
-        if LCDL2.ReadStatus('Power', None) == 'On':
-            LCDL2.Set('Power','Off')
+        if LCDLob2.ReadStatus('Power', None) == 'On':
+            A2LCDLobby.SetState(0)
+            LCDLob2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD L2 Power Off"))
         else:
-            LCDL2.Set('Power','On')
+            A2LCDLobby.SetState(1)
+            LCDLob2.Set('Power','On')
             print("Touch 1: {0}".format("LCD L2 Power On"))
     #
     elif button is ALCDPodium2:
-        if LCDP2.ReadStatus('Power', None) == 'On':
-            LCDP2.Set('Power','Off')
+        if LCDPod2.ReadStatus('Power', None) == 'On':
+            LCDPod2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD P2 Power Off"))
         else:
-            LCDP2.Set('Power','On')
+            LCDPod2.Set('Power','On')
             print("Touch 1: {0}".format("LCD P2 Power On"))
+    #
+    elif button is A2LCDCab1:
+        Monitor2.PlayContinuous('POWER')
+        Monitor2.Stop()
+        print("Touch 1: {0}".format("Monitor Cab2 Power IR"))
     pass
 
 # ACTIONS - RECORDING MODE -----------------------------------------------------
@@ -2524,7 +2727,7 @@ def PrintDialerVC1(btn_name):
 @event(VCDial, ButtonEventList)
 def vi_dial_events(button, state):
     """User Actions: Touch VC Page"""
-    ## All the VoIP Dial Buttons pressed come in button variable
+    ## All the VC Dial Buttons pressed come in button variable
     if state == 'Pressed' or state == 'Repeated':
         print('Touch: VC %s' % (button.Name))
         PrintDialerVC1(button.Name) #Recall a validation function
@@ -2593,7 +2796,7 @@ def PrintDialerVC2(btn_name):
 @event(VC2Dial, ButtonEventList)
 def VC2_dial_events(button, state):
     """User Actions: Touch VC Page"""
-    ## All the VoIP Dial Buttons pressed come in button variable
+    ## All the VC Dial Buttons pressed come in button variable
     if state == 'Pressed' or state == 'Repeated':
         print('Touch: VC %s' % (button.Name))
         PrintDialerVC2(button.Name) #Recall a validation function
@@ -2638,134 +2841,6 @@ def VC_Mode(button, state):
         Cisco2.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
         print("Touch 1: {0}".format("Cisco2: Reject"))
     pass
-
-# ACTIONS - AUDIO VOIP LINE 1 MODE ------------------------------------------------
-
-## This function is called when the user press a Dial Button
-## This function add or remove data from the panel Dial Number
-def PrintDialerVoIP1(btn_name):
-    """User Actions: Touch VC Page"""
-    global dialerVoIP
-
-    if btn_name == 'Delete':             #If the user push 'Delete' button
-        dialerVoIP = dialerVoIP[:-1]     #Remove the last char of the string
-        VoIP1_Data['Dial'] = dialerVoIP  #Asign the string to the data dictionary
-        AViDial.SetText(dialerVoIP)      #Send the string to GUI Label
-
-    else:                                   #If the user push a [*#0-9] button
-        if VoIP1_Data['DTMF'] == False:
-            number = str(btn_name[4])       #Extract the valid character of BTN name
-            dialerVoIP += number            #Append the last char to the string
-            VoIP1_Data['Dial'] = dialerVoIP #Asign the string to the data dictionary
-            AViDial.SetText(dialerVoIP)     #Send the string to GUI Label
-        else:
-            Tesira.Set('DTMF', number, {'Instance Tag':'Dialer', 'Line':'1'})
-    pass
-
-@event(VoIPDial, ButtonEventList)
-def VoIP1_dial_events(button, state):
-    """User Actions: Touch VC Page"""
-    ## All the VoIP Dial Buttons pressed come in button variable
-    if state == 'Pressed' or state == 'Repeated':
-        print('Touch: VoIP L1 %s' % (button.Name))
-        PrintDialerVoIP1(button.Name) #Recall a validation function
-        button.SetState(1)
-    else:
-        button.SetState(0)
-    pass
-
-@event(VoIPButtons, 'Pressed')
-def VC_Mode(button, state):
-    """Are actions that occur with user interaction with TouchPanel"""
-    #
-    if button is AViCall:
-        Tesira.Set('VoIPHook', 'Dial', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1', 'Number':VoIP1_Data['Dial']})
-        print("Touch 1: {0}".format("VoIP L1: Call"))
-    #
-    elif button is AViHangup:
-        Tesira.Set('VoIPHook', 'End', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
-        AViDial.SetText('')
-        print("Touch 1: {0}".format("VoIP L1: Hangup"))
-    #
-    elif button is AViRedial:
-        Tesira.Set('VoIPHook', 'Redial', {'Instance Tag':'Dialer', 'Line':'1', 'Call Appearance':'1'})
-        print("Touch 1: {0}".format("VoIP L1: Redial"))
-    #
-    elif button is AViDTMF:
-        if VoIP1_Data['DTMF'] == False:
-            VoIP1_Data['DTMF'] = True
-            AViDTMF.SetState(1)
-            print("Touch 1: {0}".format("VoIP L1: DTMF On"))
-        else:
-            VoIP1_Data['DTMF'] = False
-            AViDTMF.SetState(0)
-            print("Touch 1: {0}".format("VoIP L1: DTMF Off"))
-    pass
-
-# ACTIONS - AUDIO VOIP LINE 2 MODE ------------------------------------------------
-
-## This function is called when the user press a Dial Button
-## This function add or remove data from the panel Dial Number
-def PrintDialerVoIP2(btn_name):
-    """User Actions: Touch VC Page"""
-    global dialerVoIP2
-
-    if btn_name == 'Delete':             #If the user push 'Delete' button
-        dialerVoIP2 = dialerVoIP2[:-1]     #Remove the last char of the string
-        VoIP2_Data['Dial'] = dialerVoIP2  #Asign the string to the data dictionary
-        AVi2Dial.SetText(dialerVoIP2)      #Send the string to GUI Label
-
-    else:                                   #If the user push a [*#0-9] button
-        if VoIP2_Data['DTMF'] == False:
-            number = str(btn_name[4])       #Extract the valid character of BTN name
-            dialerVoIP2 += number            #Append the last char to the string
-            VoIP2_Data['Dial'] = dialerVoIP2 #Asign the string to the data dictionary
-            AVi2Dial.SetText(dialerVoIP2)     #Send the string to GUI Label
-        else:
-            Tesira.Set('DTMF', number, {'Instance Tag':'Dialer', 'Line':'2'})
-    pass
-
-@event(VoIP2Dial, ButtonEventList)
-def VoIP2_dial_events(button, state):
-    """User Actions: Touch VC Page"""
-    ## All the VoIP Dial Buttons pressed come in button variable
-    if state == 'Pressed' or state == 'Repeated':
-        print('Touch: VoIP L2 %s' % (button.Name))
-        PrintDialerVoIP2(button.Name) #Recall a validation function
-        button.SetState(1)
-    else:
-        button.SetState(0)
-    pass
-
-@event(VoIP2Buttons, 'Pressed')
-def VoIP2_Mode(button, state):
-    """Are actions that occur with user interaction with TouchPanel"""
-    #
-    if button is AVi2Call:
-        Tesira.Set('VoIPHook', 'Dial', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1', 'Number':VoIP1_Data['Dial']})
-        print("Touch 1: {0}".format("VoIP L2: Call"))
-    #
-    elif button is AVi2Hangup:
-        Tesira.Set('VoIPHook', 'End', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
-        AViDial.SetText('')
-        print("Touch 1: {0}".format("VoIP L2: Hangup"))
-    #
-    elif button is AVi2Redial:
-        Tesira.Set('VoIPHook', 'Redial', {'Instance Tag':'Dialer', 'Line':'2', 'Call Appearance':'1'})
-        print("Touch 1: {0}".format("VoIP L2: Redial"))
-    #
-    elif button is AVi2DTMF:
-        if VoIP2_Data['DTMF'] == False:
-            VoIP2_Data['DTMF'] = True
-            AVi2DTMF.SetState(1)
-            print("Touch 1: {0}".format("VoIP L2: DTMF On"))
-        else:
-            VoIP2_Data['DTMF'] = False
-            AVi2DTMF.SetState(0)
-            print("Touch 1: {0}".format("VoIP L2: DTMF Off"))
-    pass
-
-
 ## End Events Definitions-------------------------------------------------------
 
 Initialize()
