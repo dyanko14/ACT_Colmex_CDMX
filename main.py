@@ -1,7 +1,7 @@
 """--------------------------------------------------------------------------
- Business   | Asesores y Consultores en TecnologÃ­a S.A. de C.V.
+ Business   | Asesores y Consultores en Tecnología S.A. de C.V.
  Programmer | Dyanko Cisneros Mendoza
- Customer   | Colegio de MÃ©xico (COLMEX)
+ Customer   | Colegio de México (COLMEX)
  Project    | Alfonso Reyes Auditorium
  Version    | 0.1 --------------------------------------------------------- """
 
@@ -15,7 +15,6 @@ from extronlib.interface import (ContactInterface, DigitalIOInterface, \
 from extronlib.ui import Button, Knob, Label, Level
 from extronlib.system import Clock, MESet, Wait
 import collections
-import re
 
 print(Version())
 
@@ -327,6 +326,11 @@ AInfo2RecB    = Button(TLP1, 321)
 AInfoLCDLob1  = Button(TLP1, 322)
 AInfoLCDLob2  = Button(TLP1, 323)
 
+AInfoLCDPod1  = Button(TLP1, 324)
+AInfoLCDPod2  = Button(TLP1, 325)
+
+APython       = Label(TLP1, 326)
+
 # Mode VC ----------------------------------------------------------------------
 # Cisco 1 ---------------------
 ADial0      = Button(TLP1, 2130)
@@ -479,16 +483,22 @@ def Initialize():
     ## IP
     XTP.Connect(timeout = 5)
     Tesira.Connect(timeout = 5)
+    #
     ProjA.Connect(timeout = 5)
     ProjB.Connect(timeout = 5)
+    #
     RecA.Connect(timeout = 5)
     RecB.Connect(timeout = 5)
+    #
     LCDCab1.Connect(timeout = 5)
     LCDCab2.Connect(timeout = 5)
     LCDCab3.Connect(timeout = 5)
     LCDCab4.Connect(timeout = 5)
     LCDLob1.Connect(timeout = 5)
     LCDLob2.Connect(timeout = 5)
+    LCDPod1.Connect(timeout = 5)
+    LCDPod2.Connect(timeout = 5)
+    #
     Cisco1.Connect(timeout = 5)
     Cisco2.Connect(timeout = 5)
     
@@ -533,6 +543,7 @@ def Initialize():
 
     ## Notify to console
     print('System Initialize')
+    APython.SetText(Version())
     pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
@@ -552,24 +563,16 @@ XTP_QUERY_LIST = [
     ('InputSignal',{'Input':'12'}),
     ('InputSignal',{'Input':'13'}),
     ('InputSignal',{'Input':'14'}),
-    ('InputSignal',{'Input':'15'}),
-    ('InputSignal',{'Input':'16'}),
+    #('InputSignal',{'Input':'15'}),
+    #('InputSignal',{'Input':'16'}),
     ('InputSignal',{'Input':'17'}),
     ('InputSignal',{'Input':'18'}),
     ('InputSignal',{'Input':'19'}),
     ('InputSignal',{'Input':'20'}),
     ('InputSignal',{'Input':'21'}),
     ('InputSignal',{'Input':'22'}),
-    ('InputSignal',{'Input':'23'}),
-    ('InputSignal',{'Input':'24'}),
-    ('InputSignal',{'Input':'25'}),
-    ('InputSignal',{'Input':'26'}),
-    ('InputSignal',{'Input':'27'}),
-    ('InputSignal',{'Input':'28'}),
-    ('InputSignal',{'Input':'29'}),
-    ('InputSignal',{'Input':'30'}),
-    ('InputSignal',{'Input':'31'}),
-    ('InputSignal',{'Input':'32'}),
+    #('InputSignal',{'Input':'23'}),
+    #('InputSignal',{'Input':'24'}),
 ]
 XTP_Queue = collections.deque(XTP_QUERY_LIST)
 
@@ -664,6 +667,16 @@ LCDLob2_QUERY_LIST = [
 ]
 LCDLob2_Queue = collections.deque(LCDLob2_QUERY_LIST)
 
+LCDPod1_QUERY_LIST = [
+    ('Power', None),
+]
+LCDPod1_Queue = collections.deque(LCDPod1_QUERY_LIST)
+
+LCDPod2_QUERY_LIST = [
+    ('Power', None),
+]
+LCDPod2_Queue = collections.deque(LCDPod2_QUERY_LIST)
+
 # RECONEX / QUERY RECALL ------------------------------------------------------
 # This is a recursive function to send Query Command to Device certain time
 def QueryXTP():
@@ -673,7 +686,7 @@ def QueryXTP():
     XTP_Queue.rotate(-1)
     XTP_PollingWait.Restart()
     #
-XTP_PollingWait = Wait(0.3, QueryXTP)
+XTP_PollingWait = Wait(1, QueryXTP)
 
 def QueryTesira():
     """This send Query commands to device every 03.s"""
@@ -682,7 +695,7 @@ def QueryTesira():
     Tesira_Queue.rotate(-1)
     Tesira_PollingWait.Restart()
     #
-Tesira_PollingWait = Wait(0.3, QueryTesira)
+Tesira_PollingWait = Wait(5, QueryTesira)
 
 def QueryProjectorA():
     """This send Query commands to device every 03.s"""
@@ -691,7 +704,7 @@ def QueryProjectorA():
     Projector_A_Queue.rotate(-1)
     Projector_A_PollingWait.Restart()
     #
-Projector_A_PollingWait = Wait(0.3, QueryProjectorA)
+Projector_A_PollingWait = Wait(5, QueryProjectorA)
 
 def QueryProjectorB():
     """This send Query commands to device every 03.s"""
@@ -700,7 +713,7 @@ def QueryProjectorB():
     Projector_B_Queue.rotate(-1)
     Projector_B_PollingWait.Restart()
     #
-Projector_B_PollingWait = Wait(0.3, QueryProjectorB)
+Projector_B_PollingWait = Wait(5, QueryProjectorB)
 
 def QueryCisco1():
     """This send Query commands to device every 01.s"""
@@ -745,7 +758,7 @@ def QueryLCDCab1():
     LCDCab1_Queue.rotate(-1)
     LCDCab1_PollingWait.Restart()
     #
-LCDCab1_PollingWait = Wait(1, QueryLCDCab1)
+LCDCab1_PollingWait = Wait(5, QueryLCDCab1)
 
 def QueryLCDCab2():
     """This send Query commands to device every 02.s"""
@@ -754,7 +767,7 @@ def QueryLCDCab2():
     LCDCab2_Queue.rotate(-1)
     LCDCab2_PollingWait.Restart()
     #
-LCDCab2_PollingWait = Wait(1, QueryLCDCab2)
+LCDCab2_PollingWait = Wait(5, QueryLCDCab2)
 
 def QueryLCDCab3():
     """This send Query commands to device every 03.s"""
@@ -763,7 +776,7 @@ def QueryLCDCab3():
     LCDCab3_Queue.rotate(-1)
     LCDCab3_PollingWait.Restart()
     #
-LCDCab3_PollingWait = Wait(1, QueryLCDCab3)
+LCDCab3_PollingWait = Wait(5, QueryLCDCab3)
 
 def QueryLCDCab4():
     """This send Query commands to device every 03.s"""
@@ -772,7 +785,7 @@ def QueryLCDCab4():
     LCDCab4_Queue.rotate(-1)
     LCDCab4_PollingWait.Restart()
     #
-LCDCab4_PollingWait = Wait(1, QueryLCDCab4)
+LCDCab4_PollingWait = Wait(5, QueryLCDCab4)
 
 def QueryLCDLob1():
     """This send Query commands to device every 03.s"""
@@ -781,7 +794,7 @@ def QueryLCDLob1():
     LCDLob1_Queue.rotate(-1)
     LCDLob1_PollingWait.Restart()
     #
-LCDLob1_PollingWait = Wait(1, QueryLCDLob1)
+LCDLob1_PollingWait = Wait(5, QueryLCDLob1)
 
 def QueryLCDLob2():
     """This send Query commands to device every 03.s"""
@@ -790,7 +803,25 @@ def QueryLCDLob2():
     LCDLob2_Queue.rotate(-1)
     LCDLob2_PollingWait.Restart()
     #
-LCDLob2_PollingWait = Wait(1, QueryLCDLob2)
+LCDLob2_PollingWait = Wait(5, QueryLCDLob2)
+
+def QueryLCDPod1():
+    """This send Query commands to device every 03.s"""
+    #
+    LCDPod1.Update(*LCDPod1_Queue[0])
+    LCDPod1_Queue.rotate(-1)
+    LCDPod1_PollingWait.Restart()
+    #
+LCDPod1_PollingWait = Wait(5, QueryLCDPod1)
+
+def QueryLCDPod2():
+    """This send Query commands to device every 03.s"""
+    #
+    LCDPod2.Update(*LCDPod2_Queue[0])
+    LCDPod2_Queue.rotate(-1)
+    LCDPod2_PollingWait.Restart()
+    #
+LCDPod2_PollingWait = Wait(5, QueryLCDPod2)
 
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Try to connect automatically a Device
@@ -948,6 +979,27 @@ def AttemptConnectLCDLob2():
     pass
 reconnectWaitLCDLob2 = Wait(15, AttemptConnectLCDLob2)
 
+def AttemptConnectLCDPod1():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect LCD Pod1')
+    result = LCDPod1.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitLCDPod1.Restart()
+    pass
+reconnectWaitLCDPod1 = Wait(15, AttemptConnectLCDPod1)
+
+def AttemptConnectLCDPod2():
+    """Attempt to create a TCP connection to the LCD
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect LCD Pod2')
+    result = LCDPod2.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitLCDPod2.Restart()
+    pass
+reconnectWaitLCDPod2 = Wait(15, AttemptConnectLCDPod2)
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Functions parse the Incoming Data of every Device
 def ReceiveXTP(command, value, qualifier):
@@ -1159,11 +1211,11 @@ def ReceiveTesira(command, value, qualifier):
         if qualifier['Instance Tag'] == 'Room' and qualifier['Channel'] == '1':
             if value == 'True':
                 Room_Data['Mixed'] = True
-                Tesira.Set('PresetRecall', '1')
+                #Tesira.Set('PresetRecall', '1')
                 GroupRoom.SetCurrent(ARoomMixed)
             else:
                 Room_Data['Mixed'] = False
-                Tesira.Set('PresetRecall', '2')
+                #Tesira.Set('PresetRecall', '2')
                 GroupRoom.SetCurrent(ARoomSplit)
     pass
 
@@ -1591,6 +1643,56 @@ def ReceiveLCDLob2(command, value, qualifier):
             A2LCDLobby.SetState(0)
     pass
 
+def ReceiveLCDPod1(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module LCD Pod1: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            LCDPod1.Disconnect()
+            reconnectWaitLCDPod1.Restart()
+            AInfoLCDPod1.SetState(0)
+        else:
+            AInfoLCDPod1.SetState(1)
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Pod1: (Power ' +  value + ' )')
+        if value == 'On':
+            ALCDPodium1.SetState(1)
+        else:
+            ALCDPodium1.SetState(0)
+    pass
+
+def ReceiveLCDPod2(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module LCD Pod2: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            LCDPod2.Disconnect()
+            reconnectWaitLCDPod2.Restart()
+            AInfoLCDPod2.SetState(0)
+        else:
+            AInfoLCDPod2.SetState(1)
+    #
+    elif command == 'Power':
+        print('--- Parsing LCD Pod2: (Power ' +  value + ' )')
+        if value == 'On':
+            ALCDPodium2.SetState(1)
+        else:
+            ALCDPodium2.SetState(0)
+    pass
+
 # RECONEX / SUBSCRIPTIONS ------------------------------------------
 # This Commands make a real data mach from Device to Processor
 def SubscribeXTP():
@@ -1610,33 +1712,25 @@ def SubscribeXTP():
     XTP.SubscribeStatus('InputSignal', {'Input':'12'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'13'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'14'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'15'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'16'}, ReceiveXTP)
+    #XTP.SubscribeStatus('InputSignal', {'Input':'15'}, ReceiveXTP)
+    #XTP.SubscribeStatus('InputSignal', {'Input':'16'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'17'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'18'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'19'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'20'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'21'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'22'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'23'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'24'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'25'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'26'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'27'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'28'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'29'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'30'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'31'}, ReceiveXTP)
-    XTP.SubscribeStatus('InputSignal', {'Input':'32'}, ReceiveXTP)
+    #XTP.SubscribeStatus('InputSignal', {'Input':'23'}, ReceiveXTP)
+    #XTP.SubscribeStatus('InputSignal', {'Input':'24'}, ReceiveXTP)
     ##
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, ReceiveXTP)
+    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, ReceiveXTP)
+    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, ReceiveXTP)
@@ -1651,16 +1745,8 @@ def SubscribeXTP():
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'25', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'26', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'27', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'28', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'29', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'30', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'31', 'Tie Type':'Video'}, ReceiveXTP)
-    XTP.SubscribeStatus('OutputTieStatus', {'Output':'32', 'Tie Type':'Video'}, ReceiveXTP)
+    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, ReceiveXTP)
+    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, ReceiveXTP)
     pass
 SubscribeXTP()
 #
@@ -1767,6 +1853,18 @@ def SubscribeLob2():
     LCDLob2.SubscribeStatus('Power', None, ReceiveLCDLob2)
     pass
 SubscribeLob2()
+#
+def SubscribePod1():
+    LCDPod1.SubscribeStatus('ConnectionStatus', None, ReceiveLCDPod1)
+    LCDPod1.SubscribeStatus('Power', None, ReceiveLCDPod1)
+    pass
+SubscribePod1()
+#
+def SubscribePod2():
+    LCDPod2.SubscribeStatus('ConnectionStatus', None, ReceiveLCDPod2)
+    LCDPod2.SubscribeStatus('Power', None, ReceiveLCDPod2)
+    pass
+SubscribePod2()
 # RECONEX / SOCKET ------------------------------------------
 # This reports a physical connection socket of every Device
 @event(XTP, 'Disconnected')
@@ -1978,6 +2076,35 @@ def LCDLob2_PhysicalConex(interface, state):
         AInfoLCDLob2.SetState(0)
         print('Socket Disconnected: LCD Lob2')
     pass
+@event(LCDPod1, 'Disconnected')
+@event(LCDPod1, 'Connected')
+def LCDPod1_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoLCDPod1.SetState(1)
+        reconnectWaitLCDPod1.Cancel()
+    else:
+        AInfoLCDPod1.SetState(0)
+        print('Socket Disconnected: LCD Pod1')
+    pass
+
+@event(LCDPod2, 'Disconnected')
+@event(LCDPod2, 'Connected')
+def LCDPod2_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoLCDPod2.SetState(1)
+        reconnectWaitLCDPod2.Cancel()
+    else:
+        AInfoLCDPod2.SetState(0)
+        print('Socket Disconnected: LCD Pod2')
+    pass
 # DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store general information
 ## Room
@@ -2011,7 +2138,7 @@ def FunctionMixRoom():
     ## Store the data in dictionary
     Tesira.Set('LogicState', 'False', {'Instance Tag':'Room', 'Channel':'1'})
     Room_Data['Mixed'] = False
-    Tesira.Set('PresetRecall', '1')
+    #Tesira.Set('PresetRecall', '1')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
     ABtnRoom2.SetState(0)
@@ -2025,7 +2152,7 @@ def FunctionSplitRoom():
     ## Store the data in dictionary
     Tesira.Set('LogicState', 'True', {'Instance Tag':'Room', 'Channel':'1'})
     Room_Data['Mixed'] = True
-    Tesira.Set('PresetRecall', '2')
+    #Tesira.Set('PresetRecall', '2')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
     ABtnRoom2.SetState(1)
@@ -2086,11 +2213,13 @@ def FullMain(button, state):
         #
         elif button is ABtnVC:
             TLP1.ShowPopup('Full.VC')
+            Cisco1.Set('Standby', 'Deactivate')
+            Cisco2.Set('Standby', 'Deactivate')
             ALblMain.SetText('Control de Videoconferencia')
             print("Touch 1: {0}".format("Mode VideoConferencia"))
         #
         elif button is ABtnREC:
-            ALblMain.SetText('Control de GrabaciÃ³n')
+            ALblMain.SetText('Control de Grabación')
             print("Touch 1: {0}".format("Mode REC"))
             #
             if GroupRoom.GetCurrent() == ARoomMixed:
@@ -2100,7 +2229,7 @@ def FullMain(button, state):
         #
         elif button is ABtnInfo:
             TLP1.ShowPopup('Full.Info')
-            ALblMain.SetText('InformaciÃ³n de Dispositivos')
+            ALblMain.SetText('Información de Dispositivos')
             print("Touch 1: {0}".format("Mode Info"))
         #
         elif button is ABtnPower:
@@ -2144,7 +2273,6 @@ def FullMain(button, state):
 def FunctionActiveTie(output):
     '''This retrieve the real Output-Input Video Relation when the user push the Display button'''
     activeTie = XTP.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
-    GroupInputs.SetCurrent(None)
     ##
     if activeTie == '1':
         GroupInputs.SetCurrent(AInput1)
@@ -2204,14 +2332,6 @@ def OutsSwitching(button, state):
     
     ## Button Functions
     if button.Host.DeviceAlias == 'TouchPanelA':
-        # Validate Popup -----------------------------------------------
-        if button == AOut17 or button == AOut19:
-            TLP1.ShowPopup('Full.InputsCam')
-        elif button == AOut18 or button == AOut20:
-            TLP1.ShowPopup('Full.InputsPC')
-        else:
-            TLP1.ShowPopup('Full.Inputs')
-
         # XTP Slot 1-----------------------------------------------------
         if button is AOut1:
             output = '1'
@@ -2345,6 +2465,7 @@ def InSwitching(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
     ## Data Init
+    GroupInputs.SetCurrent(button)
     global output
     global input
     ## Button Functions
@@ -2579,11 +2700,13 @@ def ButtonObjectPressed(button, state):
             print("Touch 1: {0}".format("LCD Lob1 Power On"))
     #
     elif button is ALCDPodium1:
-        if LCDP1.ReadStatus('Power', None) == 'On':
-            LCDP1.Set('Power','Off')
+        if LCDPod1.ReadStatus('Power', None) == 'On':
+            ALCDPodium1.SetState(0)
+            LCDPod1.Set('Power','Off')
             print("Touch 1: {0}".format("LCD P1 Power Off"))
         else:
-            LCDP1.Set('Power','On')
+            ALCDPodium1.SetState(1)
+            LCDPod1.Set('Power','On')
             print("Touch 1: {0}".format("LCD P1 Power On"))
     #
     elif button is ALCDCab3:
@@ -2663,9 +2786,11 @@ def ButtonObjectPressed(button, state):
     #
     elif button is ALCDPodium2:
         if LCDPod2.ReadStatus('Power', None) == 'On':
+            ALCDPodium2.SetState(0)
             LCDPod2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD P2 Power Off"))
         else:
+            ALCDPodium2.SetState(1)
             LCDPod2.Set('Power','On')
             print("Touch 1: {0}".format("LCD P2 Power On"))
     #
