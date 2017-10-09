@@ -3,7 +3,7 @@
  Programmer | Dyanko Cisneros Mendoza
  Customer   | Colegio de México (COLMEX)
  Project    | Alfonso Reyes Auditorium
- Version    | 0.1 --------------------------------------------------------- """
+ Version    | 0.5 --------------------------------------------------------- """
 
 ## Begin ControlScript Import --------------------------------------------------
 from extronlib import event, Version
@@ -31,11 +31,13 @@ import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as ModuleSamsung
 import biam_dsp_TesiraSeries_v1_5_20_0            as ModuleTesira
 import csco_vtc_SX_Series_CE82_v1_1_0_2           as ModuleCisco
 
-##
 # MODULE TO DEVICE INSTANCES ---------------------------------------------------
 # Video Server
 XTP = ModuleXTP.EthernetClass('172.16.241.5', 23, Model='XTP II CrossPoint 3200')
 XTP.devicePassword = 'SWExtronXTP'
+#
+# Audio Server
+Tesira = ModuleTesira.EthernetClass('172.16.241.100', 23, Model='Tesira SERVER-IO')
 #
 # Projectors
 ProjA = ModuleChristie.EthernetClass('172.16.240.201', 3002, Model='D13WU-HS')
@@ -59,9 +61,6 @@ LCDPod1 = ModuleSamsung.EthernetClass('172.16.241.28', 1515, Model='LH55QMFPLGC/
 LCDPod2 = ModuleSamsung.EthernetClass('172.16.241.29', 1515, Model='LH55QMFPLGC/KR')
 LCDLob1 = ModuleSamsung.EthernetClass('172.16.241.30', 1515, Model='LH55QMFPLGC/KR')
 LCDLob2 = ModuleSamsung.EthernetClass('172.16.241.31', 1515, Model='LH55QMFPLGC/KR')
-#
-# Audio Server
-Tesira = ModuleTesira.EthernetClass('172.16.241.100', 23, Model='Tesira SERVER-IO')
 #
 # Videoconference Códecs
 Cisco1 = ModuleCisco.EthernetClass('172.16.240.87', 23, Model='SX20 CE8.2.X')
@@ -106,7 +105,6 @@ ABtnSwitch  = Button(TLP1, 11)
 ABtnDisplay = Button(TLP1, 12)
 ABtnVC      = Button(TLP1, 13)
 ABtnREC     = Button(TLP1, 15)
-ABtnVoIP    = Button(TLP1, 16)
 ABtnInfo    = Button(TLP1, 17)
 ABtnPower   = Button(TLP1, 18)
 
@@ -118,114 +116,98 @@ ABtnRoom1   = Button(TLP1, 22)
 # Mode Switching ---------------------------------------------------------------
 # Outputs ----------------------------------------------------------------------
 # XTP Out Slot 1
-AOut1  = Button(TLP1, 101) ##Room1 Projector
-AOut2  = Button(TLP1, 102) ##Room1 LCD Confidence
-AOut3  = Button(TLP1, 103) ##Room1 LCD Podium
-
+ABtnOut1  = Button(TLP1, 101) ##Room1 Projector
+ABtnOut2  = Button(TLP1, 102) ##Room1 LCD Confidence
+ABtnOut3  = Button(TLP1, 103) ##Room1 LCD Podium
 # XTP Out Slot 2
-AOut5  = Button(TLP1, 105) ##Room2 Projector
-AOut6  = Button(TLP1, 106) ##Room2 LCD Confidence
-AOut7  = Button(TLP1, 107) ##Room2 LCD Podium
-
+ABtnOut5  = Button(TLP1, 105) ##Room2 Projector
+ABtnOut6  = Button(TLP1, 106) ##Room2 LCD Confidence
+ABtnOut7  = Button(TLP1, 107) ##Room2 LCD Podium
 # XTP Out Slot 3
-AOut9  = Button(TLP1, 109) ##Core Tricaster 1 - Input 1
-AOut10 = Button(TLP1, 110) ##Core Tricaster 1 - Input 2
-AOut11 = Button(TLP1, 111) ##Core Tricaster 1 - Input 3
-AOut12 = Button(TLP1, 112) ##Core Tricaster 1 - Input 4
-
+ABtnOut9  = Button(TLP1, 109) ##Core Tricaster 1 - Input 1
+ABtnOut10 = Button(TLP1, 110) ##Core Tricaster 1 - Input 2
+ABtnOut11 = Button(TLP1, 111) ##Core Tricaster 1 - Input 3
+ABtnOut12 = Button(TLP1, 112) ##Core Tricaster 1 - Input 4
 # XTP Out Slot 4
-AOut13 = Button(TLP1, 113) ##Core Tricaster 2 - Input 1
-AOut14 = Button(TLP1, 114) ##Core Tricaster 2 - Input 2
-AOut15 = Button(TLP1, 115) ##Core Tricaster 2 - Input 3
-AOut16 = Button(TLP1, 116) ##Core Tricaster 2 - Input 4
-
+ABtnOut13 = Button(TLP1, 113) ##Core Tricaster 2 - Input 1
+ABtnOut14 = Button(TLP1, 114) ##Core Tricaster 2 - Input 2
+ABtnOut15 = Button(TLP1, 115) ##Core Tricaster 2 - Input 3
+ABtnOut16 = Button(TLP1, 116) ##Core Tricaster 2 - Input 4
 # XTP Out Slot 5
-AOut17 = Button(TLP1, 117) ##Core Cisco 1 - Input Camera
-AOut18 = Button(TLP1, 118) ##Core Cisco 1 - Input Graphics
-AOut19 = Button(TLP1, 119) ##Core Cisco 2 - Input Camera
-AOut20 = Button(TLP1, 120) ##Core Cisco 2 - Input Graphics
-
+ABtnOut17 = Button(TLP1, 117) ##Core Cisco 1 - Input Camera
+ABtnOut18 = Button(TLP1, 118) ##Core Cisco 1 - Input Graphics
+ABtnOut19 = Button(TLP1, 119) ##Core Cisco 2 - Input Camera
+ABtnOut20 = Button(TLP1, 120) ##Core Cisco 2 - Input Graphics
 # XTP Out Slot 6
-AOut21 = Button(TLP1, 121) ##Core Recorder 1
-AOut22 = Button(TLP1, 122) ##Core Recorder 2
+ABtnOut22 = Button(TLP1, 121) ##Core Recorder 1
+ABtnOut22 = Button(TLP1, 122) ##Core Recorder 2
 
 # Inputs -----------------------------------------------------------------------
 # XTP Slot 1
-AInput1    = Button(TLP1, 201) ##Room1 PC Left
-AInput2    = Button(TLP1, 202) ##Room1 PC Right
-AInput3    = Button(TLP1, 203) ##Room1 PC Stage
-AInput4    = Button(TLP1, 204) ##Room1 PC Right
-
+ABtnInput1  = Button(TLP1, 201) ##Room1 PC Left
+ABtnInput2  = Button(TLP1, 202) ##Room1 PC Right
+ABtnInput3  = Button(TLP1, 203) ##Room1 PC Stage
+ABtnInput4  = Button(TLP1, 204) ##Room1 PC Right
 # XTP Slot 2
-AInput5    = Button(TLP1, 205) ##Room2 PC Left
-AInput6    = Button(TLP1, 206) ##Room2 PC Right
-AInput7    = Button(TLP1, 207) ##Room2 PC Stage
-AInput8    = Button(TLP1, 208) ##Room2 PC Back
-
+ABtnInput5  = Button(TLP1, 205) ##Room2 PC Left
+ABtnInput6  = Button(TLP1, 206) ##Room2 PC Right
+ABtnInput7  = Button(TLP1, 207) ##Room2 PC Stage
+ABtnInput8  = Button(TLP1, 208) ##Room2 PC Back
 # XTP Slot 3
-AInput9    = Button(TLP1, 209) ##Room1 PTZ1
-AInput10   = Button(TLP1, 210) ##Room1 PTZ2
-AInput11   = Button(TLP1, 211) ##Room2 PTZ1
-AInput12   = Button(TLP1, 212) ##Room2 PTZ2
-
+ABtnInput9  = Button(TLP1, 209) ##Room1 PTZ1
+ABtnInput10 = Button(TLP1, 210) ##Room1 PTZ2
+ABtnInput11 = Button(TLP1, 211) ##Room2 PTZ1
+ABtnInput12 = Button(TLP1, 212) ##Room2 PTZ2
 # XTP Slot 4
-AInput13   = Button(TLP1, 213) ##Room1 PC Cabin
-AInput14   = Button(TLP1, 214) ##Room2 PC Cabin
+ABtnInput13 = Button(TLP1, 213) ##Room1 PC Cabin
+ABtnInput14 = Button(TLP1, 214) ##Room2 PC Cabin
 ##...
 ##...
-
 # XTP Slot 5
-AInput17   = Button(TLP1, 215) ##Core Cisco 1 Out
-AInput18   = Button(TLP1, 216) ##Core Cisco 2 Out
-AInput19   = Button(TLP1, 217) ##Core ShareLink 1
-AInput20   = Button(TLP1, 218) ##Core ShareLink 2
-
+ABtnInput17 = Button(TLP1, 215) ##Core Cisco 1 Out
+ABtnInput18 = Button(TLP1, 216) ##Core Cisco 2 Out
+ABtnInput19 = Button(TLP1, 217) ##Core ShareLink 1
+ABtnInput20 = Button(TLP1, 218) ##Core ShareLink 2
 # XTP Slot 6
-AInput21   = Button(TLP1, 219) ##Core Tricaster 1 - Out 1
-AInput22   = Button(TLP1, 220) ##Core Tricaster 2 - Out 1
+ABtnInput21 = Button(TLP1, 219) ##Core Tricaster 1 - Out 1
+ABtnInput22 = Button(TLP1, 220) ##Core Tricaster 2 - Out 1
 # Input Signal Status
-
 # XTP Slot 1
-ASignal1    = Button(TLP1, 130) ##Room1 PC Left
-ASignal2    = Button(TLP1, 131) ##Room1 PC Right
-ASignal3    = Button(TLP1, 132) ##Room1 PC Stage
-ASignal4    = Button(TLP1, 133) ##Room1 PC Right
-
+ABtnSignal1    = Button(TLP1, 130) ##Room1 PC Left
+ABtnSignal2    = Button(TLP1, 131) ##Room1 PC Right
+ABtnSignal3    = Button(TLP1, 132) ##Room1 PC Stage
+ABtnSignal4    = Button(TLP1, 133) ##Room1 PC Right
 # XTP Slot 2
-ASignal5    = Button(TLP1, 134) ##Room2 PC Left
-ASignal6    = Button(TLP1, 135) ##Room2 PC Right
-ASignal7    = Button(TLP1, 136) ##Room2 PC Stage
-ASignal8    = Button(TLP1, 137) ##Room2 PC Back
-
+ABtnSignal5    = Button(TLP1, 134) ##Room2 PC Left
+ABtnSignal6    = Button(TLP1, 135) ##Room2 PC Right
+ABtnSignal7    = Button(TLP1, 136) ##Room2 PC Stage
+ABtnSignal8    = Button(TLP1, 137) ##Room2 PC Back
 # XTP Slot 3
-ASignal9    = Button(TLP1, 138) ##Room1 PTZ1
-ASignal10   = Button(TLP1, 139) ##Room1 PTZ2
-ASignal11   = Button(TLP1, 140) ##Room2 PTZ1
-ASignal12   = Button(TLP1, 141) ##Room2 PTZ2
-
+ABtnSignal9    = Button(TLP1, 138) ##Room1 PTZ1
+ABtnSignal10   = Button(TLP1, 139) ##Room1 PTZ2
+ABtnSignal11   = Button(TLP1, 140) ##Room2 PTZ1
+ABtnSignal12   = Button(TLP1, 141) ##Room2 PTZ2
 # XTP Slot 4
-ASignal13   = Button(TLP1, 142) ##Room1 PC Cabin
-ASignal14   = Button(TLP1, 143) ##Room2 PC Cabin
+ABtnSignal13   = Button(TLP1, 142) ##Room1 PC Cabin
+ABtnSignal14   = Button(TLP1, 143) ##Room2 PC Cabin
 ##...
 ##...
-
 # XTP Slot 5
-ASignal17   = Button(TLP1, 144) ##Core Cisco 1 Out
-ASignal18   = Button(TLP1, 145) ##Core Cisco 2 Out
-ASignal19   = Button(TLP1, 146) ##Core ShareLink 1
-ASignal20   = Button(TLP1, 147) ##Core ShareLink 2
-
+ABtnSignal17   = Button(TLP1, 144) ##Core Cisco 1 Out
+ABtnSignal18   = Button(TLP1, 145) ##Core Cisco 2 Out
+ABtnSignal19   = Button(TLP1, 146) ##Core ShareLink 1
+ABtnSignal20   = Button(TLP1, 147) ##Core ShareLink 2
 # XTP Slot 6
-ASignal21   = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
-ASignal22   = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
+ABtnSignal21   = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
+ABtnSignal22   = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
 
 # Mode Display -----------------------------------------------------------------
 # Room 1 - Projection
-AProjAPwr   = Button(TLP1, 30)
-AScUp       = Button(TLP1, 31)
-AScDw       = Button(TLP1, 32)
-AElUp       = Button(TLP1, 33)
-AElDw       = Button(TLP1, 34)
+ABtnPwrProjA    = Button(TLP1, 30)
+ABtnScreenAUp   = Button(TLP1, 31)
+ABtnScreenADown = Button(TLP1, 32)
+ABtnElevAUp     = Button(TLP1, 33)
+ABtnElevADown   = Button(TLP1, 34)
 
 # Room 1 - LCD
 ALCDCab1    = Button(TLP1, 42)
@@ -235,11 +217,11 @@ ALCDLobby   = Button(TLP1, 43)
 ALCDPodium1 = Button(TLP1, 48)
 
 # Room 2 - Projection
-AProjBPwr   = Button(TLP1, 35)
-A2ScUp      = Button(TLP1, 36)
-A2ScDw      = Button(TLP1, 37)
-A2ElUp      = Button(TLP1, 38)
-A2ElDw      = Button(TLP1, 39)
+ABtnPwrProjB    = Button(TLP1, 35)
+ABtnScreenBUp   = Button(TLP1, 36)
+ABtnScreenBDown = Button(TLP1, 37)
+ABtnElevBUp     = Button(TLP1, 38)
+ABtnElevBDown   = Button(TLP1, 39)
 
 # Room 2 - LCD
 A2LCDCab1   = Button(TLP1, 46)
@@ -250,32 +232,33 @@ ALCDPodium2 = Button(TLP1, 49)
 
 # Mode Recording ---------------------------------------------------------------
 # Recorder A - Record
-Astop      = Button(TLP1, 60)
-Arecord    = Button(TLP1, 61)
-Apause     = Button(TLP1, 62)
-Atime      = Label(TLP1, 63)
+ABtnRecAStop   = Button(TLP1, 60)
+ABtnRecARecord = Button(TLP1, 61)
+ABtnRecAPause  = Button(TLP1, 62)
+ALblRecATime   = Label(TLP1, 63)
 
 # Recorder A - Info
-ARecSource  = Label(TLP1, 64)
-ARecDestine = Label(TLP1, 65)
-ARecResolut = Label(TLP1, 66)
-ARecMode    = Label(TLP1, 67)
-ARecDisk    = Label(TLP1, 68)
-ARecHDCP    = Label(TLP1, 69)
+ALblRecA1 = Label(TLP1, 64)
+ALblRecA2 = Label(TLP1, 65)
+ALblRecA3 = Label(TLP1, 66)
+ALblRecA4 = Label(TLP1, 67)
+ALblRecA5 = Label(TLP1, 68)
+ALblRecA6 = Label(TLP1, 69)
+
 
 # Recorder B - Record
-A2stop      = Button(TLP1, 70)
-A2record    = Button(TLP1, 71)
-A2pause     = Button(TLP1, 72)
-A2time      = Label(TLP1, 73)
+ABtnRecBStop   = Button(TLP1, 70)
+ABtnRecBRecord = Button(TLP1, 71)
+ABtnRecBPause  = Button(TLP1, 72)
+ALblRecBTime   = Label(TLP1, 73)
 
 # Recorder B - Info
-A2RecSource  = Label(TLP1, 74)
-A2RecDestine = Label(TLP1, 75)
-A2RecResolut = Label(TLP1, 76)
-A2RecMode    = Label(TLP1, 77)
-A2RecDisk    = Label(TLP1, 78)
-A2RecHDCP    = Label(TLP1, 79)
+ALblRecB1  = Label(TLP1, 74)
+ALblRecB2 = Label(TLP1, 75)
+ALblRecB3 = Label(TLP1, 76)
+ALblRecB4    = Label(TLP1, 77)
+ALblRecB5    = Label(TLP1, 78)
+ALblRecB6    = Label(TLP1, 79)
 
 # Mode VC ----------------------------------------------------------------------
 # Cisco 1 ---------------------
@@ -292,23 +275,18 @@ ADial9      = Button(TLP1, 2139)
 ADialDot    = Button(TLP1, 2140)
 ADialHash   = Button(TLP1, 2141)
 ADialDelete = Button(TLP1, 2144, repeatTime=0.1)
-# Dialer
-
 # Call
-ADTMF       = Button(TLP1, 2142)
-ACall       = Button(TLP1, 2143)
-
+ABtnVC1DTMF = Button(TLP1, 2142)
+ABtnVC1Call = Button(TLP1, 2143)
 # Answer
-AAnswer1    = Button(TLP1, 400)
-ADiscard1   = Button(TLP1, 401)
-
+ABtnVC1Answer = Button(TLP1, 400)
+ABtnVC1Reject = Button(TLP1, 401)
 # Content
-AContentOn  = Button(TLP1, 2145)
-AContentOff = Button(TLP1, 2146)
-
+ABtnVC1ContenOn  = Button(TLP1, 2145)
+ABtnVC1ContenOff = Button(TLP1, 2146)
 # Label
-AVCDial     = Label(TLP1, 2147)
-AVCRemote   = Label(TLP1, 2148)
+ALblVC1Dial     = Label(TLP1, 2147)
+ALblVC1Remote   = Label(TLP1, 2148)
 
 # Cisco 2 -----------------------
 A2Dial0      = Button(TLP1, 2100)
@@ -324,61 +302,56 @@ A2Dial9      = Button(TLP1, 2109)
 A2DialDot    = Button(TLP1, 2110)
 A2DialHash   = Button(TLP1, 2111)
 A2DialDelete = Button(TLP1, 2114, repeatTime=0.1)
-# Dialer
-
 # Call
-A2DTMF       = Button(TLP1, 2112)
-A2Call       = Button(TLP1, 2113)
-
+ABtnVC2DTMF = Button(TLP1, 2112)
+ABtnVC2Call = Button(TLP1, 2113)
 # Answer
-AAnswer2    = Button(TLP1, 402)
-ADiscard2   = Button(TLP1, 403)
-
+ABtnVC2Answer = Button(TLP1, 402)
+ABtnVC2Reject = Button(TLP1, 403)
 # Content
-A2ContentOn  = Button(TLP1, 2115)
-A2ContentOff = Button(TLP1, 2116)
-
+ABtnVC2ContenOn  = Button(TLP1, 2115)
+ABtnVC2ContenOff = Button(TLP1, 2116)
 # Label
-A2VCDial     = Label(TLP1, 2117)
-A2VCRemote   = Label(TLP1, 2118)
+ALblVC2Dial   = Label(TLP1, 2117)
+ALblVC2Remote = Label(TLP1, 2118)
 
 # Mode Status ------------------------------------------------------------------
-AInfoXTP     = Button(TLP1, 300)
-
-AInfoTesira  = Button(TLP1, 301)
-
-AInfoProjA   = Button(TLP1, 302)
-AInfo2ProjA  = Label(TLP1, 303)
-AInfo3ProjA  = Label(TLP1, 304)
-
-AInfoProjB   = Button(TLP1, 305)
-AInfo2ProjB  = Label(TLP1, 306)
-AInfo3ProjB  = Label(TLP1, 307)
-
-AInfoLCDCab1 = Button(TLP1, 308)
-AInfoLCDCab2 = Button(TLP1, 309)
-AInfoLCDCab3 = Button(TLP1, 310)
-AInfoLCDCab4 = Button(TLP1, 311)
-
-AInfoCisco   = Button(TLP1, 312)
-AInfo2Cisco  = Button(TLP1, 313)
-
-AInfoCisco2   = Button(TLP1, 315)
-AInfo2Cisco2  = Button(TLP1, 316)
-
-AInfoRecA     = Button(TLP1, 318)
-AInfo2RecA    = Button(TLP1, 319)
-AInfoRecB     = Button(TLP1, 320)
-AInfo2RecB    = Button(TLP1, 321)
-
-AInfoLCDLob1  = Button(TLP1, 322)
-AInfoLCDLob2  = Button(TLP1, 323)
-
-AInfoLCDPod1  = Button(TLP1, 324)
-AInfoLCDPod2  = Button(TLP1, 325)
-
-APython       = Label(TLP1, 326)
-
+# Room 1
+ALblLanProjA   = Button(TLP1, 302)
+ALblinfo1ProjA = Label(TLP1, 303)
+ALblinfo2ProjA = Label(TLP1, 304)
+#
+ABtnLanLCDCab3 = Button(TLP1, 310)
+ABtnLanLCDCab4 = Button(TLP1, 311)
+ABtnLanLCDLob1 = Button(TLP1, 322)
+ABtnLanLCDPod1 = Button(TLP1, 324)
+# Room 2
+ALblLanProjB   = Button(TLP1, 305)
+ALblinfo1ProjB = Label(TLP1, 306)
+ALblinfo2ProjB = Label(TLP1, 307)
+#
+ABtnLanLCDCab1 = Button(TLP1, 308)
+ABtnLanLCDCab2 = Button(TLP1, 309)
+ABtnLanLCDLob2 = Button(TLP1, 323)
+ABtnLanLCDPod2 = Button(TLP1, 325)
+# Core
+ABtnLanXTP    = Button(TLP1, 300)
+#
+ABtnLanTesira = Button(TLP1, 301)
+#
+ABtnLanVC1    = Button(TLP1, 312)
+ALblinfo1VC1  = Label(TLP1, 313)
+#
+ABtnLanVC2    = Button(TLP1, 315)
+ALblinfo1VC2  = Label(TLP1, 316)
+#
+ABtnLanRecA   = Button(TLP1, 318)
+ALblinfo1RecA = Label(TLP1, 319)
+#
+ABtnLanRecB   = Button(TLP1, 320)
+ALblinfo1RecB = Label(TLP1, 321)
+# Build
+ALblPython    = Label(TLP1, 326)
 
 # Mode PowerOff ------------------------------------------------------------------
 ABtnPowerAB   = Button(TLP1, 420)
@@ -386,29 +359,12 @@ ABtnPowerA    = Button(TLP1, 421)
 ABtnPowerB    = Button(TLP1, 422)
 
 
-
-
 # TouchPanel B -----------------------------------------------------------------
-## Index
-BBtnIndex = Button(TLP2, 1)
-## Full Main - Lateral Bar
-BBtnRoom    = Button(TLP2, 10)
-BBtnSwitch  = Button(TLP2, 11)
-BBtnDisplay = Button(TLP2, 12)
-BBtnVC      = Button(TLP2, 13)
-BBtnAudio   = Button(TLP2, 14)
-BBtnREC     = Button(TLP2, 15)
-BBtnVoIP    = Button(TLP2, 16)
-BBtnInfo    = Button(TLP2, 17)
-BBtnPower   = Button(TLP2, 18)
-## Full Main - Up Bar
-BLblMain    = Label(TLP2, 20)
-BBtnRoom1   = Button(TLP2, 21)
-BBtnRoom2   = Button(TLP2, 22)
+
 
 # BUTTON GROUPING --------------------------------------------------------------
 # Mode Index
-Index = [ABtnIndex, BBtnIndex]
+Index = [ABtnIndex]
 
 # Mode Room
 ModeRoom = [ARoomSplit, ARoomMixed]
@@ -416,53 +372,50 @@ ModeRoom = [ARoomSplit, ARoomMixed]
 GroupRoom = MESet(ModeRoom)
 
 # Mode Main
-Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC,
-         ABtnVoIP, ABtnInfo, ABtnPower,
-         BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnAudio, BBtnREC,
-         BBtnVoIP, BBtnInfo, BBtnPower]
+Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC, ABtnInfo, ABtnPower]
 #
 GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC,
-                    ABtnREC,ABtnVoIP, ABtnInfo, ABtnPower])
+                    ABtnREC, ABtnInfo, ABtnPower])
 
 # Mode Video Switching
-Outputs = [AOut1, AOut2, AOut3, AOut5, AOut6,AOut7, AOut9, AOut10, AOut11,
-           AOut12, AOut13, AOut14, AOut15, AOut16, AOut17, AOut18, AOut19,
-           AOut20, AOut21, AOut22]
+Outputs = [ABtnOut1, ABtnOut2, ABtnOut3, ABtnOut5, ABtnOut6,ABtnOut7, ABtnOut9, ABtnOut10, ABtnOut11,
+           ABtnOut12, ABtnOut13, ABtnOut14, ABtnOut15, ABtnOut16, ABtnOut17, ABtnOut18, ABtnOut19,
+           ABtnOut20, ABtnOut22, ABtnOut22]
 #
-Inputs = [AInput1, AInput2, AInput3, AInput4, AInput5, AInput6, AInput7, 
-          AInput8, AInput9, AInput10, AInput11, AInput12, AInput13,
-          AInput14, AInput17, AInput18, AInput19, AInput20, AInput21, 
-          AInput22]
+Inputs = [ABtnInput1, ABtnInput2, ABtnInput3, ABtnInput4, ABtnInput5, ABtnInput6, ABtnInput7, 
+          ABtnInput8, ABtnInput9, ABtnInput10, ABtnInput11, ABtnInput12, ABtnInput13,
+          ABtnInput14, ABtnInput17, ABtnInput18, ABtnInput19, ABtnInput20, ABtnInput21, 
+          ABtnInput22]
 #
 GroupInputs = MESet(Inputs)
 GroupOutputs = MESet(Outputs)
 
 # Mode Projection
-ProjeccionA = [AProjAPwr, AScUp, AScDw, AElUp, AElDw, ALCDCab1, ALCDCab2,
+ProjeccionA = [ABtnPwrProjA, ABtnScreenAUp, ABtnScreenADown, ABtnElevAUp, ABtnElevADown, ALCDCab1, ALCDCab2,
                ALCDCab3, ALCDLobby, ALCDPodium1]
-ProjeccionB = [AProjBPwr, A2ScUp, A2ScDw, A2ElUp, A2ElDw, A2LCDCab1, A2LCDCab2,
+ProjeccionB = [ABtnPwrProjB, ABtnScreenBUp, ABtnScreenBDown, ABtnElevBUp, ABtnElevBDown, A2LCDCab1, A2LCDCab2,
                A2LCDCab3, A2LCDLobby, ALCDPodium2]
 #
-GroupScreenA = MESet([AScUp, AScDw])
-GroupElevatA = MESet([AElUp, AElDw])
+GroupScreenA = MESet([ABtnScreenAUp, ABtnScreenADown])
+GroupElevatA = MESet([ABtnElevAUp, ABtnElevADown])
 #
-GroupScreen2A = MESet([A2ScUp, A2ScDw])
-GroupElevat2A = MESet([A2ElUp, A2ElDw])
+GroupScreen2A = MESet([ABtnScreenBUp, ABtnScreenBDown])
+GroupElevat2A = MESet([ABtnElevBUp, ABtnElevBDown])
 
 # Mode Recording
-Rec = [Arecord, Astop, Apause, A2record, A2stop, A2pause]
+Rec = [ABtnRecARecord, ABtnRecAStop, ABtnRecAPause, ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause]
 #
-GroupRecA = MESet([Arecord, Astop, Apause])
-GroupRecB = MESet([A2record, A2stop, A2pause])
+GroupRecA = MESet([ABtnRecARecord, ABtnRecAStop, ABtnRecAPause])
+GroupRecB = MESet([ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause])
 
 # Mode Videoconference
 VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
-VCButtons = [ACall, ADTMF, AContentOn, AContentOff, AAnswer1, ADiscard1]
-GroupContentA = MESet([AContentOn, AContentOff])
+VCButtons = [ABtnVC1Call, ABtnVC1DTMF, ABtnVC1ContenOn, ABtnVC1ContenOff, ABtnVC1Answer, ABtnVC1Reject]
+GroupContentA = MESet([ABtnVC1ContenOn, ABtnVC1ContenOff])
 #
 VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial7, A2Dial8, A2Dial9, A2DialDot, A2DialHash, A2DialDelete]
-VC2Buttons = [A2Call, A2DTMF, A2ContentOn, A2ContentOff, AAnswer2, ADiscard2]
-GroupContentB = MESet([A2ContentOn, A2ContentOff])
+VC2Buttons = [ABtnVC2Call, ABtnVC2DTMF, ABtnVC2ContenOn, ABtnVC2ContenOff, ABtnVC2Answer, ABtnVC2Reject]
+GroupContentB = MESet([ABtnVC2ContenOn, ABtnVC2ContenOff])
 
 # Mode PowerOff
 GroupPower = [ABtnPowerA, ABtnPowerB, ABtnPowerAB]
@@ -506,12 +459,12 @@ def Initialize():
     ## Cisco1 Dial PAGE
     global dialerVC  ## To access the Dial String variable in all program
     dialerVC = ''    ## Clean the Dial String Variable
-    AVCDial.SetText('')
+    ALblVC1Dial.SetText('')
 
     ## Cisco1 Dial PAGE
     global dialerVC2  ## To access the Dial String variable in all program
     dialerVC2 = ''    ## Clean the Dial String Variable
-    A2VCDial.SetText('')
+    ALblVC2Dial.SetText('')
 
     ##12v Interface (This brings power to all Relays)
     SWPowerPort1.SetState('On')
@@ -538,7 +491,7 @@ def Initialize():
 
     ## Notify to console
     print('System Initialize')
-    APython.SetText(Version())
+    ALblPython.SetText(Version())
     pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
@@ -1005,179 +958,179 @@ def ReceiveXTP(command, value, qualifier):
             ## Recall the Re-Connection Routines
             XTP.Disconnect()
             reconnectWaitXTP.Restart()
-            AInfoXTP.SetState(0)
+            ABtnLanXTP.SetState(0)
         else:
-            AInfoXTP.SetState(1)
+            ABtnLanXTP.SetState(1)
     #
     elif command == 'InputSignal':
         # XTP Slot 1-------------------
         if qualifier['Input'] == '1':
             if value == 'Active':
-                ASignal1.SetState(1)
+                ABtnSignal1.SetState(1)
             else:
-                ASignal1.SetState(0)
+                ABtnSignal1.SetState(0)
         #
         elif qualifier['Input'] == '2':
             if value == 'Active':
-                ASignal2.SetState(1)
+                ABtnSignal2.SetState(1)
             else:
-                ASignal2.SetState(0)
+                ABtnSignal2.SetState(0)
         #
         if qualifier['Input'] == '3':
             if value == 'Active':
-                ASignal3.SetState(1)
+                ABtnSignal3.SetState(1)
             else:
-                ASignal3.SetState(0)
+                ABtnSignal3.SetState(0)
         #
         elif qualifier['Input'] == '4':
             if value == 'Active':
-                ASignal4.SetState(1)
+                ABtnSignal4.SetState(1)
             else:
-                ASignal4.SetState(0)
+                ABtnSignal4.SetState(0)
         #
         # XTP Slot 2--------------------
         if qualifier['Input'] == '5':
             if value == 'Active':
-                ASignal5.SetState(1)
+                ABtnSignal5.SetState(1)
             else:
-                ASignal5.SetState(0)
+                ABtnSignal5.SetState(0)
         #
         elif qualifier['Input'] == '6':
             if value == 'Active':
-                ASignal6.SetState(1)
+                ABtnSignal6.SetState(1)
             else:
-                ASignal6.SetState(0)
+                ABtnSignal6.SetState(0)
         #
         if qualifier['Input'] == '7':
             if value == 'Active':
-                ASignal7.SetState(1)
+                ABtnSignal7.SetState(1)
             else:
-                ASignal7.SetState(0)
+                ABtnSignal7.SetState(0)
         #
         elif qualifier['Input'] == '8':
             if value == 'Active':
-                ASignal8.SetState(1)
+                ABtnSignal8.SetState(1)
             else:
-                ASignal8.SetState(0)
+                ABtnSignal8.SetState(0)
         #
         # XTP Slot 3--------------------
         elif qualifier['Input'] == '9':
             if value == 'Active':
-                ASignal9.SetState(1)
+                ABtnSignal9.SetState(1)
             else:
-                ASignal9.SetState(0)
+                ABtnSignal9.SetState(0)
         #
         elif qualifier['Input'] == '10':
             if value == 'Active':
-                ASignal10.SetState(1)
+                ABtnSignal10.SetState(1)
             else:
-                ASignal10.SetState(0)
+                ABtnSignal10.SetState(0)
         #
         elif qualifier['Input'] == '11':
             if value == 'Active':
-                ASignal11.SetState(1)
+                ABtnSignal11.SetState(1)
             else:
-                ASignal11.SetState(0)
+                ABtnSignal11.SetState(0)
         #
         elif qualifier['Input'] == '12':
             if value == 'Active':
-                ASignal12.SetState(1)
+                ABtnSignal12.SetState(1)
             else:
-                ASignal12.SetState(0)
+                ABtnSignal12.SetState(0)
         #
         # XTP Slot 4--------------------
         elif qualifier['Input'] == '13':
             if value == 'Active':
-                ASignal13.SetState(1)
+                ABtnSignal13.SetState(1)
             else:
-                ASignal13.SetState(0)
+                ABtnSignal13.SetState(0)
         #
         elif qualifier['Input'] == '14':
             if value == 'Active':
-                ASignal14.SetState(1)
+                ABtnSignal14.SetState(1)
             else:
-                ASignal14.SetState(0)
+                ABtnSignal14.SetState(0)
         #
         # XTP Slot 5---------------------
         elif qualifier['Input'] == '17':
             if value == 'Active':
-                ASignal17.SetState(1)
+                ABtnSignal17.SetState(1)
             else:
-                ASignal17.SetState(0)
+                ABtnSignal17.SetState(0)
         #
         elif qualifier['Input'] == '18':
             if value == 'Active':
-                ASignal18.SetState(1)
+                ABtnSignal18.SetState(1)
             else:
-                ASignal18.SetState(0)
+                ABtnSignal18.SetState(0)
         #
         elif qualifier['Input'] == '19':
             if value == 'Active':
-                ASignal19.SetState(1)
+                ABtnSignal19.SetState(1)
             else:
-                ASignal19.SetState(0)
+                ABtnSignal19.SetState(0)
         #       
         elif qualifier['Input'] == '20':
             if value == 'Active':
-                ASignal20.SetState(1)
+                ABtnSignal20.SetState(1)
             else:
-                ASignal20.SetState(0)
+                ABtnSignal20.SetState(0)
         #
         # XTP Slot 6--------------------
         elif qualifier['Input'] == '21':
             if value == 'Active':
-                ASignal21.SetState(1)
+                ABtnSignal21.SetState(1)
             else:
-                ASignal21.SetState(0)
+                ABtnSignal21.SetState(0)
         #
         elif qualifier['Input'] == '22':
             if value == 'Active':
-                ASignal22.SetState(1)
+                ABtnSignal22.SetState(1)
             else:
-                ASignal22.SetState(0)
+                ABtnSignal22.SetState(0)
 
     elif command == 'OutputTieStatus':
         #print('--- Parsing Matrix: (Out ' +  qualifier['Output'] + ' In ' + value + ' ' + qualifier['Tie Type'] + ')')
         if value == '1':
-            GroupInputs.SetCurrent(AInput1)
+            GroupInputs.SetCurrent(ABtnInput1)
         elif value == '2':
-            GroupInputs.SetCurrent(AInput2)
+            GroupInputs.SetCurrent(ABtnInput2)
         elif value == '3':
-            GroupInputs.SetCurrent(AInput3)
+            GroupInputs.SetCurrent(ABtnInput3)
         elif value == '4':
-            GroupInputs.SetCurrent(AInput4)
+            GroupInputs.SetCurrent(ABtnInput4)
         elif value == '5':
-            GroupInputs.SetCurrent(AInput5)
+            GroupInputs.SetCurrent(ABtnInput5)
         elif value == '6':
-            GroupInputs.SetCurrent(AInput6)
+            GroupInputs.SetCurrent(ABtnInput6)
         elif value == '7':
-            GroupInputs.SetCurrent(AInput7)
+            GroupInputs.SetCurrent(ABtnInput7)
         elif value == '8':
-            GroupInputs.SetCurrent(AInput8)
+            GroupInputs.SetCurrent(ABtnInput8)
         elif value == '9':
-            GroupInputs.SetCurrent(AInput9)
+            GroupInputs.SetCurrent(ABtnInput9)
         elif value == '10':
-            GroupInputs.SetCurrent(AInput10)
+            GroupInputs.SetCurrent(ABtnInput10)
         elif value == '11':
-            GroupInputs.SetCurrent(AInput11)
+            GroupInputs.SetCurrent(ABtnInput11)
         elif value == '12':
-            GroupInputs.SetCurrent(AInput12)
+            GroupInputs.SetCurrent(ABtnInput12)
         elif value == '13':
-            GroupInputs.SetCurrent(AInput13)
+            GroupInputs.SetCurrent(ABtnInput13)
         elif value == '14':
-            GroupInputs.SetCurrent(AInput14)
+            GroupInputs.SetCurrent(ABtnInput14)
         elif value == '17':
-            GroupInputs.SetCurrent(AInput17)
+            GroupInputs.SetCurrent(ABtnInput17)
         elif value == '18':
-            GroupInputs.SetCurrent(AInput18)
+            GroupInputs.SetCurrent(ABtnInput18)
         elif value == '19':
-            GroupInputs.SetCurrent(AInput19)
+            GroupInputs.SetCurrent(ABtnInput19)
         elif value == '20':
-            GroupInputs.SetCurrent(AInput20)
+            GroupInputs.SetCurrent(ABtnInput20)
         elif value == '21':
-            GroupInputs.SetCurrent(AInput21)
+            GroupInputs.SetCurrent(ABtnInput21)
         elif value == '22':
-            GroupInputs.SetCurrent(AInput22)
+            GroupInputs.SetCurrent(ABtnInput22)
     pass
 
 def ReceiveTesira(command, value, qualifier):
@@ -1193,9 +1146,9 @@ def ReceiveTesira(command, value, qualifier):
             ## Recall the Re-Connection Routines
             Tesira.Disconnect()
             reconnectWaitTesira.Restart()
-            AInfoTesira.SetState(0)
+            ABtnLanTesira.SetState(0)
         else:
-            AInfoTesira.SetState(1)
+            ABtnLanTesira.SetState(1)
     #
     elif command == 'LogicState':
         if qualifier['Instance Tag'] == 'Room' and qualifier['Channel'] == '1':
@@ -1222,24 +1175,24 @@ def ReceiveProjectorA(command, value, qualifier):
             ## Recall the Re-Connection Routines
             ProjA.Disconnect()
             reconnectWaitProjectorA.Restart()
-            AInfoProjA.SetState(0)
+            ALblLanProjA.SetState(0)
         else:
-            AInfoProjA.SetState(1)
+            ALblLanProjA.SetState(1)
     #
     elif command == 'Power':
-        AInfo2ProjA.SetText('Power ' + value)
+        ALblinfo1ProjA.SetText('Power ' + value)
         print('--- Parsing Projector A: (Power ' +  value + ' )')
         if value == 'On':
-            AProjAPwr.SetState(1)
+            ABtnPwrProjA.SetState(1)
             Room1ElevatorDown()
             Room1ScreenDown()
         else:
-            AProjAPwr.SetState(0)
+            ABtnPwrProjA.SetState(0)
             Room1ElevatorUp()
             Room1ScreenUp()
     #
     elif command == 'Input':
-        AInfo3ProjA.SetText(value)
+        ALblinfo2ProjA.SetText(value)
         print('--- Parsing Projector A: (Input ' +  value + ' )')
     pass
 
@@ -1256,24 +1209,24 @@ def ReceiveProjectorB(command, value, qualifier):
             ## Recall the Re-Connection Routines
             ProjB.Disconnect()
             reconnectWaitProjectorB.Restart()
-            AInfoProjB.SetState(0)
+            ALblLanProjB.SetState(0)
         else:
-            AInfoProjB.SetState(1)
+            ALblLanProjB.SetState(1)
     #
     elif command == 'Power':
-        AInfo2ProjB.SetText('Power ' + value)
+        ALblinfo1ProjB.SetText('Power ' + value)
         print('--- Parsing Projector B: (Power ' +  value + ' )')
         if value == 'On':
-            AProjBPwr.SetState(1)
+            ABtnPwrProjB.SetState(1)
             Room2ElevatorDown()
             Room2ScreenDown()
         else:
-            AProjBPwr.SetState(0)
+            ABtnPwrProjB.SetState(0)
             Room2ElevatorUp()
             Room2ScreenUp()
     #
     elif command == 'Input':
-        AInfo3ProjB.SetText(value)
+        ALblinfo2ProjB.SetText(value)
         print('--- Parsing Projector B: (Input ' +  value + ' )')
     pass
 
@@ -1290,20 +1243,20 @@ def ReceiveCisco1(command, value, qualifier):
             ## Recall the Re-Connection Routines
             Cisco1.Disconnect()
             reconnectWaitCisco1.Restart()
-            AInfoCisco.SetState(0)
+            ABtnLanVC1.SetState(0)
         else:
-            AInfoCisco.SetState(1)
+            ABtnLanVC1.SetState(1)
     #
     elif command == 'Presentation':
         print('--- Parsing Cisco 1: (Presentation ' +  value + ' )')
         if value == '2':
-            GroupContentA.SetCurrent(AContentOn)
+            GroupContentA.SetCurrent(ABtnVC1ContenOn)
         elif value == 'Stop':
-            GroupContentA.SetCurrent(AContentOff)
+            GroupContentA.SetCurrent(ABtnVC1ContenOff)
     #
     elif command == 'CallStatus':
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
-        AInfo2Cisco.SetText(value)
+        ALblinfo1VC1.SetText(value)
         #
         if value == 'Ringing':
             TLP1.ShowPopup('Cisco1.Call')
@@ -1311,16 +1264,16 @@ def ReceiveCisco1(command, value, qualifier):
             TLP1.HidePopup('Cisco1.Call')
         #
         if value == 'Idle' or value == 'Disconnecting':
-            ACall.SetState(0)
-            ACall.SetText('Llamar')
+            ABtnVC1Call.SetState(0)
+            ABtnVC1Call.SetText('Llamar')
         #
         elif value == 'Connected' or value == 'Connecting':
-            ACall.SetState(1)
-            ACall.SetText('Colgar')
+            ABtnVC1Call.SetState(1)
+            ABtnVC1Call.SetText('Colgar')
     #
     elif command == 'DisplayName':
         print('--- Parsing Cisco 1: (DisplayName ' +  value + ' )')
-        AVCRemote.SetText(value)
+        ALblVC1Remote.SetText(value)
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 1: (RemoteNumber ' +  value + ' )')
@@ -1339,19 +1292,19 @@ def ReceiveCisco2(command, value, qualifier):
             ## Recall the Re-Connection Routines
             Cisco2.Disconnect()
             reconnectWaitCisco2.Restart()
-            AInfoCisco2.SetState(0)
+            ABtnLanVC2.SetState(0)
         else:
-            AInfoCisco2.SetState(1)
+            ABtnLanVC2.SetState(1)
     #
     elif command == 'Presentation':
         print('--- Parsing Cisco 2: (Presentation ' +  value + ' )')
         if value == '2':
-            GroupContentB.SetCurrent(A2ContentOn)
+            GroupContentB.SetCurrent(ABtnVC2ContenOn)
         elif value == 'Stop':
-            GroupContentB.SetCurrent(A2ContentOff)
+            GroupContentB.SetCurrent(ABtnVC2ContenOff)
     #
     elif command == 'CallStatus':
-        AInfo2Cisco2.SetText(value)
+        ALblinfo1VC2.SetText(value)
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
         #
         if value == 'Ringing':
@@ -1360,16 +1313,16 @@ def ReceiveCisco2(command, value, qualifier):
             TLP1.HidePopup('Cisco2.Call')
         #
         if value == 'Idle' or value == 'Disconnecting':
-            A2Call.SetState(0)
-            A2Call.SetText('Llamar')
+            ABtnVC2Call.SetState(0)
+            ABtnVC2Call.SetText('Llamar')
         #
         elif value == 'Connected' or value == 'Connecting':
-            A2Call.SetState(1)
-            A2Call.SetText('Colgar')
+            ABtnVC2Call.SetState(1)
+            ABtnVC2Call.SetText('Colgar')
     #
     elif command == 'DisplayName':
         print('--- Parsing Cisco 2: (DisplayName ' +  value + ' )')
-        A2VCRemote.SetText(value)
+        ALblVC2Remote.SetText(value)
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 2: (RemoteNumber ' +  value + ' )')
@@ -1388,45 +1341,45 @@ def ReceiveRecA(command, value, qualifier):
             ## Recall the Re-Connection Routines
             RecA.Disconnect()
             reconnectWaitRecA.Restart()
-            AInfoRecA.SetState(0)
+            ABtnLanRecA.SetState(0)
         else:
-            AInfoRecA.SetState(1)
+            ABtnLanRecA.SetState(1)
     #
     elif command == 'Record':
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
-        AInfo2RecA.SetText(value)
+        ALblinfo1RecA.SetText(value)
         if value == 'Start':
-            GroupRecA.SetCurrent(Arecord)
+            GroupRecA.SetCurrent(ABtnRecARecord)
         elif value == 'Pause':
-            GroupRecA.SetCurrent(Apause)
+            GroupRecA.SetCurrent(ABtnRecAPause)
         elif value == 'Stop':
-            GroupRecA.SetCurrent(Astop)
+            GroupRecA.SetCurrent(ABtnRecAStop)
     #
     elif command == 'RecordDestination':
-        ARecDestine.SetText(value)
+        ALblRecA2.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
-        ARecMode.SetText(value)
+        ALblRecA4.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
-        ARecResolut.SetText(value)
+        ALblRecA3.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
-        ARecHDCP.SetText(value)
+        ALblRecA6.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
-            ARecDisk.SetText('Disk Free: ' + str(value) + 'GB')
+            ALblRecA5.SetText('Disk Free: ' + str(value) + 'GB')
             #print('--- Parsing Recorder A: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
-        Atime.SetText(value)
+        ALblRecATime.SetText(value)
     pass
 
 def ReceiveRecB(command, value, qualifier):
@@ -1442,45 +1395,45 @@ def ReceiveRecB(command, value, qualifier):
             ## Recall the Re-Connection Routines
             RecB.Disconnect()
             reconnectWaitRecB.Restart()
-            AInfoRecB.SetState(0)
+            ABtnLanRecB.SetState(0)
         else:
-            AInfoRecB.SetState(1)
+            ABtnLanRecB.SetState(1)
     #
     elif command == 'Record':
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
-        AInfo2RecB.SetText(value)
+        ALblinfo1RecB.SetText(value)
         if value == 'Start':
-            GroupRecB.SetCurrent(A2record)
+            GroupRecB.SetCurrent(ABtnRecBRecord)
         elif value == 'Pause':
-            GroupRecB.SetCurrent(A2pause)
+            GroupRecB.SetCurrent(ABtnRecBPause)
         elif value == 'Stop':
-            GroupRecB.SetCurrent(A2stop)
+            GroupRecB.SetCurrent(ABtnRecBStop)
     #
     elif command == 'RecordDestination':
-        A2RecDestine.SetText(value)
+        ALblRecB2.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
-        A2RecMode.SetText(value)
+        ALblRecB4.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
-        A2RecResolut.SetText(value)
+        ALblRecB3.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
-        A2RecHDCP.SetText(value)
+        ALblRecB6.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
-            A2RecDisk.SetText('Disk Free: ' + str(value) + 'GB')
+            ALblRecB5.SetText('Disk Free: ' + str(value) + 'GB')
             #print('--- Parsing Recorder B: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
-        A2time.SetText(value)
+        ALblRecBTime.SetText(value)
     pass
 
 def ReceiveLCDCab1(command, value, qualifier):
@@ -1496,9 +1449,9 @@ def ReceiveLCDCab1(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDCab1.Disconnect()
             reconnectWaitLCDCab1.Restart()
-            AInfoLCDCab1.SetState(0)
+            ABtnLanLCDCab1.SetState(0)
         else:
-            AInfoLCDCab1.SetState(1)
+            ABtnLanLCDCab1.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab1: (Power ' +  value + ' )')
@@ -1521,9 +1474,9 @@ def ReceiveLCDCab2(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDCab2.Disconnect()
             reconnectWaitLCDCab2.Restart()
-            AInfoLCDCab2.SetState(0)
+            ABtnLanLCDCab2.SetState(0)
         else:
-            AInfoLCDCab2.SetState(1)
+            ABtnLanLCDCab2.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab2: (Power ' +  value + ' )')
@@ -1546,9 +1499,9 @@ def ReceiveLCDCab3(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDCab3.Disconnect()
             reconnectWaitLCDCab3.Restart()
-            AInfoLCDCab3.SetState(0)
+            ABtnLanLCDCab3.SetState(0)
         else:
-            AInfoLCDCab3.SetState(1)
+            ABtnLanLCDCab3.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab3: (Power ' +  value + ' )')
@@ -1571,9 +1524,9 @@ def ReceiveLCDCab4(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDCab4.Disconnect()
             reconnectWaitLCDCab4.Restart()
-            AInfoLCDCab4.SetState(0)
+            ABtnLanLCDCab4.SetState(0)
         else:
-            AInfoLCDCab4.SetState(1)
+            ABtnLanLCDCab4.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab4: (Power ' +  value + ' )')
@@ -1596,9 +1549,9 @@ def ReceiveLCDLob1(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDLob1.Disconnect()
             reconnectWaitLCDLob1.Restart()
-            AInfoLCDLob1.SetState(0)
+            ABtnLanLCDLob1.SetState(0)
         else:
-            AInfoLCDLob1.SetState(1)
+            ABtnLanLCDLob1.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Lob1: (Power ' +  value + ' )')
@@ -1621,9 +1574,9 @@ def ReceiveLCDLob2(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDLob2.Disconnect()
             reconnectWaitLCDLob2.Restart()
-            AInfoLCDLob2.SetState(0)
+            ABtnLanLCDLob2.SetState(0)
         else:
-            AInfoLCDLob2.SetState(1)
+            ABtnLanLCDLob2.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Lob2: (Power ' +  value + ' )')
@@ -1646,9 +1599,9 @@ def ReceiveLCDPod1(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDPod1.Disconnect()
             reconnectWaitLCDPod1.Restart()
-            AInfoLCDPod1.SetState(0)
+            ABtnLanLCDPod1.SetState(0)
         else:
-            AInfoLCDPod1.SetState(1)
+            ABtnLanLCDPod1.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Pod1: (Power ' +  value + ' )')
@@ -1671,9 +1624,9 @@ def ReceiveLCDPod2(command, value, qualifier):
             ## Recall the Re-Connection Routines
             LCDPod2.Disconnect()
             reconnectWaitLCDPod2.Restart()
-            AInfoLCDPod2.SetState(0)
+            ABtnLanLCDPod2.SetState(0)
         else:
-            AInfoLCDPod2.SetState(1)
+            ABtnLanLCDPod2.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Pod2: (Power ' +  value + ' )')
@@ -1866,10 +1819,10 @@ def XTP_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectMatrix"""
     if state == 'Connected':
-        AInfoXTP.SetState(1)
+        ABtnLanXTP.SetState(1)
         reconnectWaitXTP.Cancel()
     else:
-        AInfoXTP.SetState(0)
+        ABtnLanXTP.SetState(0)
         print('Socket Disconnected: Matrix')
     pass
 
@@ -1881,10 +1834,10 @@ def Tesira_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoTesira.SetState(1)
+        ABtnLanTesira.SetState(1)
         reconnectWaitTesira.Cancel()
     else:
-        AInfoTesira.SetState(0)
+        ABtnLanTesira.SetState(0)
         print('Socket Disconnected: Tesira')
     pass
 
@@ -1896,10 +1849,10 @@ def ProjA_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoProjA.SetState(1)
+        ALblLanProjA.SetState(1)
         reconnectWaitProjectorA.Cancel()
     else:
-        AInfoProjA.SetState(0)
+        ALblLanProjA.SetState(0)
         print('Socket Disconnected: Projector A')
     pass
 
@@ -1911,10 +1864,10 @@ def ProjB_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoProjB.SetState(1)
+        ALblLanProjB.SetState(1)
         reconnectWaitProjectorB.Cancel()
     else:
-        AInfoProjB.SetState(0)
+        ALblLanProjB.SetState(0)
         print('Socket Disconnected: Projector B')
     pass
 
@@ -1926,11 +1879,11 @@ def Cisco1_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoCisco.SetState(1)
+        ABtnLanVC1.SetState(1)
         reconnectWaitCisco1.Cancel()
     else:
         print('Socket Disconnected: Cisco1')
-        AInfoCisco.SetState(0)
+        ABtnLanVC1.SetState(0)
     pass
 
 @event(Cisco2, 'Disconnected')
@@ -1941,11 +1894,11 @@ def Cisco2_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoCisco2.SetState(1)
+        ABtnLanVC2.SetState(1)
         reconnectWaitCisco2.Cancel()
     else:
         print('Socket Disconnected: Cisco2')
-        AInfoCisco2.SetState(0)
+        ABtnLanVC2.SetState(0)
     pass
 
 @event(RecA, 'Disconnected')
@@ -1956,10 +1909,10 @@ def RecA_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoRecA.SetState(1)
+        ABtnLanRecA.SetState(1)
         reconnectWaitRecA.Cancel()
     else:
-        AInfoRecA.SetState(0)
+        ABtnLanRecA.SetState(0)
         print('Socket Disconnected: Rec A')
     pass
 
@@ -1971,10 +1924,10 @@ def RecB_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoRecB.SetState(1)
+        ABtnLanRecB.SetState(1)
         reconnectWaitRecB.Cancel()
     else:
-        AInfoRecB.SetState(0)
+        ABtnLanRecB.SetState(0)
         print('Socket Disconnected: Rec A')
     pass
 
@@ -1986,10 +1939,10 @@ def LCDCab1_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDCab1.SetState(1)
+        ABtnLanLCDCab1.SetState(1)
         reconnectWaitLCDCab1.Cancel()
     else:
-        AInfoLCDCab1.SetState(0)
+        ABtnLanLCDCab1.SetState(0)
         print('Socket Disconnected: LCD Cab1')
     pass
 
@@ -2001,10 +1954,10 @@ def LCDCab2_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDCab2.SetState(1)
+        ABtnLanLCDCab2.SetState(1)
         reconnectWaitLCDCab2.Cancel()
     else:
-        AInfoLCDCab2.SetState(0)
+        ABtnLanLCDCab2.SetState(0)
         print('Socket Disconnected: LCD Cab2')
     pass
 
@@ -2016,10 +1969,10 @@ def LCDCab3_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDCab3.SetState(1)
+        ABtnLanLCDCab3.SetState(1)
         reconnectWaitLCDCab3.Cancel()
     else:
-        AInfoLCDCab3.SetState(0)
+        ABtnLanLCDCab3.SetState(0)
         print('Socket Disconnected: LCD Cab3')
     pass
 
@@ -2031,10 +1984,10 @@ def LCDCab4_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDCab4.SetState(1)
+        ABtnLanLCDCab4.SetState(1)
         reconnectWaitLCDCab4.Cancel()
     else:
-        AInfoLCDCab4.SetState(0)
+        ABtnLanLCDCab4.SetState(0)
         print('Socket Disconnected: LCD Cab4')
     pass
 
@@ -2046,10 +1999,10 @@ def LCDLob1_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDLob1.SetState(1)
+        ABtnLanLCDLob1.SetState(1)
         reconnectWaitLCDLob1.Cancel()
     else:
-        AInfoLCDLob1.SetState(0)
+        ABtnLanLCDLob1.SetState(0)
         print('Socket Disconnected: LCD Lob1')
     pass
 
@@ -2061,10 +2014,10 @@ def LCDLob2_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDLob2.SetState(1)
+        ABtnLanLCDLob2.SetState(1)
         reconnectWaitLCDLob2.Cancel()
     else:
-        AInfoLCDLob2.SetState(0)
+        ABtnLanLCDLob2.SetState(0)
         print('Socket Disconnected: LCD Lob2')
     pass
 @event(LCDPod1, 'Disconnected')
@@ -2075,10 +2028,10 @@ def LCDPod1_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDPod1.SetState(1)
+        ABtnLanLCDPod1.SetState(1)
         reconnectWaitLCDPod1.Cancel()
     else:
-        AInfoLCDPod1.SetState(0)
+        ABtnLanLCDPod1.SetState(0)
         print('Socket Disconnected: LCD Pod1')
     pass
 
@@ -2090,10 +2043,10 @@ def LCDPod2_PhysicalConex(interface, state):
        the Initialize function or from the connection attemps from
        AttemptConnectProjector"""
     if state == 'Connected':
-        AInfoLCDPod2.SetState(1)
+        ABtnLanLCDPod2.SetState(1)
         reconnectWaitLCDPod2.Cancel()
     else:
-        AInfoLCDPod2.SetState(0)
+        ABtnLanLCDPod2.SetState(0)
         print('Socket Disconnected: LCD Pod2')
     pass
 
@@ -2242,50 +2195,50 @@ def FunctionActiveTie(output):
     activeTie = XTP.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
     ##
     if activeTie == '1':
-        GroupInputs.SetCurrent(AInput1)
+        GroupInputs.SetCurrent(ABtnInput1)
     elif activeTie == '2':
-        GroupInputs.SetCurrent(AInput2)
+        GroupInputs.SetCurrent(ABtnInput2)
     elif activeTie == '3':
-        GroupInputs.SetCurrent(AInput3)
+        GroupInputs.SetCurrent(ABtnInput3)
     elif activeTie == '4':
-        GroupInputs.SetCurrent(AInput4)
+        GroupInputs.SetCurrent(ABtnInput4)
     ##
     elif activeTie == '5':
-        GroupInputs.SetCurrent(AInput5)
+        GroupInputs.SetCurrent(ABtnInput5)
     elif activeTie == '6':
-        GroupInputs.SetCurrent(AInput6)
+        GroupInputs.SetCurrent(ABtnInput6)
     elif activeTie == '7':
-        GroupInputs.SetCurrent(AInput7)
+        GroupInputs.SetCurrent(ABtnInput7)
     elif activeTie == '8':
-        GroupInputs.SetCurrent(AInput8)
+        GroupInputs.SetCurrent(ABtnInput8)
     ##
     elif activeTie == '9':
-        GroupInputs.SetCurrent(AInput9)
+        GroupInputs.SetCurrent(ABtnInput9)
     elif activeTie == '10':
-        GroupInputs.SetCurrent(AInput10)
+        GroupInputs.SetCurrent(ABtnInput10)
     elif activeTie == '11':
-        GroupInputs.SetCurrent(AInput11)
+        GroupInputs.SetCurrent(ABtnInput11)
     elif activeTie == '12':
-        GroupInputs.SetCurrent(AInput12)
+        GroupInputs.SetCurrent(ABtnInput12)
     ##
     elif activeTie == '13':
-        GroupInputs.SetCurrent(AInput13)
+        GroupInputs.SetCurrent(ABtnInput13)
     elif activeTie == '14':
-        GroupInputs.SetCurrent(AInput14)
+        GroupInputs.SetCurrent(ABtnInput14)
     ##
     elif activeTie == '17':
-        GroupInputs.SetCurrent(AInput17)
+        GroupInputs.SetCurrent(ABtnInput17)
     elif activeTie == '18':
-        GroupInputs.SetCurrent(AInput18)
+        GroupInputs.SetCurrent(ABtnInput18)
     elif activeTie == '19':
-        GroupInputs.SetCurrent(AInput19)
+        GroupInputs.SetCurrent(ABtnInput19)
     elif activeTie == '20':
-        GroupInputs.SetCurrent(AInput20)
+        GroupInputs.SetCurrent(ABtnInput20)
     ##
     elif activeTie == '21':
-        GroupInputs.SetCurrent(AInput21)
+        GroupInputs.SetCurrent(ABtnInput21)
     elif activeTie == '22':
-        GroupInputs.SetCurrent(AInput22)
+        GroupInputs.SetCurrent(ABtnInput22)
     pass
 
 # ACTIONS - SWITCHING VIDEO OUTPUTS MODE ---------------------------------------
@@ -2300,126 +2253,126 @@ def OutsSwitching(button, state):
     ## Button Functions
     if button.Host.DeviceAlias == 'TouchPanelA':
         # XTP Slot 1-----------------------------------------------------
-        if button is AOut1:
+        if button is ABtnOut1:
             output = '1'
             print("Touch 1: {0}".format("Out Room 1: Projector"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut2:
+        elif button is ABtnOut2:
             output = '2'
             print("Touch 1: {0}".format("Out Room 1: LCD Podium"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut3:
+        elif button is ABtnOut3:
             output = '3'
             print("Touch 1: {0}".format("Out Room 1: LCD Lobby"))
             ##Recall Function
             FunctionActiveTie(output)
         
         #XTP Slot 2-----------------------------------------------------
-        elif button is AOut5:
+        elif button is ABtnOut5:
             output = '5'
             print("Touch 1: {0}".format("Out Room 2: Projector"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut6:
+        elif button is ABtnOut6:
             output = '6'
             print("Touch 1: {0}".format("Out Room 2: LCD Podium"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut7:
+        elif button is ABtnOut7:
             output = '7'
             print("Touch 1: {0}".format("Out Room 2: LCD Lobby"))
             ##Recall Function
             FunctionActiveTie(output)
 
         #XTP Slot 3-----------------------------------------------------
-        elif button is AOut9:
+        elif button is ABtnOut9:
             output = '9'
             print("Touch 1: {0}".format("Out Room 1: Tricaster In 1"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut10:
+        elif button is ABtnOut10:
             output = '10'
             print("Touch 1: {0}".format("Out Room 1: Tricaster In 2"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut11:
+        elif button is ABtnOut11:
             output = '11'
             print("Touch 1: {0}".format("Out Room 1: Tricaster In 3"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut12:
+        elif button is ABtnOut12:
             output = '12'
             print("Touch 1: {0}".format("Out Room 1: Tricaster In 4"))
             ##Recall Function
             FunctionActiveTie(output)
 
         #XTP Slot 4-----------------------------------------------------
-        elif button is AOut13:
+        elif button is ABtnOut13:
             output = '13'
             print("Touch 1: {0}".format("Out Room 2: Tricaster In 1"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut14:
+        elif button is ABtnOut14:
             output = '14'
             print("Touch 1: {0}".format("Out Room 2: Tricaster In 2"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut15:
+        elif button is ABtnOut15:
             output = '15'
             print("Touch 1: {0}".format("Out Room 2: Tricaster In 3"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut16:
+        elif button is ABtnOut16:
             output = '16'
             print("Touch 1: {0}".format("Out Room 2: Tricaster In 4"))
             ##Recall Function
             FunctionActiveTie(output)
             
         #XTP Slot 5------------------------------------------------------
-        elif button is AOut17:
+        elif button is ABtnOut17:
             output = '17'
             print("Touch 1: {0}".format("Out Room 1: Cisco Camera"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut18:
+        elif button is ABtnOut18:
             output = '18'
             print("Touch 1: {0}".format("Out Room 1: Cisco Graphics"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut19:
+        elif button is ABtnOut19:
             output = '19'
             print("Touch 1: {0}".format("Out Room 2: Cisco Camera"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut20:
+        elif button is ABtnOut20:
             output = '20'
             print("Touch 1: {0}".format("Out Room 2: Cisco Graphics"))
             ##Recall Function
             FunctionActiveTie(output)
 
         #XTP Slot 6------------------------------------------------------
-        elif button is AOut21:
+        elif button is ABtnOut22:
             output = '21'
             print("Touch 1: {0}".format("Out Room 1: Recorder"))
             ##Recall Function
             FunctionActiveTie(output)
         #
-        elif button is AOut22:
+        elif button is ABtnOut22:
             output = '22'
             print("Touch 1: {0}".format("Out Room 2: Recorder"))
             ##Recall Function
@@ -2438,107 +2391,107 @@ def InSwitching(button, state):
     ## Button Functions
     if button.Host.DeviceAlias == 'TouchPanelA':
         # XTP Slot 1-----------------------------------------------------
-        if button is AInput1:
+        if button is ABtnInput1:
             input = '1'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: Placa Left"))
         #
-        elif button is AInput2:
+        elif button is ABtnInput2:
             input = '2'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: Placa Right"))
         #
-        elif button is AInput3:
+        elif button is ABtnInput3:
             input = '3'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: Placa Stage"))
         #
-        elif button is AInput4:
+        elif button is ABtnInput4:
             input = '4'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: Placa Back"))
 
         # XTP Slot 2-----------------------------------------------------
-        elif button is AInput5:
+        elif button is ABtnInput5:
             input = '5'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: Placa Left"))
         #
-        elif button is AInput6:
+        elif button is ABtnInput6:
             input = '6'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: Placa Right"))
         #
-        elif button is AInput7:
+        elif button is ABtnInput7:
             input = '7'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: Placa Stage"))
         #
-        elif button is AInput8:
+        elif button is ABtnInput8:
             input = '8'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: Placa Back"))
             
         # XTP Slot 3-----------------------------------------------------
-        elif button is AInput9:
+        elif button is ABtnInput9:
             input = '9'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: PTZ Frontal"))
         #
-        elif button is AInput10:
+        elif button is ABtnInput10:
             input = '10'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: PTZ Back"))
         #
-        elif button is AInput11:
+        elif button is ABtnInput11:
             input = '11'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: PTZ Frontal"))
         #
-        elif button is AInput12:
+        elif button is ABtnInput12:
             input = '12'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: PTZ Back"))
             
         # XTP Slot 4-----------------------------------------------------
-        elif button is AInput13:
+        elif button is ABtnInput13:
             input = '13'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 1: PC Cabina"))
         #
-        elif button is AInput14:
+        elif button is ABtnInput14:
             input = '14'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Room 2: PC Cabina"))
             
         # XTP Slot 5-----------------------------------------------------
-        elif button is AInput17:
+        elif button is ABtnInput17:
             input = '17'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Core: Cisco 1 Out"))
         #
-        elif button is AInput18:
+        elif button is ABtnInput18:
             input = '18'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Core: Cisco 2 Out"))
         #
-        elif button is AInput19:
+        elif button is ABtnInput19:
             input = '19'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Core: ShareLink 1"))
         #
-        elif button is AInput20:
+        elif button is ABtnInput20:
             input = '20'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Core: ShareLink 2"))
             
         # XTP Slot 6-----------------------------------------------------
-        elif button is AInput21:
+        elif button is ABtnInput21:
             input = '21'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Core: Tricaster 1 Out"))
         #
-        elif button is AInput22:
+        elif button is ABtnInput22:
             input = '22'
             XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
             print("Touch 1: {0}".format("In Core: Tricaster 2 Out"))
@@ -2602,37 +2555,37 @@ def Room2ElevatorDown():
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is AProjAPwr:
+    if button is ABtnPwrProjA:
         if ProjA.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 1: PowerOff"))
-            AProjAPwr.SetState(0)
+            ABtnPwrProjA.SetState(0)
             ProjA.Set('Power','Off')
             Room1ElevatorUp()
             Room1ScreenUp()
         else:
             print("Touch 1: {0}".format("Proyector 1: PowerOn"))
-            AProjAPwr.SetState(1)
+            ABtnPwrProjA.SetState(1)
             ProjA.Set('Power','On')
             Room1ElevatorDown()
             Room1ScreenDown()
     #
-    elif button is AScUp:
-        GroupScreenA.SetCurrent(AScUp)
+    elif button is ABtnScreenAUp:
+        GroupScreenA.SetCurrent(ABtnScreenAUp)
         Room1ScreenUp()
         print("Touch 1: {0}".format("Screen 1: Up"))
     #
-    elif button is AScDw:
-        GroupScreenA.SetCurrent(AScDw)
+    elif button is ABtnScreenADown:
+        GroupScreenA.SetCurrent(ABtnScreenADown)
         Room1ScreenDown()
         print("Touch 1: {0}".format("Screen 1: Down"))
     #
-    elif button is AElUp:
-        GroupElevatA.SetCurrent(AElUp)
+    elif button is ABtnElevAUp:
+        GroupElevatA.SetCurrent(ABtnElevAUp)
         Room1ElevatorUp()
         print("Touch 1: {0}".format("Elevator 1: Up"))
     #
-    elif button is AElDw:
-        GroupElevatA.SetCurrent(AElDw)
+    elif button is ABtnElevADown:
+        GroupElevatA.SetCurrent(ABtnElevADown)
         Room1ElevatorDown()
         print("Touch 1: {0}".format("Elevator 1: Down"))
     #
@@ -2687,37 +2640,37 @@ def ButtonObjectPressed(button, state):
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is AProjBPwr:
+    if button is ABtnPwrProjB:
         if ProjB.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 2: PowerOff"))
-            AProjBPwr.SetState(0)
+            ABtnPwrProjB.SetState(0)
             ProjB.Set('Power','Off')
             Room2ElevatorUp()
             Room2ScreenUp()
         else:
             print("Touch 1: {0}".format("Proyector 2: PowerOn"))
-            AProjBPwr.SetState(1)
+            ABtnPwrProjB.SetState(1)
             ProjB.Set('Power','On')
             Room2ElevatorDown()
             Room2ScreenDown()
     #
-    elif button is A2ScUp:
-        GroupScreen2A.SetCurrent(A2ScUp)
+    elif button is ABtnScreenBUp:
+        GroupScreen2A.SetCurrent(ABtnScreenBUp)
         Room2ScreenUp()
         print("Touch 1: {0}".format("Screen 2: Up"))
     #
-    elif button is A2ScDw:
-        GroupScreen2A.SetCurrent(A2ScDw)
+    elif button is ABtnScreenBDown:
+        GroupScreen2A.SetCurrent(ABtnScreenBDown)
         Room2ScreenDown()
         print("Touch 1: {0}".format("Screen 2: Down"))
     #
-    elif button is A2ElUp:
-        GroupElevat2A.SetCurrent(A2ElUp)
+    elif button is ABtnElevBUp:
+        GroupElevat2A.SetCurrent(ABtnElevBUp)
         Room2ElevatorUp()
         print("Touch 1: {0}".format("Elevator 2: Up"))
     #
-    elif button is A2ElDw:
-        GroupElevat2A.SetCurrent(A2ElDw)
+    elif button is ABtnElevBDown:
+        GroupElevat2A.SetCurrent(ABtnElevBDown)
         Room2ElevatorDown()
         print("Touch 1: {0}".format("Elevator 2: Down"))
     #
@@ -2772,27 +2725,27 @@ def ButtonObjectPressed(button, state):
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is Arecord:
+    if button is ABtnRecARecord:
         RecA.Set('Record','Start')
         print("Touch 1: {0}".format("SMP11-A: Rec"))
     #
-    elif button is Astop:
+    elif button is ABtnRecAStop:
         RecA.Set('Record','Stop')
         print("Touch 1: {0}".format("SMP11-A: Stop"))
     #
-    elif button is Apause:
+    elif button is ABtnRecAPause:
         RecA.Set('Record','Pause')
         print("Touch 1: {0}".format("SMP11-A: Pause"))
     #
-    elif button is A2record:
+    elif button is ABtnRecBRecord:
         RecB.Set('Record','Start')
         print("Touch 1: {0}".format("SMP11-B: Rec"))
     #
-    elif button is A2stop:
+    elif button is ABtnRecBStop:
         RecB.Set('Record','Stop')
         print("Touch 1: {0}".format("SMP11-B: Stop"))
     #
-    elif button is A2pause:
+    elif button is ABtnRecBPause:
         RecB.Set('Record','Pause')
         print("Touch 1: {0}".format("SMP11-B: Pause"))
     pass
@@ -2806,7 +2759,7 @@ def PrintDialerVC1(btn_name):
     if btn_name == 'Delete':           #If the user push 'Delete' button
         dialerVC = dialerVC[:-1]       #Remove the last char of the string
         Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
-        AVCDial.SetText(dialerVC)      #Send the string to GUI Label
+        ALblVC1Dial.SetText(dialerVC)      #Send the string to GUI Label
     else:                            #If the user push a [*#0-9] button
         number = str(btn_name[4])    #Extract the valid character of BTN name
         if Cisco1_Data['DTMF'] == True:
@@ -2817,7 +2770,7 @@ def PrintDialerVC1(btn_name):
         else:
             dialerVC += number           #Append the last char to the string
             Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
-            AVCDial.SetText(dialerVC)  #Send the string to GUI Label
+            ALblVC1Dial.SetText(dialerVC)  #Send the string to GUI Label
     pass
 
 ## This function is called when the user press a Dial Button
@@ -2837,44 +2790,44 @@ def vi_dial_events(button, state):
 def VC_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ACall:
+    if button is ABtnVC1Call:
         if Cisco1.ReadStatus('CallStatus', {'Call':'1'}) == 'Connected':
             Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
-            AVCDial.SetText('')
+            ALblVC1Dial.SetText('')
             dialerVC = ''
             print("Touch 1: {0}".format("Cisco1: Hangup"))
         else:
             Cisco1.Set('Hook', 'Dial', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
             print("Touch 1: {0}".format("Cisco1: Call"))
     #
-    elif button is ADTMF:
+    elif button is ABtnVC1DTMF:
         if Cisco1_Data['DTMF'] == False:
             Cisco1_Data['DTMF'] = True
             ADialDot.SetText('*')
-            ADTMF.SetState(1)
+            ABtnVC1DTMF.SetState(1)
             print("Touch 1: {0}".format("Cisco1: DTMF On"))
         else:
             Cisco1_Data['DTMF'] = False
             ADialDot.SetText('?')
-            ADTMF.SetState(0)
+            ABtnVC1DTMF.SetState(0)
             print("Touch 1: {0}".format("Cisco1: DTMF Off"))
     #
-    elif button is AContentOn:
-        GroupContentA.SetCurrent(AContentOn)
+    elif button is ABtnVC1ContenOn:
+        GroupContentA.SetCurrent(ABtnVC1ContenOn)
         Cisco1.Set('Presentation', '2', {'Instance': '1'})
         print("Touch 1: {0}".format("Cisco1: Content On"))
     #
-    elif button is AContentOff:
-        GroupContentA.SetCurrent(AContentOff)
+    elif button is ABtnVC1ContenOff:
+        GroupContentA.SetCurrent(ABtnVC1ContenOff)
         Cisco1.Set('Presentation', 'Stop', {'Instance': '1'})
         print("Touch 1: {0}".format("Cisco1: Content Off"))
     #
-    elif button is AAnswer1:
+    elif button is ABtnVC1Answer:
         TLP1.HidePopup('Cisco1.Call')
         Cisco1.Set('Hook', 'Accept', {'Number':'','Protocol': 'H323'})
         print("Touch 1: {0}".format("Cisco1: Answer"))
     #
-    elif button is ADiscard1:
+    elif button is ABtnVC1Reject:
         TLP1.HidePopup('Cisco1.Call')
         Cisco1.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
         print("Touch 1: {0}".format("Cisco1: Reject"))
@@ -2891,7 +2844,7 @@ def PrintDialerVC2(btn_name):
     if btn_name == 'Delete':         #If the user push 'Delete' button
         dialerVC2 = dialerVC2[:-1]     #Remove the last char of the string
         Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
-        A2VCDial.SetText(dialerVC2)  #Send the string to GUI Label
+        ALblVC2Dial.SetText(dialerVC2)  #Send the string to GUI Label
 
     else:                            #If the user push a [*#0-9] button
         number = str(btn_name[4])    #Extract the valid character of BTN name
@@ -2903,7 +2856,7 @@ def PrintDialerVC2(btn_name):
         else:
             dialerVC2 += number           #Append the last char to the string
             Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
-            A2VCDial.SetText(dialerVC2)  #Send the string to GUI Label
+            ALblVC2Dial.SetText(dialerVC2)  #Send the string to GUI Label
     pass
 
 @event(VC2Dial, ButtonEventList)
@@ -2922,44 +2875,44 @@ def VC2_dial_events(button, state):
 def VC_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is A2Call:
+    if button is ABtnVC2Call:
         if Cisco2.ReadStatus('CallStatus', {'Call':'1'}) == 'Connected':
             Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
-            A2VCDial.SetText('')
+            ALblVC2Dial.SetText('')
             dialerVC2 = ''
             print("Touch 1: {0}".format("Cisco2: Hangup"))
         else:
             Cisco2.Set('Hook', 'Dial', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
             print("Touch 1: {0}".format("Cisco2: Call"))
     #
-    elif button is A2DTMF:
+    elif button is ABtnVC2DTMF:
         if Cisco2_Data['DTMF'] == False:
             Cisco2_Data['DTMF'] = True
             A2DialDot.SetText('*')
-            A2DTMF.SetState(1)
+            ABtnVC2DTMF.SetState(1)
             print("Touch 1: {0}".format("Cisco2: DTMF On"))
         else:
             Cisco2_Data['DTMF'] = False
             A2DialDot.SetText('?')
-            A2DTMF.SetState(0)
+            ABtnVC2DTMF.SetState(0)
             print("Touch 1: {0}".format("Cisco2: DTMF Off"))
     #
-    elif button is A2ContentOn:
-        GroupContentB.SetCurrent(A2ContentOn)
+    elif button is ABtnVC2ContenOn:
+        GroupContentB.SetCurrent(ABtnVC2ContenOn)
         Cisco2.Set('Presentation', '2', {'Instance': '1'})
         print("Touch 1: {0}".format("Cisco2: Content On"))
     #
-    elif button is A2ContentOff:
-        GroupContentB.SetCurrent(A2ContentOff)
+    elif button is ABtnVC2ContenOff:
+        GroupContentB.SetCurrent(ABtnVC2ContenOff)
         Cisco2.Set('Presentation', 'Stop', {'Instance': '1'})
         print("Touch 1: {0}".format("Cisco2: Content Off"))
     #
-    elif button is AAnswer2:
+    elif button is ABtnVC2Answer:
         TLP1.HidePopup('Cisco2.Call')
         Cisco2.Set('Hook', 'Accept', {'Number':'','Protocol': 'H323'})
         print("Touch 1: {0}".format("Cisco2: Answer"))
     #
-    elif button is ADiscard2:
+    elif button is ABtnVC2Reject:
         TLP1.HidePopup('Cisco2.Call')
         Cisco2.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
         print("Touch 1: {0}".format("Cisco2: Reject"))
@@ -2986,7 +2939,7 @@ def PowerOffRoomA():
     RecA.Set('Record','Stop')
     # VC - VoIP Calls Hangup
     Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
-    AVCDial.SetText('')
+    ALblVC1Dial.SetText('')
     dialerVC = ''
     # VC Standby
     Cisco1.Set('Standby', 'Activate')
@@ -3013,7 +2966,7 @@ def PowerOffRoomB():
     RecB.Set('Record','Stop')
     # VC - VoIP Calls Hangup
     Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
-    A2VCDial.SetText('')
+    ALblVC2Dial.SetText('')
     dialerVC2 = ''
     # VC Standby
     Cisco2.Set('Standby', 'Activate')
@@ -3053,8 +3006,8 @@ def PowerOffRoomAB():
     # VC - VoIP Calls Hangup
     Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
     Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
-    AVCDial.SetText('')
-    A2VCDial.SetText('')
+    ALblVC1Dial.SetText('')
+    ALblVC2Dial.SetText('')
     dialerVC = ''
     dialerVC2 = ''
     # VC Standby
