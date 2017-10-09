@@ -72,6 +72,9 @@ Tesira = ModuleTesira.EthernetClass('172.16.241.100', 23, Model='Tesira SERVER-I
 #
 # Cameras
 PTZ1 = ModulePTZ.EthernetClass('172.16.240.15', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
+"""PTZ2 = ModulePTZ.EthernetClass('172.16.240.16', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
+PTZ3 = ModulePTZ.EthernetClass('172.16.240.17', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
+PTZ4 = ModulePTZ.EthernetClass('172.16.240.18', 52381, ServicePort=52381, Model='BRC-H800') ##UDP"""
 #
 # Videoconference Códecs
 Cisco1 = ModuleCisco.EthernetClass('172.16.240.87', 23, Model='SX20 CE8.2.X')
@@ -331,6 +334,12 @@ AInfoLCDPod2  = Button(TLP1, 325)
 
 APython       = Label(TLP1, 326)
 
+AInfoPTZ1     = Button(TLP1, 330)
+AInfoPTZ2     = Button(TLP1, 331)
+AInfoPTZ3     = Button(TLP1, 332)
+AInfoPTZ4     = Button(TLP1, 333)
+
+
 # Mode VC ----------------------------------------------------------------------
 # Cisco 1 ---------------------
 ADial0      = Button(TLP1, 2130)
@@ -349,7 +358,7 @@ ADialDelete = Button(TLP1, 2144, repeatTime=0.1)
 # Dialer
 
 # Call
-AHangup     = Button(TLP1, 2142)
+ADTMF       = Button(TLP1, 2142)
 ACall       = Button(TLP1, 2143)
 
 # Answer
@@ -381,7 +390,7 @@ A2DialDelete = Button(TLP1, 2114, repeatTime=0.1)
 # Dialer
 
 # Call
-A2Hangup     = Button(TLP1, 2112)
+A2DTMF       = Button(TLP1, 2112)
 A2Call       = Button(TLP1, 2113)
 
 # Answer
@@ -465,11 +474,11 @@ GroupRecB = MESet([A2record, A2stop, A2pause])
 
 # Mode Videoconference
 VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
-VCButtons = [ACall, AHangup, AContentOn, AContentOff, AAnswer1, ADiscard1]
+VCButtons = [ACall, ADTMF, AContentOn, AContentOff, AAnswer1, ADiscard1]
 GroupContentA = MESet([AContentOn, AContentOff])
 #
 VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial7, A2Dial8, A2Dial9, A2DialDot, A2DialHash, A2DialDelete]
-VC2Buttons = [A2Call, A2Hangup, A2ContentOn, A2ContentOff, AAnswer2, ADiscard2]
+VC2Buttons = [A2Call, A2DTMF, A2ContentOn, A2ContentOff, AAnswer2, ADiscard2]
 GroupContentB = MESet([A2ContentOn, A2ContentOff])
 
 # Button State List
@@ -501,6 +510,8 @@ def Initialize():
     #
     Cisco1.Connect(timeout = 5)
     Cisco2.Connect(timeout = 5)
+    #
+    PTZ1.Connect(timeout = 5)
     
     ## XTP Matrix Data Init
     global output
@@ -595,22 +606,16 @@ Projector_B_Queue = collections.deque(PROJECTOR_B_QUERY_LIST)
 
 CISCO1_QUERY_LIST = [
     ('Presentation', {'Instance':'1'}),
-    ('PresentationMode', None),
     ('CallStatus', {'Call':'1'}),
-    ('CallStatusType', {'Call':'1'}),
     ('DisplayName', {'Call':'1'}),
-    ('IPAddress', None),
     ('RemoteNumber', {'Call':'1'}),
 ]
 Cisco1_Queue = collections.deque(CISCO1_QUERY_LIST)
 
 CISCO2_QUERY_LIST = [
     ('Presentation', {'Instance':'1'}),
-    ('PresentationMode', None),
     ('CallStatus', {'Call':'1'}),
-    ('CallStatusType', {'Call':'1'}),
     ('DisplayName', {'Call':'1'}),
-    ('IPAddress', None),
     ('RemoteNumber', {'Call':'1'}),
 ]
 Cisco2_Queue = collections.deque(CISCO2_QUERY_LIST)
@@ -676,6 +681,11 @@ LCDPod2_QUERY_LIST = [
     ('Power', None),
 ]
 LCDPod2_Queue = collections.deque(LCDPod2_QUERY_LIST)
+
+PTZ1_QUERY_LIST = [
+    ('Power', None),
+]
+PTZ1_Queue = collections.deque(PTZ1_QUERY_LIST)
 
 # RECONEX / QUERY RECALL ------------------------------------------------------
 # This is a recursive function to send Query Command to Device certain time
@@ -822,6 +832,15 @@ def QueryLCDPod2():
     LCDPod2_PollingWait.Restart()
     #
 LCDPod2_PollingWait = Wait(5, QueryLCDPod2)
+
+def QueryPTZ1():
+    """This send Query commands to device every 03.s"""
+    #
+    PTZ1.Update(*PTZ1_Queue[0])
+    PTZ1_Queue.rotate(-1)
+    PTZ1_PollingWait.Restart()
+    #
+PTZ1_PollingWait = Wait(5, QueryPTZ1)
 
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Try to connect automatically a Device
@@ -1000,6 +1019,17 @@ def AttemptConnectLCDPod2():
         reconnectWaitLCDPod2.Restart()
     pass
 reconnectWaitLCDPod2 = Wait(15, AttemptConnectLCDPod2)
+
+def AttemptConnectPTZ1():
+    """Attempt to create a TCP connection to the PTZ1
+       IF it fails, retry in 15 seconds
+    """
+    print('Attempting to connect PTZ1')
+    result = PTZ1.Connect(timeout=5)
+    if result != 'Connected':
+        reconnectWaitPTZ1.Restart()
+    pass
+reconnectWaitPTZ1 = Wait(15, AttemptConnectPTZ1)
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Functions parse the Incoming Data of every Device
 def ReceiveXTP(command, value, qualifier):
@@ -1312,25 +1342,25 @@ def ReceiveCisco1(command, value, qualifier):
         elif value == 'Stop':
             GroupContentA.SetCurrent(AContentOff)
     #
-    elif command == 'PresentationMode':
-        print('--- Parsing Cisco 1: (PresentationMode ' +  value + ' )')
-    #
     elif command == 'CallStatus':
-        print('--- Parsing Cisco 1: (CallStatus ' +  value + ' )')
+        print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
+        #
         if value == 'Ringing':
             TLP1.ShowPopup('Cisco1.Call')
         else:
             TLP1.HidePopup('Cisco1.Call')
-    #
-    elif command == 'CallStatusType':
-        print('--- Parsing Cisco 1: (CallStatusType ' +  value + ' )')
+        #
+        if value == 'Idle' or value == 'Disconnecting':
+            ACall.SetState(0)
+            ACall.SetText('Llamar')
+        #
+        elif value == 'Connected' or value == 'Connecting':
+            ACall.SetState(1)
+            ACall.SetText('Colgar')
     #
     elif command == 'DisplayName':
         print('--- Parsing Cisco 1: (DisplayName ' +  value + ' )')
         AVCRemote.SetText(value)
-    #
-    elif command == 'IPAddress':
-        print('--- Parsing Cisco 1: (IPAddress ' +  value + ' )')
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 1: (RemoteNumber ' +  value + ' )')
@@ -1361,25 +1391,25 @@ def ReceiveCisco2(command, value, qualifier):
         elif value == 'Stop':
             GroupContentB.SetCurrent(A2ContentOff)
     #
-    elif command == 'PresentationMode':
-        print('--- Parsing Cisco 2: (PresentationMode ' +  value + ' )')
-    #
     elif command == 'CallStatus':
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
+        #
         if value == 'Ringing':
             TLP1.ShowPopup('Cisco2.Call')
         else:
             TLP1.HidePopup('Cisco2.Call')
-    #
-    elif command == 'CallStatusType':
-        print('--- Parsing Cisco 2: (CallStatusType ' +  value + ' )')
+        #
+        if value == 'Idle' or value == 'Disconnecting':
+            A2Call.SetState(0)
+            A2Call.SetText('Llamar')
+        #
+        elif value == 'Connected' or value == 'Connecting':
+            A2Call.SetState(1)
+            A2Call.SetText('Colgar')
     #
     elif command == 'DisplayName':
         print('--- Parsing Cisco 2: (DisplayName ' +  value + ' )')
         A2VCRemote.SetText(value)
-    #
-    elif command == 'IPAddress':
-        print('--- Parsing Cisco 2: (IPAddress ' +  value + ' )')
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 2: (RemoteNumber ' +  value + ' )')
@@ -1693,6 +1723,30 @@ def ReceiveLCDPod2(command, value, qualifier):
             ALCDPodium2.SetState(0)
     pass
 
+def ReceivePTZ1(command, value, qualifier):
+    """If the module´s ConnectionStatus becomes Disconnected, then many
+       consecutive Updates have failed to receive a response from the device.
+       Attempt to re-stablish the TCP connection to the device by calling
+       Disconnect on the module instance and restarting reconnectWait
+    """
+    if command == 'ConnectionStatus':
+        print('Module PTZ1: ' + value)
+        #
+        if value == 'Disconnected':
+            ## Recall the Re-Connection Routines
+            PTZ1.Disconnect()
+            reconnectWaitPTZ1.Restart()
+            AInfoPTZ1.SetState(0)
+        else:
+            AInfoPTZ1.SetState(1)
+    #
+    elif command == 'Power':
+        print('--- Parsing PTZ1: (Power ' +  value + ' )')
+        #if value == 'On':
+            #ALCDPodium2.SetState(1)
+        #else:
+            #ALCDPodium2.SetState(0)
+    pass
 # RECONEX / SUBSCRIPTIONS ------------------------------------------
 # This Commands make a real data mach from Device to Processor
 def SubscribeXTP():
@@ -1865,6 +1919,12 @@ def SubscribePod2():
     LCDPod2.SubscribeStatus('Power', None, ReceiveLCDPod2)
     pass
 SubscribePod2()
+
+def SubscribePTZ1():
+    PTZ1.SubscribeStatus('ConnectionStatus', None, ReceivePTZ1)
+    PTZ1.SubscribeStatus('Power', None, ReceivePTZ1)
+    pass
+SubscribePTZ1()
 # RECONEX / SOCKET ------------------------------------------
 # This reports a physical connection socket of every Device
 @event(XTP, 'Disconnected')
@@ -2105,6 +2165,20 @@ def LCDPod2_PhysicalConex(interface, state):
         AInfoLCDPod2.SetState(0)
         print('Socket Disconnected: LCD Pod2')
     pass
+@event(PTZ1, 'Disconnected')
+@event(PTZ1, 'Connected')
+def PTZ1_PhysicalConex(interface, state):
+    """If the TCP Connection has been established physically, stop attempting
+       reconnects. This can be triggered by the initial TCP connect attempt in
+       the Initialize function or from the connection attemps from
+       AttemptConnectProjector"""
+    if state == 'Connected':
+        AInfoPTZ1.SetState(1)
+        reconnectWaitPTZ1.Cancel()
+    else:
+        AInfoPTZ1.SetState(0)
+        print('Socket Disconnected: PTZ1')
+    pass
 # DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store general information
 ## Room
@@ -2113,10 +2187,12 @@ Room_Data = {
 }
 ## IP
 Cisco1_Data = {
+    'DTMF' : False,
     'Dial' : None,
 }
 
 Cisco2_Data = {
+    'DTMF' : False,
     'Dial' : None,
 }
 
@@ -2840,12 +2916,17 @@ def PrintDialerVC1(btn_name):
         dialerVC = dialerVC[:-1]       #Remove the last char of the string
         Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
         AVCDial.SetText(dialerVC)      #Send the string to GUI Label
-
-    else:                              #If the user push a [*#0-9] button
-        number = str(btn_name[4])      #Extract the valid character of BTN name
-        dialerVC += number             #Append the last char to the string
-        Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
-        AVCDial.SetText(dialerVC)      #Send the string to GUI Label
+    else:                            #If the user push a [*#0-9] button
+        number = str(btn_name[4])    #Extract the valid character of BTN name
+        if Cisco1_Data['DTMF'] == True:
+            if number == '.':
+                Cisco1.Set('DTMF', '*')
+            else:
+                Cisco1.Set('DTMF', number)
+        else:
+            dialerVC += number           #Append the last char to the string
+            Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
+            AVCDial.SetText(dialerVC)  #Send the string to GUI Label
     pass
 
 ## This function is called when the user press a Dial Button
@@ -2866,16 +2947,26 @@ def VC_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
     if button is ACall:
-        Cisco1.Set('Hook', 'Dial', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
-        print("Touch 1: {0}".format("Cisco1: Call"))
-    #
-    elif button is AHangup:
-        if Cisco1.ReadStatus('CallStatus', {'Call':'1'}) == 'Idle':
-            pint('XD')
-        else:
+        if Cisco1.ReadStatus('CallStatus', {'Call':'1'}) == 'Connected':
             Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
             AVCDial.SetText('')
+            dialerVC = ''
             print("Touch 1: {0}".format("Cisco1: Hangup"))
+        else:
+            Cisco1.Set('Hook', 'Dial', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
+            print("Touch 1: {0}".format("Cisco1: Call"))
+    #
+    elif button is ADTMF:
+        if Cisco1_Data['DTMF'] == False:
+            Cisco1_Data['DTMF'] = True
+            ADialDot.SetText('*')
+            ADTMF.SetState(1)
+            print("Touch 1: {0}".format("Cisco1: DTMF On"))
+        else:
+            Cisco1_Data['DTMF'] = False
+            ADialDot.SetText('?')
+            ADTMF.SetState(0)
+            print("Touch 1: {0}".format("Cisco1: DTMF Off"))
     #
     elif button is AContentOn:
         GroupContentA.SetCurrent(AContentOn)
@@ -2913,9 +3004,15 @@ def PrintDialerVC2(btn_name):
 
     else:                            #If the user push a [*#0-9] button
         number = str(btn_name[4])    #Extract the valid character of BTN name
-        dialerVC2 += number           #Append the last char to the string
-        Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
-        A2VCDial.SetText(dialerVC2)  #Send the string to GUI Label
+        if Cisco2_Data['DTMF'] == True:
+            if number == '.':
+                Cisco2.Set('DTMF', '*')
+            else:
+                Cisco2.Set('DTMF', number)
+        else:
+            dialerVC2 += number           #Append the last char to the string
+            Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
+            A2VCDial.SetText(dialerVC2)  #Send the string to GUI Label
     pass
 
 @event(VC2Dial, ButtonEventList)
@@ -2935,16 +3032,26 @@ def VC_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
     if button is A2Call:
-        Cisco2.Set('Hook', 'Dial', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
-        print("Touch 1: {0}".format("Cisco2: Call"))
-    #
-    elif button is A2Hangup:
-        if Cisco2.ReadStatus('CallStatus', {'Call':'1'}) == 'Idle':
-            pint('XD')
-        else:
+        if Cisco2.ReadStatus('CallStatus', {'Call':'1'}) == 'Connected':
             Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
             A2VCDial.SetText('')
+            dialerVC2 = ''
             print("Touch 1: {0}".format("Cisco2: Hangup"))
+        else:
+            Cisco2.Set('Hook', 'Dial', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
+            print("Touch 1: {0}".format("Cisco2: Call"))
+    #
+    elif button is A2DTMF:
+        if Cisco2_Data['DTMF'] == False:
+            Cisco2_Data['DTMF'] = True
+            A2DialDot.SetText('*')
+            A2DTMF.SetState(1)
+            print("Touch 1: {0}".format("Cisco2: DTMF On"))
+        else:
+            Cisco2_Data['DTMF'] = False
+            A2DialDot.SetText('?')
+            A2DTMF.SetState(0)
+            print("Touch 1: {0}".format("Cisco2: DTMF Off"))
     #
     elif button is A2ContentOn:
         GroupContentB.SetCurrent(A2ContentOn)
