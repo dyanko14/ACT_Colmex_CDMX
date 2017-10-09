@@ -15,19 +15,13 @@ from extronlib.interface import (ContactInterface, DigitalIOInterface, \
 from extronlib.ui import Button, Knob, Label, Level
 from extronlib.system import Clock, MESet, Wait
 import collections
-
+#
 print(Version())
-
-## End ControlScript Import ----------------------------------------------------
-##
-## Begin Device/Processor Definition -------------------------------------------
+# CONTROLLERS ------------------------------------------------------------------
 IPCP = ProcessorDevice('IPCP550')
-## End Device/Processor Definition ---------------------------------------------
-##
-## Begin Device/User Interface Definition --------------------------------------
+# USER INTERFACES --------------------------------------------------------------
 TLP1 = UIDevice('TouchPanelA')
 TLP2 = UIDevice('TouchPanelB')
-## Begin User Import -----------------------------------------------------------
 # MODULES-----------------------------------------------------------------------
 ## IP
 import extr_matrix_XTPIICrossPointSeries_v1_1_1_1 as ModuleXTP
@@ -35,13 +29,12 @@ import chri_vp_D13HDHS_D13WUHS_v1_0_2_0           as ModuleChristie
 import extr_sm_SMP_111_v1_1_0_0                   as ModuleSMP111
 import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as ModuleSamsung
 import biam_dsp_TesiraSeries_v1_5_20_0            as ModuleTesira
-import sony_camera_BRC_H800_X1000_v1_0_0_0        as ModulePTZ
 import csco_vtc_SX_Series_CE82_v1_1_0_2           as ModuleCisco
 
 ##
 # MODULE TO DEVICE INSTANCES ---------------------------------------------------
 # Video Server
-XTP   = ModuleXTP.EthernetClass('172.16.241.5', 23, Model='XTP II CrossPoint 3200')
+XTP = ModuleXTP.EthernetClass('172.16.241.5', 23, Model='XTP II CrossPoint 3200')
 XTP.devicePassword = 'SWExtronXTP'
 #
 # Projectors
@@ -49,10 +42,10 @@ ProjA = ModuleChristie.EthernetClass('172.16.240.201', 3002, Model='D13WU-HS')
 ProjB = ModuleChristie.EthernetClass('172.16.240.200', 3002, Model='D13WU-HS')
 #
 # Recorders
-RecA  = ModuleSMP111.EthernetClass('172.16.241.6', 23, Model='SMP 111')
+RecA = ModuleSMP111.EthernetClass('172.16.241.6', 23, Model='SMP 111')
 RecA.devicePassword = 'R3cSala1'
 #
-RecB  = ModuleSMP111.EthernetClass('172.16.241.7', 23, Model='SMP 111')
+RecB = ModuleSMP111.EthernetClass('172.16.241.7', 23, Model='SMP 111')
 RecB.devicePassword = 'R3cSala2'
 #
 # Displays
@@ -70,21 +63,15 @@ LCDLob2 = ModuleSamsung.EthernetClass('172.16.241.31', 1515, Model='LH55QMFPLGC/
 # Audio Server
 Tesira = ModuleTesira.EthernetClass('172.16.241.100', 23, Model='Tesira SERVER-IO')
 #
-# Cameras
-PTZ1 = ModulePTZ.EthernetClass('172.16.240.15', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
-"""PTZ2 = ModulePTZ.EthernetClass('172.16.240.16', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
-PTZ3 = ModulePTZ.EthernetClass('172.16.240.17', 52381, ServicePort=52381, Model='BRC-H800') ##UDP
-PTZ4 = ModulePTZ.EthernetClass('172.16.240.18', 52381, ServicePort=52381, Model='BRC-H800') ##UDP"""
-#
 # Videoconference Códecs
 Cisco1 = ModuleCisco.EthernetClass('172.16.240.87', 23, Model='SX20 CE8.2.X')
-Cisco1.deviceUsername = 'admin'
+Cisco1.deviceUsername ='admin'
 Cisco1.devicePassword = 'auditc0lm3xS1'
 #
 Cisco2 = ModuleCisco.EthernetClass('172.16.240.88', 23, Model='SX20 CE8.2.X')
 Cisco2.deviceUsername = 'admin'
 Cisco2.devicePassword = 'auditc0lm3xS2'
-
+#
 # DEVICES INTERFACES -----------------------------------------------------------
 #
 # 12v Power Interface
@@ -103,11 +90,6 @@ A2ScreenDw = RelayInterface(IPCP, 'RLY2')
 A2ElevatUp = RelayInterface(IPCP, 'RLY5')
 A2ElevatDw = RelayInterface(IPCP, 'RLY6')
 ##
-## End User Import -------------------------------------------------------------
-
-## End Device/User Interface Definition ----------------------------------------
-##
-## Begin Communication Interface Definition ------------------------------------
 # BUTTONS DEFINITION -----------------------------------------------------------
 # TouchPanel A -----------------------------------------------------------------
 # Mode Index -------------------------------------------------------------------
@@ -295,51 +277,6 @@ A2RecMode    = Label(TLP1, 77)
 A2RecDisk    = Label(TLP1, 78)
 A2RecHDCP    = Label(TLP1, 79)
 
-# Mode Status ------------------------------------------------------------------
-AInfoXTP     = Button(TLP1, 300)
-
-AInfoTesira  = Button(TLP1, 301)
-
-AInfoProjA   = Button(TLP1, 302)
-AInfo2ProjA  = Label(TLP1, 303)
-AInfo3ProjA  = Label(TLP1, 304)
-
-AInfoProjB   = Button(TLP1, 305)
-AInfo2ProjB  = Label(TLP1, 306)
-AInfo3ProjB  = Label(TLP1, 307)
-
-AInfoLCDCab1 = Button(TLP1, 308)
-AInfoLCDCab2 = Button(TLP1, 309)
-AInfoLCDCab3 = Button(TLP1, 310)
-AInfoLCDCab4 = Button(TLP1, 311)
-
-AInfoCisco   = Button(TLP1, 312)
-AInfo2Cisco  = Button(TLP1, 313)
-AInfo2Cisco  = Button(TLP1, 314)
-
-AInfoCisco2   = Button(TLP1, 315)
-AInfo2Cisco2  = Button(TLP1, 316)
-AInfo2Cisco2  = Button(TLP1, 317)
-
-AInfoRecA     = Button(TLP1, 318)
-AInfo2RecA    = Button(TLP1, 319)
-AInfoRecB     = Button(TLP1, 320)
-AInfo2RecB    = Button(TLP1, 321)
-
-AInfoLCDLob1  = Button(TLP1, 322)
-AInfoLCDLob2  = Button(TLP1, 323)
-
-AInfoLCDPod1  = Button(TLP1, 324)
-AInfoLCDPod2  = Button(TLP1, 325)
-
-APython       = Label(TLP1, 326)
-
-AInfoPTZ1     = Button(TLP1, 330)
-AInfoPTZ2     = Button(TLP1, 331)
-AInfoPTZ3     = Button(TLP1, 332)
-AInfoPTZ4     = Button(TLP1, 333)
-
-
 # Mode VC ----------------------------------------------------------------------
 # Cisco 1 ---------------------
 ADial0      = Button(TLP1, 2130)
@@ -404,6 +341,52 @@ A2ContentOff = Button(TLP1, 2116)
 # Label
 A2VCDial     = Label(TLP1, 2117)
 A2VCRemote   = Label(TLP1, 2118)
+
+# Mode Status ------------------------------------------------------------------
+AInfoXTP     = Button(TLP1, 300)
+
+AInfoTesira  = Button(TLP1, 301)
+
+AInfoProjA   = Button(TLP1, 302)
+AInfo2ProjA  = Label(TLP1, 303)
+AInfo3ProjA  = Label(TLP1, 304)
+
+AInfoProjB   = Button(TLP1, 305)
+AInfo2ProjB  = Label(TLP1, 306)
+AInfo3ProjB  = Label(TLP1, 307)
+
+AInfoLCDCab1 = Button(TLP1, 308)
+AInfoLCDCab2 = Button(TLP1, 309)
+AInfoLCDCab3 = Button(TLP1, 310)
+AInfoLCDCab4 = Button(TLP1, 311)
+
+AInfoCisco   = Button(TLP1, 312)
+AInfo2Cisco  = Button(TLP1, 313)
+
+AInfoCisco2   = Button(TLP1, 315)
+AInfo2Cisco2  = Button(TLP1, 316)
+
+AInfoRecA     = Button(TLP1, 318)
+AInfo2RecA    = Button(TLP1, 319)
+AInfoRecB     = Button(TLP1, 320)
+AInfo2RecB    = Button(TLP1, 321)
+
+AInfoLCDLob1  = Button(TLP1, 322)
+AInfoLCDLob2  = Button(TLP1, 323)
+
+AInfoLCDPod1  = Button(TLP1, 324)
+AInfoLCDPod2  = Button(TLP1, 325)
+
+APython       = Label(TLP1, 326)
+
+
+# Mode PowerOff ------------------------------------------------------------------
+ABtnPowerAB   = Button(TLP1, 420)
+ABtnPowerA    = Button(TLP1, 421)
+ABtnPowerB    = Button(TLP1, 422)
+
+
+
 
 # TouchPanel B -----------------------------------------------------------------
 ## Index
@@ -481,6 +464,9 @@ VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial
 VC2Buttons = [A2Call, A2DTMF, A2ContentOn, A2ContentOff, AAnswer2, ADiscard2]
 GroupContentB = MESet([A2ContentOn, A2ContentOff])
 
+# Mode PowerOff
+GroupPower = [ABtnPowerA, ABtnPowerB, ABtnPowerAB]
+
 # Button State List
 ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 ## End Communication Interface Definition --------------------------------------
@@ -510,8 +496,6 @@ def Initialize():
     #
     Cisco1.Connect(timeout = 5)
     Cisco2.Connect(timeout = 5)
-    #
-    PTZ1.Connect(timeout = 5)
     
     ## XTP Matrix Data Init
     global output
@@ -535,7 +519,7 @@ def Initialize():
     SWPowerPort3.SetState('On')
     SWPowerPort4.SetState('On')
 
-    ## Audio Routing
+    ## Audio Routing (XTP HDMI Matrix to Tesira Server I/O)
     ## XTP Input Slot 1
     XTP.Set('MatrixTieCommand', None, {'Input':'1', 'Output':'9', 'Tie Type':'Audio'})
     XTP.Set('MatrixTieCommand', None, {'Input':'2', 'Output':'10', 'Tie Type':'Audio'})
@@ -682,11 +666,6 @@ LCDPod2_QUERY_LIST = [
 ]
 LCDPod2_Queue = collections.deque(LCDPod2_QUERY_LIST)
 
-PTZ1_QUERY_LIST = [
-    ('Power', None),
-]
-PTZ1_Queue = collections.deque(PTZ1_QUERY_LIST)
-
 # RECONEX / QUERY RECALL ------------------------------------------------------
 # This is a recursive function to send Query Command to Device certain time
 def QueryXTP():
@@ -832,15 +811,6 @@ def QueryLCDPod2():
     LCDPod2_PollingWait.Restart()
     #
 LCDPod2_PollingWait = Wait(5, QueryLCDPod2)
-
-def QueryPTZ1():
-    """This send Query commands to device every 03.s"""
-    #
-    PTZ1.Update(*PTZ1_Queue[0])
-    PTZ1_Queue.rotate(-1)
-    PTZ1_PollingWait.Restart()
-    #
-PTZ1_PollingWait = Wait(5, QueryPTZ1)
 
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Try to connect automatically a Device
@@ -1020,16 +990,6 @@ def AttemptConnectLCDPod2():
     pass
 reconnectWaitLCDPod2 = Wait(15, AttemptConnectLCDPod2)
 
-def AttemptConnectPTZ1():
-    """Attempt to create a TCP connection to the PTZ1
-       IF it fails, retry in 15 seconds
-    """
-    print('Attempting to connect PTZ1')
-    result = PTZ1.Connect(timeout=5)
-    if result != 'Connected':
-        reconnectWaitPTZ1.Restart()
-    pass
-reconnectWaitPTZ1 = Wait(15, AttemptConnectPTZ1)
 # RECONEX / TCP CONNECTIONS HANDLING ------------------------------------------
 # This Functions parse the Incoming Data of every Device
 def ReceiveXTP(command, value, qualifier):
@@ -1335,7 +1295,6 @@ def ReceiveCisco1(command, value, qualifier):
             AInfoCisco.SetState(1)
     #
     elif command == 'Presentation':
-        AInfo2Cisco.SetText(value)
         print('--- Parsing Cisco 1: (Presentation ' +  value + ' )')
         if value == '2':
             GroupContentA.SetCurrent(AContentOn)
@@ -1344,6 +1303,7 @@ def ReceiveCisco1(command, value, qualifier):
     #
     elif command == 'CallStatus':
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
+        AInfo2Cisco.SetText(value)
         #
         if value == 'Ringing':
             TLP1.ShowPopup('Cisco1.Call')
@@ -1384,7 +1344,6 @@ def ReceiveCisco2(command, value, qualifier):
             AInfoCisco2.SetState(1)
     #
     elif command == 'Presentation':
-        AInfo2Cisco.SetText(value)
         print('--- Parsing Cisco 2: (Presentation ' +  value + ' )')
         if value == '2':
             GroupContentB.SetCurrent(A2ContentOn)
@@ -1392,6 +1351,7 @@ def ReceiveCisco2(command, value, qualifier):
             GroupContentB.SetCurrent(A2ContentOff)
     #
     elif command == 'CallStatus':
+        AInfo2Cisco2.SetText(value)
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
         #
         if value == 'Ringing':
@@ -1723,30 +1683,6 @@ def ReceiveLCDPod2(command, value, qualifier):
             ALCDPodium2.SetState(0)
     pass
 
-def ReceivePTZ1(command, value, qualifier):
-    """If the module´s ConnectionStatus becomes Disconnected, then many
-       consecutive Updates have failed to receive a response from the device.
-       Attempt to re-stablish the TCP connection to the device by calling
-       Disconnect on the module instance and restarting reconnectWait
-    """
-    if command == 'ConnectionStatus':
-        print('Module PTZ1: ' + value)
-        #
-        if value == 'Disconnected':
-            ## Recall the Re-Connection Routines
-            PTZ1.Disconnect()
-            reconnectWaitPTZ1.Restart()
-            AInfoPTZ1.SetState(0)
-        else:
-            AInfoPTZ1.SetState(1)
-    #
-    elif command == 'Power':
-        print('--- Parsing PTZ1: (Power ' +  value + ' )')
-        #if value == 'On':
-            #ALCDPodium2.SetState(1)
-        #else:
-            #ALCDPodium2.SetState(0)
-    pass
 # RECONEX / SUBSCRIPTIONS ------------------------------------------
 # This Commands make a real data mach from Device to Processor
 def SubscribeXTP():
@@ -1920,11 +1856,6 @@ def SubscribePod2():
     pass
 SubscribePod2()
 
-def SubscribePTZ1():
-    PTZ1.SubscribeStatus('ConnectionStatus', None, ReceivePTZ1)
-    PTZ1.SubscribeStatus('Power', None, ReceivePTZ1)
-    pass
-SubscribePTZ1()
 # RECONEX / SOCKET ------------------------------------------
 # This reports a physical connection socket of every Device
 @event(XTP, 'Disconnected')
@@ -2165,20 +2096,7 @@ def LCDPod2_PhysicalConex(interface, state):
         AInfoLCDPod2.SetState(0)
         print('Socket Disconnected: LCD Pod2')
     pass
-@event(PTZ1, 'Disconnected')
-@event(PTZ1, 'Connected')
-def PTZ1_PhysicalConex(interface, state):
-    """If the TCP Connection has been established physically, stop attempting
-       reconnects. This can be triggered by the initial TCP connect attempt in
-       the Initialize function or from the connection attemps from
-       AttemptConnectProjector"""
-    if state == 'Connected':
-        AInfoPTZ1.SetState(1)
-        reconnectWaitPTZ1.Cancel()
-    else:
-        AInfoPTZ1.SetState(0)
-        print('Socket Disconnected: PTZ1')
-    pass
+
 # DATA DICTIONARIES ------------------------------------------------------------
 ## Each dictionary store general information
 ## Room
@@ -2311,38 +2229,11 @@ def FullMain(button, state):
         elif button is ABtnPower:
             ALblMain.SetText('Apagar Sistema')
             print("Touch 1: {0}".format("Mode PowerAll"))
-
-    elif button.Host.DeviceAlias == 'TouchPanelB':
-        TLP2.HideAllPopups()
-        if button is BBtnRoom:
-            TLP2.ShowPopup('Room')
-            print("Touch 2: {0}".format("Mode Room"))
-        #
-        elif button is BBtnSwitch:
-            TLP2.ShowPopup('Full.Outputs')
-            print("Touch 2: {0}".format("Mode Switching"))
-        #
-        elif button is BBtnDisplay:
-            TLP2.ShowPopup('Full.Displays')
-            print("Touch 2: {0}".format("Mode Display"))
-        #
-        elif button is BBtnVC:
-            TLP2.ShowPopup('Full.VC')
-            print("Touch 2: {0}".format("Mode VideoConferencia"))
-        #
-        elif button is BBtnAudio:
-            print("Touch 2: {0}".format("Mode Audio"))
-        #
-        elif button is BBtnREC:
-            TLP2.ShowPopup('Full.Rec')
-            print("Touch 2: {0}".format("Mode REC"))
-        #
-        elif button is BBtnInfo:
-            TLP2.ShowPopup('Full.Info')
-            print("Touch 2: {0}".format("Mode Info"))
-        #
-        elif button is BBtnPower:
-            print("Touch 2: {0}".format("Mode PowerAll"))
+            #
+            if GroupRoom.GetCurrent() == ARoomMixed:
+                TLP1.ShowPopup('Split.PowerAB')
+            else:
+                TLP1.ShowPopup('Split.PowerA')
     pass
 
 # ACTIONS - MATRIX TIE INFO FUNCTIONS ------------------------------------------
@@ -3072,6 +2963,121 @@ def VC_Mode(button, state):
         TLP1.HidePopup('Cisco2.Call')
         Cisco2.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
         print("Touch 1: {0}".format("Cisco2: Reject"))
+    pass
+
+
+# ACTIONS - POWER MODE ---------------------------------------------------------
+def PowerOffRoomA():
+    """This Shutdown all controllable devices of Room A"""
+    # Projection A
+    ProjA.Set('Power','Off')
+    Room1ElevatorUp()
+    Room1ScreenUp()
+    # Monitors
+    LCDCab3.Set('Power','Off')
+    LCDCab4.Set('Power','Off')
+    LCDLob1.Set('Power','Off')
+    LCDPod1.Set('Power','Off')
+    Monitor1.PlayContinuous('POWER')
+    Monitor1.Stop()
+    # VC Content Off
+    Cisco1.Set('Presentation', 'Stop', {'Instance': '1'})
+    # Recorder Stop
+    RecA.Set('Record','Stop')
+    # VC - VoIP Calls Hangup
+    Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
+    AVCDial.SetText('')
+    dialerVC = ''
+    # VC Standby
+    Cisco1.Set('Standby', 'Activate')
+    # TouchPanel Actions
+    TLP1.ShowPage('Index')
+    pass
+
+def PowerOffRoomB():
+    """This Shutdown all controllable devices of Room B"""
+    # Projection B
+    ProjB.Set('Power','Off')
+    Room2ElevatorUp()
+    Room2ScreenUp()
+    # Monitors
+    LCDCab1.Set('Power','Off')
+    LCDCab2.Set('Power','Off')
+    LCDLob2.Set('Power','Off')
+    LCDPod2.Set('Power','Off')
+    Monitor2.PlayContinuous('POWER')
+    Monitor2.Stop()
+    # VC Content Off
+    Cisco2.Set('Presentation', 'Stop', {'Instance': '1'})
+    # Recorder Stop
+    RecB.Set('Record','Stop')
+    # VC - VoIP Calls Hangup
+    Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
+    A2VCDial.SetText('')
+    dialerVC2 = ''
+    # VC Standby
+    Cisco2.Set('Standby', 'Activate')
+    # TouchPanel Actions
+    TLP2.ShowPage('Index')
+    pass
+
+def PowerOffRoomAB():
+    """This Shutdown all controllable devices of Room B"""
+    # Projection A
+    ProjA.Set('Power','Off')
+    ProjB.Set('Power','Off')
+    Room1ElevatorUp()
+    Room2ElevatorUp()
+    Room1ScreenUp()
+    Room2ScreenUp()
+    # Monitors
+    LCDCab3.Set('Power','Off')
+    LCDCab4.Set('Power','Off')
+    LCDLob1.Set('Power','Off')
+    LCDPod1.Set('Power','Off')
+    Monitor1.PlayContinuous('POWER')
+    Monitor1.Stop()
+    #
+    LCDCab1.Set('Power','Off')
+    LCDCab2.Set('Power','Off')
+    LCDLob2.Set('Power','Off')
+    LCDPod2.Set('Power','Off')
+    Monitor2.PlayContinuous('POWER')
+    Monitor2.Stop()
+    # VC Content Off
+    Cisco1.Set('Presentation', 'Stop', {'Instance': '1'})
+    Cisco2.Set('Presentation', 'Stop', {'Instance': '1'})
+    # Recorder Stop
+    RecA.Set('Record','Stop')
+    RecB.Set('Record','Stop')
+    # VC - VoIP Calls Hangup
+    Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
+    Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
+    AVCDial.SetText('')
+    A2VCDial.SetText('')
+    dialerVC = ''
+    dialerVC2 = ''
+    # VC Standby
+    Cisco1.Set('Standby', 'Activate')
+    Cisco2.Set('Standby', 'Activate')
+    # TouchPanel Actions
+    TLP1.ShowPage('Index')
+    TLP2.ShowPage('Index')
+    pass
+
+@event(GroupPower, 'Pressed')
+def PowerOff_Mode(button, state):
+    """Are actions that occur with user interaction with TouchPanel"""
+    #
+    if button is ABtnPowerA:
+        PowerOffRoomA()
+        print("Touch 1: {0}".format("PowerOff: Sala A"))
+    elif button is ABtnPowerB:
+        #PowerOffRoomB()
+        print("Touch 1: {0}".format("PowerOff: Sala B"))
+    elif button is ABtnPowerAB:
+        #PowerOffRoomAB()
+        print("Touch 1: {0}".format("PowerOff: Sala A-B"))
     pass
 ## End Events Definitions-------------------------------------------------------
 
