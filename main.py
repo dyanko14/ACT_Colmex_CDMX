@@ -104,9 +104,9 @@ ABtnRoom    = Button(TLP1, 10)
 ABtnSwitch  = Button(TLP1, 11)
 ABtnDisplay = Button(TLP1, 12)
 ABtnVC      = Button(TLP1, 13)
-ABtnREC     = Button(TLP1, 15)
-ABtnInfo    = Button(TLP1, 17)
-ABtnPower   = Button(TLP1, 18)
+ABtnREC     = Button(TLP1, 14)
+ABtnInfo    = Button(TLP1, 15)
+ABtnPower   = Button(TLP1, 16)
 
 # Mode Main - Up Bar
 ALblMain    = Label(TLP1, 20)
@@ -358,24 +358,291 @@ ABtnPowerAB   = Button(TLP1, 420)
 ABtnPowerA    = Button(TLP1, 421)
 ABtnPowerB    = Button(TLP1, 422)
 
-
 # TouchPanel B -----------------------------------------------------------------
+# Mode Index -------------------------------------------------------------------
+BBtnIndex = Button(TLP2, 1)
+
+# Mode Room --------------------------------------------------------------------
+BRoomSplit = Button(TLP2, 240)
+BRoomMixed = Button(TLP2, 241)
+
+# Mode Main --------------------------------------------------------------------
+# Mode Main - Lateral Bar
+BBtnRoom    = Button(TLP2, 10)
+BBtnSwitch  = Button(TLP2, 11)
+BBtnDisplay = Button(TLP2, 12)
+BBtnVC      = Button(TLP2, 13)
+BBtnREC     = Button(TLP2, 14)
+BBtnInfo    = Button(TLP2, 15)
+BBtnPower   = Button(TLP2, 16)
+
+# Mode Main - Up Bar
+BLblMain    = Label(TLP2, 20)
+BBtnRoom2   = Button(TLP2, 21)
+BBtnRoom1   = Button(TLP2, 22)
+
+# Mode Switching ---------------------------------------------------------------
+# Outputs ----------------------------------------------------------------------
+# XTP Out Slot 1
+BBtnOut1  = Button(TLP2, 101) ##Room1 Projector
+BBtnOut2  = Button(TLP2, 102) ##Room1 LCD Confidence
+BBtnOut3  = Button(TLP2, 103) ##Room1 LCD Podium
+# XTP Out Slot 2
+BBtnOut5  = Button(TLP2, 105) ##Room2 Projector
+BBtnOut6  = Button(TLP2, 106) ##Room2 LCD Confidence
+BBtnOut7  = Button(TLP2, 107) ##Room2 LCD Podium
+# XTP Out Slot 3
+BBtnOut9  = Button(TLP2, 109) ##Core Tricaster 1 - Input 1
+BBtnOut10 = Button(TLP2, 110) ##Core Tricaster 1 - Input 2
+BBtnOut11 = Button(TLP2, 111) ##Core Tricaster 1 - Input 3
+BBtnOut12 = Button(TLP2, 112) ##Core Tricaster 1 - Input 4
+# XTP Out Slot 4
+BBtnOut13 = Button(TLP2, 113) ##Core Tricaster 2 - Input 1
+BBtnOut14 = Button(TLP2, 114) ##Core Tricaster 2 - Input 2
+BBtnOut15 = Button(TLP2, 115) ##Core Tricaster 2 - Input 3
+BBtnOut16 = Button(TLP2, 116) ##Core Tricaster 2 - Input 4
+# XTP Out Slot 5
+BBtnOut17 = Button(TLP2, 117) ##Core Cisco 1 - Input Camera
+BBtnOut18 = Button(TLP2, 118) ##Core Cisco 1 - Input Graphics
+BBtnOut19 = Button(TLP2, 119) ##Core Cisco 2 - Input Camera
+BBtnOut20 = Button(TLP2, 120) ##Core Cisco 2 - Input Graphics
+# XTP Out Slot 6
+BBtnOut22 = Button(TLP2, 121) ##Core Recorder 1
+BBtnOut22 = Button(TLP2, 122) ##Core Recorder 2
+
+# Inputs -----------------------------------------------------------------------
+# XTP Slot 1
+BBtnInput1  = Button(TLP2, 201) ##Room1 PC Left
+BBtnInput2  = Button(TLP2, 202) ##Room1 PC Right
+BBtnInput3  = Button(TLP2, 203) ##Room1 PC Stage
+BBtnInput4  = Button(TLP2, 204) ##Room1 PC Right
+# XTP Slot 2
+BBtnInput5  = Button(TLP2, 205) ##Room2 PC Left
+BBtnInput6  = Button(TLP2, 206) ##Room2 PC Right
+BBtnInput7  = Button(TLP2, 207) ##Room2 PC Stage
+BBtnInput8  = Button(TLP2, 208) ##Room2 PC Back
+# XTP Slot 3
+BBtnInput9  = Button(TLP2, 209) ##Room1 PTZ1
+BBtnInput10 = Button(TLP2, 210) ##Room1 PTZ2
+BBtnInput11 = Button(TLP2, 211) ##Room2 PTZ1
+BBtnInput12 = Button(TLP2, 212) ##Room2 PTZ2
+# XTP Slot 4
+BBtnInput13 = Button(TLP2, 213) ##Room1 PC Cabin
+BBtnInput14 = Button(TLP2, 214) ##Room2 PC Cabin
+##...
+##...
+# XTP Slot 5
+BBtnInput17 = Button(TLP2, 215) ##Core Cisco 1 Out
+BBtnInput18 = Button(TLP2, 216) ##Core Cisco 2 Out
+BBtnInput19 = Button(TLP2, 217) ##Core ShareLink 1
+BBtnInput20 = Button(TLP2, 218) ##Core ShareLink 2
+# XTP Slot 6
+BBtnInput21 = Button(TLP2, 219) ##Core Tricaster 1 - Out 1
+BBtnInput22 = Button(TLP2, 220) ##Core Tricaster 2 - Out 1
+# Input Signal Status
+# XTP Slot 1
+BBtnSignal1 = Button(TLP2, 130) ##Room1 PC Left
+BBtnSignal2 = Button(TLP2, 131) ##Room1 PC Right
+BBtnSignal3 = Button(TLP2, 132) ##Room1 PC Stage
+BBtnSignal4 = Button(TLP2, 133) ##Room1 PC Right
+# XTP Slot 2
+BBtnSignal5 = Button(TLP2, 134) ##Room2 PC Left
+BBtnSignal6 = Button(TLP2, 135) ##Room2 PC Right
+BBtnSignal7 = Button(TLP2, 136) ##Room2 PC Stage
+BBtnSignal8 = Button(TLP2, 137) ##Room2 PC Back
+# XTP Slot 3
+BBtnSignal9 = Button(TLP2, 138) ##Room1 PTZ1
+BBtnSignal10 = Button(TLP2, 139) ##Room1 PTZ2
+BBtnSignal11 = Button(TLP2, 140) ##Room2 PTZ1
+BBtnSignal12 = Button(TLP2, 141) ##Room2 PTZ2
+# XTP Slot 4
+BBtnSignal13 = Button(TLP2, 142) ##Room1 PC Cabin
+BBtnSignal14 = Button(TLP2, 143) ##Room2 PC Cabin
+##...
+##...
+# XTP Slot 5
+BBtnSignal17 = Button(TLP2, 144) ##Core Cisco 1 Out
+BBtnSignal18 = Button(TLP2, 145) ##Core Cisco 2 Out
+BBtnSignal19 = Button(TLP2, 146) ##Core ShareLink 1
+BBtnSignal20 = Button(TLP2, 147) ##Core ShareLink 2
+# XTP Slot 6
+BBtnSignal21 = Button(TLP2, 148) ##Core Tricaster 1 - Out 1
+BBtnSignal22 = Button(TLP2, 149) ##Core Tricaster 2 - Out 1
+
+# Mode Display -----------------------------------------------------------------
+# Room 1 - Projection
+BBtnPwrProjA    = Button(TLP2, 30)
+BBtnScreenAUp   = Button(TLP2, 31)
+BBtnScreenADown = Button(TLP2, 32)
+BBtnElevAUp     = Button(TLP2, 33)
+BBtnElevADown   = Button(TLP2, 34)
+
+# Room 1 - LCD
+BLCDCab1    = Button(TLP2, 42)
+BLCDCab2    = Button(TLP2, 41)
+BLCDCab3    = Button(TLP2, 40)
+BLCDLobby   = Button(TLP2, 43)
+BLCDPodium1 = Button(TLP2, 48)
+
+# Room 2 - Projection
+BBtnPwrProjB    = Button(TLP2, 35)
+BBtnScreenBUp   = Button(TLP2, 36)
+BBtnScreenBDown = Button(TLP2, 37)
+BBtnElevBUp     = Button(TLP2, 38)
+BBtnElevBDown   = Button(TLP2, 39)
+
+# Room 2 - LCD
+B2LCDCab1   = Button(TLP2, 46)
+B2LCDCab2   = Button(TLP2, 45)
+B2LCDCab3   = Button(TLP2, 44)
+B2LCDLobby  = Button(TLP2, 47)
+BLCDPodium2 = Button(TLP2, 49)
+
+# Mode Recording ---------------------------------------------------------------
+# Recorder A - Record
+BBtnRecAStop   = Button(TLP2, 60)
+BBtnRecARecord = Button(TLP2, 61)
+BBtnRecAPause  = Button(TLP2, 62)
+BLblRecATime   = Label(TLP2, 63)
+
+# Recorder A - Info
+BLblRecA1 = Label(TLP2, 64)
+BLblRecA2 = Label(TLP2, 65)
+BLblRecA3 = Label(TLP2, 66)
+BLblRecA4 = Label(TLP2, 67)
+BLblRecA5 = Label(TLP2, 68)
+BLblRecA6 = Label(TLP2, 69)
+
+# Recorder B - Record
+BBtnRecBStop   = Button(TLP2, 70)
+BBtnRecBRecord = Button(TLP2, 71)
+BBtnRecBPause  = Button(TLP2, 72)
+BLblRecBTime   = Label(TLP2, 73)
+
+# Recorder B - Info
+BLblRecB1 = Label(TLP2, 74)
+BLblRecB2 = Label(TLP2, 75)
+BLblRecB3 = Label(TLP2, 76)
+BLblRecB4 = Label(TLP2, 77)
+BLblRecB5 = Label(TLP2, 78)
+BLblRecB6 = Label(TLP2, 79)
+
+# Mode VC ----------------------------------------------------------------------
+# Cisco 1 ---------------------
+BDial0      = Button(TLP2, 2130)
+BDial1      = Button(TLP2, 2131)
+BDial2      = Button(TLP2, 2132)
+BDial3      = Button(TLP2, 2133)
+BDial4      = Button(TLP2, 2134)
+BDial5      = Button(TLP2, 2135)
+BDial6      = Button(TLP2, 2136)
+BDial7      = Button(TLP2, 2137)
+BDial8      = Button(TLP2, 2138)
+BDial9      = Button(TLP2, 2139)
+BDialDot    = Button(TLP2, 2140)
+BDialHash   = Button(TLP2, 2141)
+BDialDelete = Button(TLP2, 2144, repeatTime=0.1)
+# Call
+BBtnVC1DTMF = Button(TLP2, 2142)
+BBtnVC1Call = Button(TLP2, 2143)
+# Answer
+BBtnVC1Answer = Button(TLP2, 400)
+BBtnVC1Reject = Button(TLP2, 401)
+# Content
+BBtnVC1ContenOn  = Button(TLP2, 2145)
+BBtnVC1ContenOff = Button(TLP2, 2146)
+# Label
+BLblVC1Dial     = Label(TLP2, 2147)
+BLblVC1Remote   = Label(TLP2, 2148)
+
+# Cisco 2 -----------------------
+B2Dial0      = Button(TLP2, 2100)
+B2Dial1      = Button(TLP2, 2101)
+B2Dial2      = Button(TLP2, 2102)
+B2Dial3      = Button(TLP2, 2103)
+B2Dial4      = Button(TLP2, 2104)
+B2Dial5      = Button(TLP2, 2105)
+B2Dial6      = Button(TLP2, 2106)
+B2Dial7      = Button(TLP2, 2107)
+B2Dial8      = Button(TLP2, 2108)
+B2Dial9      = Button(TLP2, 2109)
+B2DialDot    = Button(TLP2, 2110)
+B2DialHash   = Button(TLP2, 2111)
+B2DialDelete = Button(TLP2, 2114, repeatTime=0.1)
+# Call
+BBtnVC2DTMF = Button(TLP2, 2112)
+BBtnVC2Call = Button(TLP2, 2113)
+# Answer
+BBtnVC2Answer = Button(TLP2, 402)
+BBtnVC2Reject = Button(TLP2, 403)
+# Content
+BBtnVC2ContenOn  = Button(TLP2, 2115)
+BBtnVC2ContenOff = Button(TLP2, 2116)
+# Label
+BLblVC2Dial   = Label(TLP2, 2117)
+BLblVC2Remote = Label(TLP2, 2118)
+
+# Mode Status ------------------------------------------------------------------
+# Room 1
+BLblLanProjA   = Button(TLP2, 302)
+BLblinfo1ProjA = Label(TLP2, 303)
+BLblinfo2ProjA = Label(TLP2, 304)
+#
+BBtnLanLCDCab3 = Button(TLP2, 310)
+BBtnLanLCDCab4 = Button(TLP2, 311)
+BBtnLanLCDLob1 = Button(TLP2, 322)
+BBtnLanLCDPod1 = Button(TLP2, 324)
+# Room 2
+BLblLanProjB   = Button(TLP2, 305)
+BLblinfo1ProjB = Label(TLP2, 306)
+BLblinfo2ProjB = Label(TLP2, 307)
+#
+BBtnLanLCDCab1 = Button(TLP2, 308)
+BBtnLanLCDCab2 = Button(TLP2, 309)
+BBtnLanLCDLob2 = Button(TLP2, 323)
+BBtnLanLCDPod2 = Button(TLP2, 325)
+# Core
+BBtnLanXTP    = Button(TLP2, 300)
+#
+BBtnLanTesira = Button(TLP2, 301)
+#
+BBtnLanVC1    = Button(TLP2, 312)
+BLblinfo1VC1  = Label(TLP2, 313)
+#
+BBtnLanVC2    = Button(TLP2, 315)
+BLblinfo1VC2  = Label(TLP2, 316)
+#
+BBtnLanRecA   = Button(TLP2, 318)
+ALblinfo1RecA = Label(TLP2, 319)
+#
+BBtnLanRecB   = Button(TLP2, 320)
+BLblinfo1RecB = Label(TLP2, 321)
+# Build
+BLblPython    = Label(TLP2, 326)
+
+# Mode PowerOff ------------------------------------------------------------------
+BBtnPowerAB   = Button(TLP2, 420)
+BBtnPowerA    = Button(TLP2, 421)
+BBtnPowerB    = Button(TLP2, 422)
 
 
 # BUTTON GROUPING --------------------------------------------------------------
 # Mode Index
-Index = [ABtnIndex]
+GroupModeIndex = [ABtnIndex, BBtnIndex]
 
 # Mode Room
-ModeRoom = [ARoomSplit, ARoomMixed]
+ModeRoom = [ARoomSplit, ARoomMixed, BRoomSplit, BRoomMixed]
 #
-GroupRoom = MESet(ModeRoom)
+GroupRoomA = MESet([ARoomSplit, ARoomMixed])
+GroupRoomB = MESet([BRoomSplit, BRoomMixed])
+GroupModeRoom = MESet(ModeRoom)
 
 # Mode Main
-Main  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC, ABtnInfo, ABtnPower]
+ModeMain  = [ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC, ABtnInfo, ABtnPower,
+             BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnREC, BBtnInfo, BBtnPower]
 #
-GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC,
-                    ABtnREC, ABtnInfo, ABtnPower])
+GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC, ABtnInfo, ABtnPower])
+GroupMainB = MESet([BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnREC, BBtnInfo, BBtnPower])
 
 # Mode Video Switching
 Outputs = [ABtnOut1, ABtnOut2, ABtnOut3, ABtnOut5, ABtnOut6,ABtnOut7, ABtnOut9, ABtnOut10, ABtnOut11,
@@ -392,7 +659,10 @@ GroupOutputs = MESet(Outputs)
 
 # Mode Projection
 ProjeccionA = [ABtnPwrProjA, ABtnScreenAUp, ABtnScreenADown, ABtnElevAUp, ABtnElevADown, ALCDCab1, ALCDCab2,
-               ALCDCab3, ALCDLobby, ALCDPodium1]
+               ALCDCab3, ALCDLobby, ALCDPodium1,
+               BBtnPwrProjA, BBtnScreenAUp, BBtnScreenADown, BBtnElevAUp, BBtnElevADown, BLCDCab1, BLCDCab2,
+               BLCDCab3, BLCDLobby, BLCDPodium1]
+
 ProjeccionB = [ABtnPwrProjB, ABtnScreenBUp, ABtnScreenBDown, ABtnElevBUp, ABtnElevBDown, A2LCDCab1, A2LCDCab2,
                A2LCDCab3, A2LCDLobby, ALCDPodium2]
 #
@@ -1155,11 +1425,13 @@ def ReceiveTesira(command, value, qualifier):
             if value == 'True':
                 Room_Data['Mixed'] = True
                 #Tesira.Set('PresetRecall', '1')
-                GroupRoom.SetCurrent(ARoomMixed)
+                GroupRoomA.SetCurrent(ARoomMixed)
+                GroupRoomB.SetCurrent(BRoomMixed)
             else:
                 Room_Data['Mixed'] = False
                 #Tesira.Set('PresetRecall', '2')
-                GroupRoom.SetCurrent(ARoomSplit)
+                GroupRoomA.SetCurrent(ARoomSplit)
+                GroupRoomB.SetCurrent(BRoomSplit)
     pass
 
 def ReceiveProjectorA(command, value, qualifier):
@@ -1176,23 +1448,28 @@ def ReceiveProjectorA(command, value, qualifier):
             ProjA.Disconnect()
             reconnectWaitProjectorA.Restart()
             ALblLanProjA.SetState(0)
+            BLblLanProjA.SetState(0)
         else:
             ALblLanProjA.SetState(1)
+            BLblLanProjA.SetState(1)
     #
     elif command == 'Power':
         ALblinfo1ProjA.SetText('Power ' + value)
         print('--- Parsing Projector A: (Power ' +  value + ' )')
         if value == 'On':
             ABtnPwrProjA.SetState(1)
+            BBtnPwrProjA.SetState(1)
             Room1ElevatorDown()
             Room1ScreenDown()
         else:
             ABtnPwrProjA.SetState(0)
+            BBtnPwrProjA.SetState(0)
             Room1ElevatorUp()
             Room1ScreenUp()
     #
     elif command == 'Input':
         ALblinfo2ProjA.SetText(value)
+        BLblinfo2ProjA.SetText(value)
         print('--- Parsing Projector A: (Input ' +  value + ' )')
     pass
 
@@ -1210,23 +1487,28 @@ def ReceiveProjectorB(command, value, qualifier):
             ProjB.Disconnect()
             reconnectWaitProjectorB.Restart()
             ALblLanProjB.SetState(0)
+            BLblLanProjB.SetState(0)
         else:
             ALblLanProjB.SetState(1)
+            BLblLanProjB.SetState(1)
     #
     elif command == 'Power':
         ALblinfo1ProjB.SetText('Power ' + value)
         print('--- Parsing Projector B: (Power ' +  value + ' )')
         if value == 'On':
             ABtnPwrProjB.SetState(1)
+            BBtnPwrProjB.SetState(1)
             Room2ElevatorDown()
             Room2ScreenDown()
         else:
             ABtnPwrProjB.SetState(0)
+            BBtnPwrProjB.SetState(0)
             Room2ElevatorUp()
             Room2ScreenUp()
     #
     elif command == 'Input':
         ALblinfo2ProjB.SetText(value)
+        BLblinfo2ProjB.SetText(value)
         print('--- Parsing Projector B: (Input ' +  value + ' )')
     pass
 
@@ -1244,8 +1526,10 @@ def ReceiveCisco1(command, value, qualifier):
             Cisco1.Disconnect()
             reconnectWaitCisco1.Restart()
             ABtnLanVC1.SetState(0)
+            BBtnLanVC1.SetState(0)
         else:
             ABtnLanVC1.SetState(1)
+            BBtnLanVC1.SetState(1)
     #
     elif command == 'Presentation':
         print('--- Parsing Cisco 1: (Presentation ' +  value + ' )')
@@ -1293,8 +1577,10 @@ def ReceiveCisco2(command, value, qualifier):
             Cisco2.Disconnect()
             reconnectWaitCisco2.Restart()
             ABtnLanVC2.SetState(0)
+            BBtnLanVC2.SetState(0)
         else:
             ABtnLanVC2.SetState(1)
+            BBtnLanVC2.SetState(1)
     #
     elif command == 'Presentation':
         print('--- Parsing Cisco 2: (Presentation ' +  value + ' )')
@@ -1450,15 +1736,19 @@ def ReceiveLCDCab1(command, value, qualifier):
             LCDCab1.Disconnect()
             reconnectWaitLCDCab1.Restart()
             ABtnLanLCDCab1.SetState(0)
+            BBtnLanLCDCab1.SetState(0)
         else:
             ABtnLanLCDCab1.SetState(1)
+            BBtnLanLCDCab1.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab1: (Power ' +  value + ' )')
         if value == 'On':
             A2LCDCab2.SetState(1)
+            B2LCDCab2.SetState(1)
         else:
             A2LCDCab2.SetState(0)
+            B2LCDCab2.SetState(0)
     pass
 
 def ReceiveLCDCab2(command, value, qualifier):
@@ -1475,15 +1765,19 @@ def ReceiveLCDCab2(command, value, qualifier):
             LCDCab2.Disconnect()
             reconnectWaitLCDCab2.Restart()
             ABtnLanLCDCab2.SetState(0)
+            BBtnLanLCDCab2.SetState(0)
         else:
             ABtnLanLCDCab2.SetState(1)
+            BBtnLanLCDCab2.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab2: (Power ' +  value + ' )')
         if value == 'On':
             A2LCDCab3.SetState(1)
+            B2LCDCab3.SetState(1)
         else:
             A2LCDCab3.SetState(0)
+            B2LCDCab3.SetState(0)
     pass
 
 def ReceiveLCDCab3(command, value, qualifier):
@@ -1500,15 +1794,19 @@ def ReceiveLCDCab3(command, value, qualifier):
             LCDCab3.Disconnect()
             reconnectWaitLCDCab3.Restart()
             ABtnLanLCDCab3.SetState(0)
+            BBtnLanLCDCab3.SetState(0)
         else:
             ABtnLanLCDCab3.SetState(1)
+            BBtnLanLCDCab3.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab3: (Power ' +  value + ' )')
         if value == 'On':
             ALCDCab1.SetState(1)
+            BLCDCab1.SetState(1)
         else:
             ALCDCab1.SetState(0)
+            BLCDCab1.SetState(0)
     pass
 
 def ReceiveLCDCab4(command, value, qualifier):
@@ -1525,15 +1823,19 @@ def ReceiveLCDCab4(command, value, qualifier):
             LCDCab4.Disconnect()
             reconnectWaitLCDCab4.Restart()
             ABtnLanLCDCab4.SetState(0)
+            BBtnLanLCDCab4.SetState(0)
         else:
             ABtnLanLCDCab4.SetState(1)
+            BBtnLanLCDCab4.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Cab4: (Power ' +  value + ' )')
         if value == 'On':
             ALCDCab2.SetState(1)
+            BLCDCab2.SetState(1)
         else:
             ALCDCab2.SetState(0)
+            BLCDCab2.SetState(0)
     pass
 
 def ReceiveLCDLob1(command, value, qualifier):
@@ -1550,15 +1852,19 @@ def ReceiveLCDLob1(command, value, qualifier):
             LCDLob1.Disconnect()
             reconnectWaitLCDLob1.Restart()
             ABtnLanLCDLob1.SetState(0)
+            BBtnLanLCDLob1.SetState(0)
         else:
             ABtnLanLCDLob1.SetState(1)
+            BBtnLanLCDLob1.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Lob1: (Power ' +  value + ' )')
         if value == 'On':
             ALCDLobby.SetState(1)
+            BLCDLobby.SetState(1)
         else:
             ALCDLobby.SetState(0)
+            BLCDLobby.SetState(0)
     pass
 
 def ReceiveLCDLob2(command, value, qualifier):
@@ -1575,15 +1881,19 @@ def ReceiveLCDLob2(command, value, qualifier):
             LCDLob2.Disconnect()
             reconnectWaitLCDLob2.Restart()
             ABtnLanLCDLob2.SetState(0)
+            BBtnLanLCDLob2.SetState(0)
         else:
             ABtnLanLCDLob2.SetState(1)
+            BBtnLanLCDLob2.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Lob2: (Power ' +  value + ' )')
         if value == 'On':
             A2LCDLobby.SetState(1)
+            B2LCDLobby.SetState(1)
         else:
             A2LCDLobby.SetState(0)
+            B2LCDLobby.SetState(0)
     pass
 
 def ReceiveLCDPod1(command, value, qualifier):
@@ -1600,15 +1910,19 @@ def ReceiveLCDPod1(command, value, qualifier):
             LCDPod1.Disconnect()
             reconnectWaitLCDPod1.Restart()
             ABtnLanLCDPod1.SetState(0)
+            BBtnLanLCDPod1.SetState(0)
         else:
             ABtnLanLCDPod1.SetState(1)
+            BBtnLanLCDPod1.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Pod1: (Power ' +  value + ' )')
         if value == 'On':
             ALCDPodium1.SetState(1)
+            BLCDPodium1.SetState(1)
         else:
             ALCDPodium1.SetState(0)
+            BLCDPodium1.SetState(0)
     pass
 
 def ReceiveLCDPod2(command, value, qualifier):
@@ -1625,15 +1939,19 @@ def ReceiveLCDPod2(command, value, qualifier):
             LCDPod2.Disconnect()
             reconnectWaitLCDPod2.Restart()
             ABtnLanLCDPod2.SetState(0)
+            BBtnLanLCDPod2.SetState(0)
         else:
             ABtnLanLCDPod2.SetState(1)
+            BBtnLanLCDPod2.SetState(1)
     #
     elif command == 'Power':
         print('--- Parsing LCD Pod2: (Power ' +  value + ' )')
         if value == 'On':
             ALCDPodium2.SetState(1)
+            BLCDPodium2.SetState(1)
         else:
             ALCDPodium2.SetState(0)
+            BLCDPodium2.SetState(0)
     pass
 
 # RECONEX / SUBSCRIPTIONS ------------------------------------------
@@ -2068,7 +2386,7 @@ Cisco2_Data = {
 }
 
 # ACTIONS - INDEX PAGE MODE ----------------------------------------------------
-@event(Index, 'Pressed')
+@event(GroupModeIndex, 'Pressed')
 def Index(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
@@ -2083,30 +2401,34 @@ def Index(button, state):
 def FunctionMixRoom():
     """This prepare the room to be used in mode Mixed"""
     ## Store the data in dictionary
-    Tesira.Set('LogicState', 'False', {'Instance Tag':'Room', 'Channel':'1'})
-    Room_Data['Mixed'] = False
+    Tesira.Set('LogicState', 'True', {'Instance Tag':'Room', 'Channel':'1'})
+    Room_Data['Mixed'] = True
     #Tesira.Set('PresetRecall', '1')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
-    ABtnRoom2.SetState(0)
-    ## Touchpanel actions
-    TLP1.ShowPage('Main')
+    ABtnRoom2.SetState(1)
+    BBtnRoom1.SetState(1)
+    BBtnRoom2.SetState(1)
+    GroupRoomA.SetCurrent(ARoomMixed)
+    GroupRoomB.SetCurrent(BRoomMixed)
     ## Notify to console
-    print("Touch 1: {0}".format("Room Split"))
+    print("Room Split")
     pass
 
 def FunctionSplitRoom():
     ## Store the data in dictionary
-    Tesira.Set('LogicState', 'True', {'Instance Tag':'Room', 'Channel':'1'})
-    Room_Data['Mixed'] = True
+    Tesira.Set('LogicState', 'False', {'Instance Tag':'Room', 'Channel':'1'})
+    Room_Data['Mixed'] = False
     #Tesira.Set('PresetRecall', '2')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
-    ABtnRoom2.SetState(1)
-    ## Touchpanel actions
-    TLP2.ShowPage('Main')
+    ABtnRoom2.SetState(0)
+    BBtnRoom1.SetState(0)
+    BBtnRoom2.SetState(1)
+    GroupRoomA.SetCurrent(ARoomSplit)
+    GroupRoomB.SetCurrent(BRoomSplit)
     ## Notify to console
-    print("Touch 1: {0}".format("Room Mixed"))
+    print("Room Mixed")
     pass
 
 # ACTIONS - ROOM CONFIGURATION MODE --------------------------------------------
@@ -2114,79 +2436,182 @@ def FunctionSplitRoom():
 @event(ModeRoom, 'Pressed')
 def Index(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
+    # Validate the Active TouchPanel
     if button.Host.DeviceAlias == 'TouchPanelA':
-        #Mutually Exclusive
-        GroupRoom.SetCurrent(button)
-        #
         if button is ARoomSplit:
-            FunctionMixRoom()
-        else:
             FunctionSplitRoom()
+        else:
+            FunctionMixRoom()
+    else:
+        if button is BRoomSplit:
+            FunctionSplitRoom()
+        else:
+            FunctionMixRoom()
     pass
 
 # ACTIONS - MAIN OPERATION MODE ------------------------------------------------
-@event(Main, 'Pressed')
+@event(ModeMain, 'Pressed')
 def FullMain(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
-    #
+    # Validate the Active TouchPanel
     if button.Host.DeviceAlias == 'TouchPanelA':
-        GroupMainA.SetCurrent(button)
+        Panel = TLP1
+        Label = ALblMain
+        Group = GroupMainA
+        PanelID = 'Touch 1'
+    else:
+        Panel = TLP2
+        Label = BLblMain
+        Group = GroupMainB
+        PanelID = 'Touch 2'
+    
+    # Validate the Active Room Configuration
+    if Room_Data['Mixed'] == True:
+        #
         TLP1.HideAllPopups()
+        TLP2.HideAllPopups()
         #
-        if button is ABtnRoom:
+        # Validate Buttons Actions
+        if button.ID == 10: #Room
+            print(PanelID + ": {0}".format("Mode Room"))
+            #
             TLP1.ShowPopup('Room')
-            ALblMain.SetText('Configurar Sala')
-            print("Touch 1: {0}".format("Mode Room"))
+            TLP2.ShowPopup('Room')
+            GroupMainA.SetCurrent(ABtnRoom)
+            GroupMainB.SetCurrent(BBtnRoom)
+            ALblMain.SetText('Configuración de Sala')
+            BLblMain.SetText('Configuración de Sala')
         #
-        elif button is ABtnSwitch:
-            ALblMain.SetText('Switcheo de Video')
-            print("Touch 1: {0}".format("Mode Switching"))
+        elif button.ID == 11: #Switching
+            print(PanelID + ": {0}".format("Mode Switching"))
             #
-            if GroupRoom.GetCurrent() == ARoomMixed:
-                TLP1.ShowPopup('Full.Outputs')
-                TLP1.ShowPopup('Full.Inputs')
-            else:
-                TLP1.ShowPopup('Split.OutputsA')
-                TLP1.ShowPopup('Full.Inputs')
+            TLP1.ShowPopup('Full.Inputs')
+            TLP2.ShowPopup('Full.Inputs')
+            TLP1.ShowPopup('Full.Outputs')
+            TLP2.ShowPopup('Full.Outputs')
+            GroupMainA.SetCurrent(ABtnSwitch)
+            GroupMainB.SetCurrent(BBtnSwitch)
+            ALblMain.SetText('Switcheo de Videos')
+            BLblMain.SetText('Switcheo de Videos')
         #
-        elif button is ABtnDisplay:
+        elif button.ID == 12: #Displays
+            print(PanelID + ": {0}".format("Mode Display"))
+            #
+            TLP1.ShowPopup('Full.Displays')
+            TLP2.ShowPopup('Full.Displays')
+            GroupMainA.SetCurrent(ABtnDisplay)
+            GroupMainB.SetCurrent(BBtnDisplay)
             ALblMain.SetText('Control de Display')
-            print("Touch 1: {0}".format("Mode Display"))
-            #
-            if GroupRoom.GetCurrent() == ARoomMixed:
-                TLP1.ShowPopup('Full.Displays')
-            else:
-                TLP1.ShowPopup('Split.DisplaysA')
+            BLblMain.SetText('Control de Display')
         #
-        elif button is ABtnVC:
-            TLP1.ShowPopup('Full.VC')
+        elif button.ID == 13: #Videoconference
+            print(PanelID + ": {0}".format("Mode VC"))
             Cisco1.Set('Standby', 'Deactivate')
             Cisco2.Set('Standby', 'Deactivate')
+            #
+            TLP1.ShowPopup('Full.VC')
+            TLP2.ShowPopup('Full.VC')
+            GroupMainA.SetCurrent(ABtnVC)
+            GroupMainB.SetCurrent(BBtnVC)
             ALblMain.SetText('Control de Videoconferencia')
-            print("Touch 1: {0}".format("Mode VideoConferencia"))
+            BLblMain.SetText('Control de Videoconferencia')
         #
-        elif button is ABtnREC:
+        elif button.ID == 14: #Recorder
+            print(PanelID + ": {0}".format("Mode REC"))
+            #
+            TLP1.ShowPopup('Full.Rec')
+            TLP2.ShowPopup('Full.Rec')
+            GroupMainA.SetCurrent(ABtnREC)
+            GroupMainB.SetCurrent(BBtnREC)
             ALblMain.SetText('Control de Grabación')
-            print("Touch 1: {0}".format("Mode REC"))
-            #
-            if GroupRoom.GetCurrent() == ARoomMixed:
-                TLP1.ShowPopup('Full.Rec')
-            else:
-                TLP1.ShowPopup('Split.RecA')
+            BLblMain.SetText('Control de Grabación')
         #
-        elif button is ABtnInfo:
+        elif button.ID == 15: #Info
+            print(PanelID + ": {0}".format("Mode Info"))
+            #
             TLP1.ShowPopup('Full.Info')
+            TLP2.ShowPopup('Full.Info')
+            GroupMainA.SetCurrent(ABtnInfo)
+            GroupMainB.SetCurrent(BBtnInfo)
             ALblMain.SetText('Información de Dispositivos')
-            print("Touch 1: {0}".format("Mode Info"))
+            BLblMain.SetText('Información de Dispositivos')
         #
-        elif button is ABtnPower:
-            ALblMain.SetText('Apagar Sistema')
-            print("Touch 1: {0}".format("Mode PowerAll"))
+        elif button.ID == 16: #PowerOff
+            print(PanelID + ": {0}".format("Mode PowerOff"))
             #
-            if GroupRoom.GetCurrent() == ARoomMixed:
-                TLP1.ShowPopup('Split.PowerAB')
+            TLP1.ShowPopup('Full.Power')
+            TLP2.ShowPopup('Full.Power')
+            GroupMainA.SetCurrent(ABtnPower)
+            GroupMainB.SetCurrent(BBtnPower)
+            ALblMain.SetText('Apagado General')
+            BLblMain.SetText('Apagado General')
+        #
+    else: # SPLIT ROOM
+        #
+        Group.SetCurrent(button)
+        Panel.HideAllPopups()
+        #
+        # Validate Buttons Actions
+        if button.ID == 10: #Room
+            print(PanelID + ": {0}".format("Mode Room"))
+            #
+            Panel.HideAllPopups()
+            Panel.ShowPopup('Room')
+            Label.SetText('Configuración de Sala')
+        #
+        elif button.ID == 11: #Switching
+            print(PanelID + ": {0}".format("Mode Switching"))
+            Label.SetText('Switcheo de Videos')
+            #
+            if Panel == TLP1:
+                Panel.ShowPopup('Split.OutputsA')
+                Panel.ShowPopup('Full.Inputs')
             else:
-                TLP1.ShowPopup('Split.PowerA')
+                Panel.ShowPopup('Split.OutputsB')
+                Panel.ShowPopup('Full.Inputs')
+        #
+        elif button.ID == 12: #Displays
+            print(PanelID + ": {0}".format("Mode Display"))
+            Label.SetText('Control de Displays')            
+            #
+            if Panel == TLP1:
+                Panel.ShowPopup('Split.DisplaysA')
+            else:
+                Panel.ShowPopup('Split.DisplaysB')
+        #
+        elif button.ID == 13: #Videoconference
+            print(PanelID + ": {0}".format("Mode VC"))
+            Cisco1.Set('Standby', 'Deactivate')
+            Cisco2.Set('Standby', 'Deactivate')
+            Label.SetText('Control de Videoconferencia')
+            #
+            if Panel == TLP1:
+                Panel.ShowPopup('Split.Cisco1')
+            else:
+                Panel.ShowPopup('Split.Cisco2')
+        #
+        elif button.ID == 14: #Recorder
+            print(PanelID + ": {0}".format("Mode VC"))
+            Label.SetText('Control de Grabación')
+            #
+            if Panel == TLP1:
+                Panel.ShowPopup('Split.RecA')
+            else:
+                Panel.ShowPopup('Split.RecB')
+        #
+        elif button.ID == 15: #Info
+            print(PanelID + ": {0}".format("Mode Info"))
+            Label.SetText('Información de Dispositivos')
+            Panel.ShowPopup('Full.Info')
+        #
+        elif button.ID == 16: #PowerOff
+            print(PanelID + ": {0}".format("Mode PowerOff"))
+            Label.SetText('Apagado General')
+            #
+            if Panel == TLP1:
+                Panel.ShowPopup('Split.PowerA')
+            else:
+                Panel.ShowPopup('Split.PowerB')
     pass
 
 # ACTIONS - MATRIX TIE INFO FUNCTIONS ------------------------------------------
@@ -2555,84 +2980,94 @@ def Room2ElevatorDown():
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ABtnPwrProjA:
+    if button.ID == 30: #Projector A
         if ProjA.ReadStatus('Power',None) == 'On':
-            print("Touch 1: {0}".format("Proyector 1: PowerOff"))
+            print("Touch: {0}".format("Proyector 1: PowerOff"))
+            BBtnPwrProjA.SetState(0)
             ABtnPwrProjA.SetState(0)
             ProjA.Set('Power','Off')
             Room1ElevatorUp()
             Room1ScreenUp()
         else:
-            print("Touch 1: {0}".format("Proyector 1: PowerOn"))
+            print("Touch: {0}".format("Proyector 1: PowerOn"))
             ABtnPwrProjA.SetState(1)
+            BBtnPwrProjA.SetState(1)
             ProjA.Set('Power','On')
             Room1ElevatorDown()
             Room1ScreenDown()
     #
-    elif button is ABtnScreenAUp:
+    elif button.ID == 31: #Screen A - Up
         GroupScreenA.SetCurrent(ABtnScreenAUp)
         Room1ScreenUp()
-        print("Touch 1: {0}".format("Screen 1: Up"))
+        print("Touch: {0}".format("Screen 1: Up"))
     #
-    elif button is ABtnScreenADown:
+    elif button.ID == 32: #Screen A - Down
         GroupScreenA.SetCurrent(ABtnScreenADown)
         Room1ScreenDown()
-        print("Touch 1: {0}".format("Screen 1: Down"))
+        print("Touch: {0}".format("Screen 1: Down"))
     #
-    elif button is ABtnElevAUp:
+    elif button.ID == 33: #Elevator A - Up
         GroupElevatA.SetCurrent(ABtnElevAUp)
         Room1ElevatorUp()
-        print("Touch 1: {0}".format("Elevator 1: Up"))
+        print("Touch: {0}".format("Elevator 1: Up"))
     #
-    elif button is ABtnElevADown:
+    elif button.ID == 34: #Elevator A - Down
         GroupElevatA.SetCurrent(ABtnElevADown)
         Room1ElevatorDown()
-        print("Touch 1: {0}".format("Elevator 1: Down"))
+        print("Touch: {0}".format("Elevator 1: Down"))
     #
-    elif button is ALCDCab1:
+    elif button.ID == 42: #LCD 3 - Cabina
         if LCDCab3.ReadStatus('Power', None) == 'On':
             ALCDCab1.SetState(0)
+            BLCDCab1.SetState(0)
             LCDCab3.Set('Power','Off')
-            print("Touch 1: {0}".format("LCD 3 Power Off"))
+            print("Touch: {0}".format("LCD 3 Power Off"))
         else:
             ALCDCab1.SetState(1)
+            BLCDCab1.SetState(1)
             LCDCab3.Set('Power','On')
-            print("Touch 1: {0}".format("LCD 3 Power On"))
+            print("Touch: {0}".format("LCD 3 Power On"))
     #
-    elif button is ALCDCab2:
+    elif button.ID == 41: #LCD 4 - Cabina
         if LCDCab4.ReadStatus('Power', None) == 'On':
             ALCDCab2.SetState(0)
+            BLCDCab2.SetState(0)
             LCDCab4.Set('Power','Off')
-            print("Touch 1: {0}".format("LCD 4 Power Off"))
+            print("Touch: {0}".format("LCD 4 Power Off"))
         else:
             ALCDCab2.SetState(1)
+            BLCDCab2.SetState(1)
             LCDCab4.Set('Power','On')
-            print("Touch 1: {0}".format("LCD Cab4 Power On"))
+            print("Touch: {0}".format("LCD Cab4 Power On"))
     #
-    elif button is ALCDLobby:
+    elif button.ID == 43: #LCD 1 - Lobby
         if LCDLob1.ReadStatus('Power', None) == 'On':
             ALCDLobby.SetState(0)
+            BLCDLobby.SetState(0)
             LCDLob1.Set('Power','Off')
             print("Touch 1: {0}".format("LCD Lob1 Power Off"))
         else:
             ALCDLobby.SetState(1)
+            BLCDLobby.SetState(1)
             LCDLob1.Set('Power','On')
-            print("Touch 1: {0}".format("LCD Lob1 Power On"))
+            print("Touch: {0}".format("LCD Lob1 Power On"))
     #
-    elif button is ALCDPodium1:
+    elif button.ID == 48: #LCD 1 - Podium
         if LCDPod1.ReadStatus('Power', None) == 'On':
             ALCDPodium1.SetState(0)
+            BLCDPodium1.SetState(0)
             LCDPod1.Set('Power','Off')
-            print("Touch 1: {0}".format("LCD P1 Power Off"))
+            print("Touch: {0}".format("LCD P1 Power Off"))
         else:
             ALCDPodium1.SetState(1)
+            BLCDPodium1.SetState(1)
             LCDPod1.Set('Power','On')
             print("Touch 1: {0}".format("LCD P1 Power On"))
     #
-    elif button is ALCDCab3:
+    elif button.ID == 40: #Monitor IR - Cabina
         Monitor1.PlayContinuous('POWER')
         Monitor1.Stop()
-        print("Touch 1: {0}".format("Monitor Cab1 Power IR"))
+        print("Touch: {0}".format("Monitor Cab1 Power IR"))
     pass
 
 # ACTIONS - DISPLAYS B MODE ----------------------------------------------------
