@@ -613,7 +613,7 @@ BBtnLanVC2    = Button(TLP2, 315)
 BLblinfo1VC2  = Label(TLP2, 316)
 #
 BBtnLanRecA   = Button(TLP2, 318)
-ALblinfo1RecA = Label(TLP2, 319)
+BLblinfo1RecA = Label(TLP2, 319)
 #
 BBtnLanRecB   = Button(TLP2, 320)
 BLblinfo1RecB = Label(TLP2, 321)
@@ -664,7 +664,9 @@ ProjeccionA = [ABtnPwrProjA, ABtnScreenAUp, ABtnScreenADown, ABtnElevAUp, ABtnEl
                BLCDCab3, BLCDLobby, BLCDPodium1]
 
 ProjeccionB = [ABtnPwrProjB, ABtnScreenBUp, ABtnScreenBDown, ABtnElevBUp, ABtnElevBDown, A2LCDCab1, A2LCDCab2,
-               A2LCDCab3, A2LCDLobby, ALCDPodium2]
+               A2LCDCab3, A2LCDLobby, ALCDPodium2,
+               BBtnPwrProjB, BBtnScreenBUp, BBtnScreenBDown, BBtnElevBUp, BBtnElevBDown, B2LCDCab1, B2LCDCab2,
+               B2LCDCab3, B2LCDLobby, BLCDPodium2]
 #
 GroupScreenA = MESet([ABtnScreenAUp, ABtnScreenADown])
 GroupElevatA = MESet([ABtnElevAUp, ABtnElevADown])
@@ -673,10 +675,14 @@ GroupScreen2A = MESet([ABtnScreenBUp, ABtnScreenBDown])
 GroupElevat2A = MESet([ABtnElevBUp, ABtnElevBDown])
 
 # Mode Recording
-Rec = [ABtnRecARecord, ABtnRecAStop, ABtnRecAPause, ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause]
+GroupModeRec = [ABtnRecARecord, ABtnRecAStop, ABtnRecAPause, ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause,
+                BBtnRecARecord, BBtnRecAStop, BBtnRecAPause, BBtnRecBRecord, BBtnRecBStop, BBtnRecBPause]
 #
-GroupRecA = MESet([ABtnRecARecord, ABtnRecAStop, ABtnRecAPause])
-GroupRecB = MESet([ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause])
+GroupRecA1 = MESet([ABtnRecARecord, ABtnRecAStop, ABtnRecAPause])
+GroupRecA2 = MESet([BBtnRecARecord, BBtnRecAStop, BBtnRecAPause])
+
+GroupRecB1 = MESet([ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause])
+GroupRecB2 = MESet([BBtnRecBRecord, BBtnRecBStop, BBtnRecBPause])
 
 # Mode Videoconference
 VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
@@ -1237,127 +1243,167 @@ def ReceiveXTP(command, value, qualifier):
         if qualifier['Input'] == '1':
             if value == 'Active':
                 ABtnSignal1.SetState(1)
+                BBtnSignal1.SetState(1)
             else:
                 ABtnSignal1.SetState(0)
+                BBtnSignal1.SetState(0)
         #
         elif qualifier['Input'] == '2':
             if value == 'Active':
                 ABtnSignal2.SetState(1)
+                BBtnSignal2.SetState(1)
             else:
                 ABtnSignal2.SetState(0)
+                BBtnSignal2.SetState(0)
         #
         if qualifier['Input'] == '3':
             if value == 'Active':
                 ABtnSignal3.SetState(1)
+                BBtnSignal3.SetState(1)
             else:
                 ABtnSignal3.SetState(0)
+                BBtnSignal3.SetState(0)
         #
         elif qualifier['Input'] == '4':
             if value == 'Active':
                 ABtnSignal4.SetState(1)
+                BBtnSignal4.SetState(1)
             else:
                 ABtnSignal4.SetState(0)
+                BBtnSignal4.SetState(0)
         #
         # XTP Slot 2--------------------
         if qualifier['Input'] == '5':
             if value == 'Active':
                 ABtnSignal5.SetState(1)
+                BBtnSignal5.SetState(1)
             else:
                 ABtnSignal5.SetState(0)
+                BBtnSignal5.SetState(0)
         #
         elif qualifier['Input'] == '6':
             if value == 'Active':
                 ABtnSignal6.SetState(1)
+                BBtnSignal6.SetState(1)
             else:
                 ABtnSignal6.SetState(0)
+                BBtnSignal6.SetState(0)
         #
         if qualifier['Input'] == '7':
             if value == 'Active':
                 ABtnSignal7.SetState(1)
+                BBtnSignal7.SetState(1)
             else:
                 ABtnSignal7.SetState(0)
+                BBtnSignal7.SetState(0)
         #
         elif qualifier['Input'] == '8':
             if value == 'Active':
                 ABtnSignal8.SetState(1)
+                BBtnSignal8.SetState(1)
             else:
                 ABtnSignal8.SetState(0)
+                BBtnSignal8.SetState(0)
         #
         # XTP Slot 3--------------------
         elif qualifier['Input'] == '9':
             if value == 'Active':
                 ABtnSignal9.SetState(1)
+                BBtnSignal9.SetState(1)
             else:
                 ABtnSignal9.SetState(0)
+                BBtnSignal9.SetState(0)
         #
         elif qualifier['Input'] == '10':
             if value == 'Active':
                 ABtnSignal10.SetState(1)
+                BBtnSignal10.SetState(1)
             else:
                 ABtnSignal10.SetState(0)
+                BBtnSignal10.SetState(0)
         #
         elif qualifier['Input'] == '11':
             if value == 'Active':
                 ABtnSignal11.SetState(1)
+                BBtnSignal11.SetState(1)
             else:
                 ABtnSignal11.SetState(0)
+                BBtnSignal11.SetState(0)
         #
         elif qualifier['Input'] == '12':
             if value == 'Active':
                 ABtnSignal12.SetState(1)
+                BBtnSignal12.SetState(1)
             else:
                 ABtnSignal12.SetState(0)
+                BBtnSignal12.SetState(0)
         #
         # XTP Slot 4--------------------
         elif qualifier['Input'] == '13':
             if value == 'Active':
                 ABtnSignal13.SetState(1)
+                BBtnSignal13.SetState(1)
             else:
                 ABtnSignal13.SetState(0)
+                BBtnSignal13.SetState(0)
         #
         elif qualifier['Input'] == '14':
             if value == 'Active':
                 ABtnSignal14.SetState(1)
+                BBtnSignal14.SetState(1)
             else:
                 ABtnSignal14.SetState(0)
+                BBtnSignal14.SetState(0)
         #
         # XTP Slot 5---------------------
         elif qualifier['Input'] == '17':
             if value == 'Active':
                 ABtnSignal17.SetState(1)
+                BBtnSignal17.SetState(1)
             else:
                 ABtnSignal17.SetState(0)
+                BBtnSignal17.SetState(0)
         #
         elif qualifier['Input'] == '18':
             if value == 'Active':
                 ABtnSignal18.SetState(1)
+                BBtnSignal18.SetState(1)
             else:
                 ABtnSignal18.SetState(0)
+                BBtnSignal18.SetState(0)
         #
         elif qualifier['Input'] == '19':
             if value == 'Active':
                 ABtnSignal19.SetState(1)
+                BBtnSignal19.SetState(1)
             else:
                 ABtnSignal19.SetState(0)
+                BBtnSignal19.SetState(0)
         #       
         elif qualifier['Input'] == '20':
             if value == 'Active':
                 ABtnSignal20.SetState(1)
+                BBtnSignal20.SetState(1)
             else:
                 ABtnSignal20.SetState(0)
+                BBtnSignal20.SetState(0)
         #
         # XTP Slot 6--------------------
         elif qualifier['Input'] == '21':
             if value == 'Active':
                 ABtnSignal21.SetState(1)
+                BBtnSignal21.SetState(1)
             else:
                 ABtnSignal21.SetState(0)
+                BBtnSignal21.SetState(0)
         #
         elif qualifier['Input'] == '22':
             if value == 'Active':
                 ABtnSignal22.SetState(1)
+                BBtnSignal22.SetState(1)
             else:
                 ABtnSignal22.SetState(0)
+                BBtnSignal22.SetState(0)
 
     elif command == 'OutputTieStatus':
         #print('--- Parsing Matrix: (Out ' +  qualifier['Output'] + ' In ' + value + ' ' + qualifier['Tie Type'] + ')')
@@ -1417,8 +1463,10 @@ def ReceiveTesira(command, value, qualifier):
             Tesira.Disconnect()
             reconnectWaitTesira.Restart()
             ABtnLanTesira.SetState(0)
+            BBtnLanTesira.SetState(0)
         else:
             ABtnLanTesira.SetState(1)
+            BBtnLanTesira.SetState(1)
     #
     elif command == 'LogicState':
         if qualifier['Instance Tag'] == 'Room' and qualifier['Channel'] == '1':
@@ -1459,13 +1507,13 @@ def ReceiveProjectorA(command, value, qualifier):
         if value == 'On':
             ABtnPwrProjA.SetState(1)
             BBtnPwrProjA.SetState(1)
-            Room1ElevatorDown()
-            Room1ScreenDown()
+            #Room1ElevatorDown()
+            #Room1ScreenDown()
         else:
             ABtnPwrProjA.SetState(0)
             BBtnPwrProjA.SetState(0)
-            Room1ElevatorUp()
-            Room1ScreenUp()
+            #Room1ElevatorUp()
+            #Room1ScreenUp()
     #
     elif command == 'Input':
         ALblinfo2ProjA.SetText(value)
@@ -1498,13 +1546,13 @@ def ReceiveProjectorB(command, value, qualifier):
         if value == 'On':
             ABtnPwrProjB.SetState(1)
             BBtnPwrProjB.SetState(1)
-            Room2ElevatorDown()
-            Room2ScreenDown()
+            #Room2ElevatorDown()
+            #Room2ScreenDown()
         else:
             ABtnPwrProjB.SetState(0)
             BBtnPwrProjB.SetState(0)
-            Room2ElevatorUp()
-            Room2ScreenUp()
+            #Room2ElevatorUp()
+            #Room2ScreenUp()
     #
     elif command == 'Input':
         ALblinfo2ProjB.SetText(value)
@@ -1628,44 +1676,57 @@ def ReceiveRecA(command, value, qualifier):
             RecA.Disconnect()
             reconnectWaitRecA.Restart()
             ABtnLanRecA.SetState(0)
+            BBtnLanRecA.SetState(0)
         else:
             ABtnLanRecA.SetState(1)
+            BBtnLanRecA.SetState(1)
     #
     elif command == 'Record':
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
         ALblinfo1RecA.SetText(value)
+        BLblinfo1RecA.SetText(value)
         if value == 'Start':
-            GroupRecA.SetCurrent(ABtnRecARecord)
+            GroupRecA1.SetCurrent(ABtnRecARecord)
+            GroupRecA2.SetCurrent(BBtnRecARecord)
         elif value == 'Pause':
-            GroupRecA.SetCurrent(ABtnRecAPause)
+            GroupRecA1.SetCurrent(ABtnRecAPause)
+            GroupRecA2.SetCurrent(BBtnRecAPause)
         elif value == 'Stop':
-            GroupRecA.SetCurrent(ABtnRecAStop)
+            GroupRecA1.SetCurrent(ABtnRecAStop)
+            GroupRecA2.SetCurrent(BBtnRecAStop)
+            
     #
     elif command == 'RecordDestination':
         ALblRecA2.SetText(value)
+        BLblRecA2.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
         ALblRecA4.SetText(value)
+        BLblRecA4.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
         ALblRecA3.SetText(value)
+        BLblRecA3.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
         ALblRecA6.SetText(value)
+        BLblRecA6.SetText(value)
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
             ALblRecA5.SetText('Disk Free: ' + str(value) + 'GB')
+            BLblRecA5.SetText('Disk Free: ' + str(value) + 'GB')
             #print('--- Parsing Recorder A: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
         #print('--- Parsing Recorder A: ' + command + ' ' + value)
         ALblRecATime.SetText(value)
+        BLblRecATime.SetText(value)
     pass
 
 def ReceiveRecB(command, value, qualifier):
@@ -1682,44 +1743,56 @@ def ReceiveRecB(command, value, qualifier):
             RecB.Disconnect()
             reconnectWaitRecB.Restart()
             ABtnLanRecB.SetState(0)
+            BBtnLanRecB.SetState(0)
         else:
             ABtnLanRecB.SetState(1)
+            BBtnLanRecB.SetState(1)
     #
     elif command == 'Record':
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
         ALblinfo1RecB.SetText(value)
+        BLblinfo1RecB.SetText(value)
         if value == 'Start':
-            GroupRecB.SetCurrent(ABtnRecBRecord)
+            GroupRecB1.SetCurrent(ABtnRecBRecord)
+            GroupRecB2.SetCurrent(BBtnRecBRecord)
         elif value == 'Pause':
-            GroupRecB.SetCurrent(ABtnRecBPause)
+            GroupRecB1.SetCurrent(ABtnRecBPause)
+            GroupRecB2.SetCurrent(BBtnRecBPause)
         elif value == 'Stop':
-            GroupRecB.SetCurrent(ABtnRecBStop)
+            GroupRecB1.SetCurrent(ABtnRecBStop)
+            GroupRecB2.SetCurrent(BBtnRecBStop)
     #
     elif command == 'RecordDestination':
         ALblRecB2.SetText(value)
+        BLblRecB2.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'RecordingMode':
         ALblRecB4.SetText(value)
+        BLblRecB4.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'VideoResolution':
         ALblRecB3.SetText(value)
+        BLblRecB3.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'HDCPStatus':
         ALblRecB6.SetText(value)
+        BLblRecB6.SetText(value)
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
     #
     elif command == 'RemainingFreeDiskSpace':
         if qualifier['Drive'] == 'Primary':
             value = int(value / 1024)
             ALblRecB5.SetText('Disk Free: ' + str(value) + 'GB')
+            BLblRecB5.SetText('Disk Free: ' + str(value) + 'GB')
             #print('--- Parsing Recorder B: ' + command + ' ' + str(value))
     #
     elif command == 'CurrentRecordingDuration':
         #print('--- Parsing Recorder B: ' + command + ' ' + value)
         ALblRecBTime.SetText(value)
+        BLblRecBTime.SetText(value)
     pass
 
 def ReceiveLCDCab1(command, value, qualifier):
@@ -2927,14 +3000,14 @@ def Room1ScreenUp():
     """Control of Relays"""
     AScreenDw.SetState('Open')
     #AScreenUp.SetState('Close')
-    AScreenUp.Pulse(20)
+    AScreenUp.Pulse(2)
     pass
 
 def Room1ScreenDown():
     """Control of Relays"""
     AScreenUp.SetState('Open')
     #AScreenDw.SetState('Close')
-    AScreenDw.Pulse(20)
+    AScreenDw.Pulse(2)
     pass
 
 def Room1ElevatorUp():
@@ -2953,14 +3026,14 @@ def Room2ScreenUp():
     """Control of Relays"""
     A2ScreenDw.SetState('Open')
     #A2ScreenUp.SetState('Close')
-    A2ScreenUp.Pulse(20)
+    A2ScreenUp.Pulse(2)
     pass
 
 def Room2ScreenDown():
     """Control of Relays"""
     A2ScreenUp.SetState('Open')
     #A2ScreenDw.SetState('Close')
-    A2ScreenDw.Pulse(20)
+    A2ScreenDw.Pulse(2)
     pass
 
 def Room2ElevatorUp():
@@ -2983,8 +3056,8 @@ def ButtonObjectPressed(button, state):
     if button.ID == 30: #Projector A
         if ProjA.ReadStatus('Power',None) == 'On':
             print("Touch: {0}".format("Proyector 1: PowerOff"))
-            BBtnPwrProjA.SetState(0)
             ABtnPwrProjA.SetState(0)
+            BBtnPwrProjA.SetState(0)
             ProjA.Set('Power','Off')
             Room1ElevatorUp()
             Room1ScreenUp()
@@ -3075,114 +3148,125 @@ def ButtonObjectPressed(button, state):
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ABtnPwrProjB:
+    if button.ID == 35: #Projector B
         if ProjB.ReadStatus('Power',None) == 'On':
             print("Touch 1: {0}".format("Proyector 2: PowerOff"))
             ABtnPwrProjB.SetState(0)
+            BBtnPwrProjB.SetState(0)
             ProjB.Set('Power','Off')
             Room2ElevatorUp()
             Room2ScreenUp()
         else:
             print("Touch 1: {0}".format("Proyector 2: PowerOn"))
             ABtnPwrProjB.SetState(1)
+            BBtnPwrProjB.SetState(1)
             ProjB.Set('Power','On')
             Room2ElevatorDown()
             Room2ScreenDown()
     #
-    elif button is ABtnScreenBUp:
+    elif button.ID == 36: #Screen B - Up
         GroupScreen2A.SetCurrent(ABtnScreenBUp)
         Room2ScreenUp()
         print("Touch 1: {0}".format("Screen 2: Up"))
     #
-    elif button is ABtnScreenBDown:
+    elif button.ID == 37: #Screen B - Down
         GroupScreen2A.SetCurrent(ABtnScreenBDown)
         Room2ScreenDown()
         print("Touch 1: {0}".format("Screen 2: Down"))
     #
-    elif button is ABtnElevBUp:
+    elif button.ID == 38: #Elevator B - Up
         GroupElevat2A.SetCurrent(ABtnElevBUp)
         Room2ElevatorUp()
         print("Touch 1: {0}".format("Elevator 2: Up"))
     #
-    elif button is ABtnElevBDown:
+    elif button.ID == 39: #Elevator B - Down
         GroupElevat2A.SetCurrent(ABtnElevBDown)
         Room2ElevatorDown()
         print("Touch 1: {0}".format("Elevator 2: Down"))
     #
-    elif button is A2LCDCab2:
+    elif button.ID == 45: #LCD 1 - Cabin
         if LCDCab1.ReadStatus('Power', None) == 'On':
             A2LCDCab2.SetState(0)
+            B2LCDCab2.SetState(0)
             LCDCab1.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 1 Power Off"))
         else:
             A2LCDCab2.SetState(1)
+            B2LCDCab2.SetState(1)
             LCDCab1.Set('Power','On')
             print("Touch 1: {0}".format("LCD 1 Power On"))
     #
-    elif button is A2LCDCab3:
+    elif button.ID == 44: #LCD 2 - Cabin
         if LCDCab2.ReadStatus('Power', None) == 'On':
             A2LCDCab3.SetState(0)
+            B2LCDCab3.SetState(0)
             LCDCab2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD 2 Power Off"))
         else:
             A2LCDCab3.SetState(1)
+            B2LCDCab3.SetState(1)
             LCDCab2.Set('Power','On')
             print("Touch 1: {0}".format("LCD 2 Power On"))
     #
-    elif button is A2LCDLobby:
+    elif button.ID == 47: #LCD 2 - Lobby
         if LCDLob2.ReadStatus('Power', None) == 'On':
             A2LCDLobby.SetState(0)
+            B2LCDLobby.SetState(0)
             LCDLob2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD L2 Power Off"))
         else:
             A2LCDLobby.SetState(1)
+            B2LCDLobby.SetState(1)
             LCDLob2.Set('Power','On')
             print("Touch 1: {0}".format("LCD L2 Power On"))
     #
-    elif button is ALCDPodium2:
+    elif button.ID == 49: #LCD 2 - Podium
         if LCDPod2.ReadStatus('Power', None) == 'On':
             ALCDPodium2.SetState(0)
+            BLCDPodium2.SetState(0)
             LCDPod2.Set('Power','Off')
             print("Touch 1: {0}".format("LCD P2 Power Off"))
         else:
             ALCDPodium2.SetState(1)
+            BLCDPodium2.SetState(1)
             LCDPod2.Set('Power','On')
             print("Touch 1: {0}".format("LCD P2 Power On"))
     #
-    elif button is A2LCDCab1:
+    elif button.ID == 46: #Monitor IR - Cabin 2
         Monitor2.PlayContinuous('POWER')
         Monitor2.Stop()
         print("Touch 1: {0}".format("Monitor Cab2 Power IR"))
     pass
 
 # ACTIONS - RECORDING MODE -----------------------------------------------------
-@event(Rec, 'Pressed')
+@event(GroupModeRec, 'Pressed')
 def ButtonObjectPressed(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ABtnRecARecord:
+    print(button.ID)
+    if button.ID == 61: #Rec
         RecA.Set('Record','Start')
-        print("Touch 1: {0}".format("SMP11-A: Rec"))
+        print("Touch: {0}".format("SMP11-A: Rec"))
     #
-    elif button is ABtnRecAStop:
+    elif button.ID == 60: #Stop
         RecA.Set('Record','Stop')
-        print("Touch 1: {0}".format("SMP11-A: Stop"))
+        print("Touch: {0}".format("SMP11-A: Stop"))
     #
-    elif button is ABtnRecAPause:
+    elif button.ID == 62: #Pause
         RecA.Set('Record','Pause')
-        print("Touch 1: {0}".format("SMP11-A: Pause"))
+        print("Touch: {0}".format("SMP11-A: Pause"))
     #
-    elif button is ABtnRecBRecord:
+    elif button.ID == 71: #Rec
         RecB.Set('Record','Start')
-        print("Touch 1: {0}".format("SMP11-B: Rec"))
+        print("Touch: {0}".format("SMP11-B: Rec"))
     #
-    elif button is ABtnRecBStop:
+    elif button.ID == 70: #Stop
         RecB.Set('Record','Stop')
-        print("Touch 1: {0}".format("SMP11-B: Stop"))
+        print("Touch: {0}".format("SMP11-B: Stop"))
     #
-    elif button is ABtnRecBPause:
+    elif button.ID == 72: #Pause
         RecB.Set('Record','Pause')
-        print("Touch 1: {0}".format("SMP11-B: Pause"))
+        print("Touch: {0}".format("SMP11-B: Pause"))
     pass
 
 # ACTIONS - CISCO 1 MODE -----------------------------------------------------
