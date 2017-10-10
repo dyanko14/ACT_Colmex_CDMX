@@ -139,22 +139,22 @@ ABtnOut18 = Button(TLP1, 118) ##Core Cisco 1 - Input Graphics
 ABtnOut19 = Button(TLP1, 119) ##Core Cisco 2 - Input Camera
 ABtnOut20 = Button(TLP1, 120) ##Core Cisco 2 - Input Graphics
 # XTP Out Slot 6
-ABtnOut22 = Button(TLP1, 121) ##Core Recorder 1
+ABtnOut21 = Button(TLP1, 121) ##Core Recorder 1
 ABtnOut22 = Button(TLP1, 122) ##Core Recorder 2
 
 # Inputs -----------------------------------------------------------------------
 # XTP Slot 1
-ABtnInput1  = Button(TLP1, 201) ##Room1 PC Left
-ABtnInput2  = Button(TLP1, 202) ##Room1 PC Right
-ABtnInput3  = Button(TLP1, 203) ##Room1 PC Stage
-ABtnInput4  = Button(TLP1, 204) ##Room1 PC Right
+ABtnInput1 = Button(TLP1, 201) ##Room1 PC Left
+ABtnInput2 = Button(TLP1, 202) ##Room1 PC Right
+ABtnInput3 = Button(TLP1, 203) ##Room1 PC Stage
+ABtnInput4 = Button(TLP1, 204) ##Room1 PC Right
 # XTP Slot 2
-ABtnInput5  = Button(TLP1, 205) ##Room2 PC Left
-ABtnInput6  = Button(TLP1, 206) ##Room2 PC Right
-ABtnInput7  = Button(TLP1, 207) ##Room2 PC Stage
-ABtnInput8  = Button(TLP1, 208) ##Room2 PC Back
+ABtnInput5 = Button(TLP1, 205) ##Room2 PC Left
+ABtnInput6 = Button(TLP1, 206) ##Room2 PC Right
+ABtnInput7 = Button(TLP1, 207) ##Room2 PC Stage
+ABtnInput8 = Button(TLP1, 208) ##Room2 PC Back
 # XTP Slot 3
-ABtnInput9  = Button(TLP1, 209) ##Room1 PTZ1
+ABtnInput9 = Button(TLP1, 209) ##Room1 PTZ1
 ABtnInput10 = Button(TLP1, 210) ##Room1 PTZ2
 ABtnInput11 = Button(TLP1, 211) ##Room2 PTZ1
 ABtnInput12 = Button(TLP1, 212) ##Room2 PTZ2
@@ -164,42 +164,42 @@ ABtnInput14 = Button(TLP1, 214) ##Room2 PC Cabin
 ##...
 ##...
 # XTP Slot 5
-ABtnInput17 = Button(TLP1, 215) ##Core Cisco 1 Out
-ABtnInput18 = Button(TLP1, 216) ##Core Cisco 2 Out
-ABtnInput19 = Button(TLP1, 217) ##Core ShareLink 1
-ABtnInput20 = Button(TLP1, 218) ##Core ShareLink 2
+ABtnInput17 = Button(TLP1, 217) ##Core Cisco 1 Out
+ABtnInput18 = Button(TLP1, 218) ##Core Cisco 2 Out
+ABtnInput19 = Button(TLP1, 219) ##Core ShareLink 1
+ABtnInput20 = Button(TLP1, 220) ##Core ShareLink 2
 # XTP Slot 6
-ABtnInput21 = Button(TLP1, 219) ##Core Tricaster 1 - Out 1
-ABtnInput22 = Button(TLP1, 220) ##Core Tricaster 2 - Out 1
+ABtnInput21 = Button(TLP1, 221) ##Core Tricaster 1 - Out 1
+ABtnInput22 = Button(TLP1, 222) ##Core Tricaster 2 - Out 1
 # Input Signal Status
 # XTP Slot 1
-ABtnSignal1    = Button(TLP1, 130) ##Room1 PC Left
-ABtnSignal2    = Button(TLP1, 131) ##Room1 PC Right
-ABtnSignal3    = Button(TLP1, 132) ##Room1 PC Stage
-ABtnSignal4    = Button(TLP1, 133) ##Room1 PC Right
+ABtnSignal1 = Button(TLP1, 130) ##Room1 PC Left
+ABtnSignal2 = Button(TLP1, 131) ##Room1 PC Right
+ABtnSignal3 = Button(TLP1, 132) ##Room1 PC Stage
+ABtnSignal4 = Button(TLP1, 133) ##Room1 PC Right
 # XTP Slot 2
-ABtnSignal5    = Button(TLP1, 134) ##Room2 PC Left
-ABtnSignal6    = Button(TLP1, 135) ##Room2 PC Right
-ABtnSignal7    = Button(TLP1, 136) ##Room2 PC Stage
-ABtnSignal8    = Button(TLP1, 137) ##Room2 PC Back
+ABtnSignal5 = Button(TLP1, 134) ##Room2 PC Left
+ABtnSignal6 = Button(TLP1, 135) ##Room2 PC Right
+ABtnSignal7 = Button(TLP1, 136) ##Room2 PC Stage
+ABtnSignal8 = Button(TLP1, 137) ##Room2 PC Back
 # XTP Slot 3
-ABtnSignal9    = Button(TLP1, 138) ##Room1 PTZ1
-ABtnSignal10   = Button(TLP1, 139) ##Room1 PTZ2
-ABtnSignal11   = Button(TLP1, 140) ##Room2 PTZ1
-ABtnSignal12   = Button(TLP1, 141) ##Room2 PTZ2
+ABtnSignal9 = Button(TLP1, 138) ##Room1 PTZ1
+ABtnSignal10 = Button(TLP1, 139) ##Room1 PTZ2
+ABtnSignal11 = Button(TLP1, 140) ##Room2 PTZ1
+ABtnSignal12 = Button(TLP1, 141) ##Room2 PTZ2
 # XTP Slot 4
-ABtnSignal13   = Button(TLP1, 142) ##Room1 PC Cabin
-ABtnSignal14   = Button(TLP1, 143) ##Room2 PC Cabin
+ABtnSignal13 = Button(TLP1, 142) ##Room1 PC Cabin
+ABtnSignal14 = Button(TLP1, 143) ##Room2 PC Cabin
 ##...
 ##...
 # XTP Slot 5
-ABtnSignal17   = Button(TLP1, 144) ##Core Cisco 1 Out
-ABtnSignal18   = Button(TLP1, 145) ##Core Cisco 2 Out
-ABtnSignal19   = Button(TLP1, 146) ##Core ShareLink 1
-ABtnSignal20   = Button(TLP1, 147) ##Core ShareLink 2
+ABtnSignal17 = Button(TLP1, 144) ##Core Cisco 1 Out
+ABtnSignal18 = Button(TLP1, 145) ##Core Cisco 2 Out
+ABtnSignal19 = Button(TLP1, 146) ##Core ShareLink 1
+ABtnSignal20 = Button(TLP1, 147) ##Core ShareLink 2
 # XTP Slot 6
-ABtnSignal21   = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
-ABtnSignal22   = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
+ABtnSignal21 = Button(TLP1, 148) ##Core Tricaster 1 - Out 1
+ABtnSignal22 = Button(TLP1, 149) ##Core Tricaster 2 - Out 1
 
 # Mode Display -----------------------------------------------------------------
 # Room 1 - Projection
@@ -407,7 +407,7 @@ BBtnOut18 = Button(TLP2, 118) ##Core Cisco 1 - Input Graphics
 BBtnOut19 = Button(TLP2, 119) ##Core Cisco 2 - Input Camera
 BBtnOut20 = Button(TLP2, 120) ##Core Cisco 2 - Input Graphics
 # XTP Out Slot 6
-BBtnOut22 = Button(TLP2, 121) ##Core Recorder 1
+BBtnOut21 = Button(TLP2, 121) ##Core Recorder 1
 BBtnOut22 = Button(TLP2, 122) ##Core Recorder 2
 
 # Inputs -----------------------------------------------------------------------
@@ -432,13 +432,13 @@ BBtnInput14 = Button(TLP2, 214) ##Room2 PC Cabin
 ##...
 ##...
 # XTP Slot 5
-BBtnInput17 = Button(TLP2, 215) ##Core Cisco 1 Out
-BBtnInput18 = Button(TLP2, 216) ##Core Cisco 2 Out
-BBtnInput19 = Button(TLP2, 217) ##Core ShareLink 1
-BBtnInput20 = Button(TLP2, 218) ##Core ShareLink 2
+BBtnInput17 = Button(TLP2, 217) ##Core Cisco 1 Out
+BBtnInput18 = Button(TLP2, 218) ##Core Cisco 2 Out
+BBtnInput19 = Button(TLP2, 219) ##Core ShareLink 1
+BBtnInput20 = Button(TLP2, 220) ##Core ShareLink 2
 # XTP Slot 6
-BBtnInput21 = Button(TLP2, 219) ##Core Tricaster 1 - Out 1
-BBtnInput22 = Button(TLP2, 220) ##Core Tricaster 2 - Out 1
+BBtnInput21 = Button(TLP2, 221) ##Core Tricaster 1 - Out 1
+BBtnInput22 = Button(TLP2, 222) ##Core Tricaster 2 - Out 1
 # Input Signal Status
 # XTP Slot 1
 BBtnSignal1 = Button(TLP2, 130) ##Room1 PC Left
@@ -645,17 +645,29 @@ GroupMainA = MESet([ABtnRoom, ABtnSwitch, ABtnDisplay, ABtnVC, ABtnREC, ABtnInfo
 GroupMainB = MESet([BBtnRoom, BBtnSwitch, BBtnDisplay, BBtnVC, BBtnREC, BBtnInfo, BBtnPower])
 
 # Mode Video Switching
-Outputs = [ABtnOut1, ABtnOut2, ABtnOut3, ABtnOut5, ABtnOut6,ABtnOut7, ABtnOut9, ABtnOut10, ABtnOut11,
-           ABtnOut12, ABtnOut13, ABtnOut14, ABtnOut15, ABtnOut16, ABtnOut17, ABtnOut18, ABtnOut19,
-           ABtnOut20, ABtnOut22, ABtnOut22]
+OutputsA = [ABtnOut1, ABtnOut2, ABtnOut3, ABtnOut5, ABtnOut6,ABtnOut7, ABtnOut9, ABtnOut10, ABtnOut11,
+            ABtnOut12, ABtnOut13, ABtnOut14, ABtnOut15, ABtnOut16, ABtnOut17, ABtnOut18, ABtnOut19,
+            ABtnOut20, ABtnOut21, ABtnOut22]
+
+OutputsB = [BBtnOut1, BBtnOut2, BBtnOut3, BBtnOut5, BBtnOut6,BBtnOut7, BBtnOut9, BBtnOut10, BBtnOut11,
+            BBtnOut12, BBtnOut13, BBtnOut14, BBtnOut15, BBtnOut16, BBtnOut17, BBtnOut18, BBtnOut19,
+            BBtnOut20, BBtnOut21, BBtnOut22]
 #
-Inputs = [ABtnInput1, ABtnInput2, ABtnInput3, ABtnInput4, ABtnInput5, ABtnInput6, ABtnInput7, 
-          ABtnInput8, ABtnInput9, ABtnInput10, ABtnInput11, ABtnInput12, ABtnInput13,
-          ABtnInput14, ABtnInput17, ABtnInput18, ABtnInput19, ABtnInput20, ABtnInput21, 
-          ABtnInput22]
+InputsA = [ABtnInput1, ABtnInput2, ABtnInput3, ABtnInput4, ABtnInput5, ABtnInput6, ABtnInput7, 
+           ABtnInput8, ABtnInput9, ABtnInput10, ABtnInput11, ABtnInput12, ABtnInput13,
+           ABtnInput14, ABtnInput17, ABtnInput18, ABtnInput19, ABtnInput20, ABtnInput21, 
+           ABtnInput22]
+
+InputsB = [BBtnInput1, BBtnInput2, BBtnInput3, BBtnInput4, BBtnInput5, BBtnInput6, BBtnInput7, 
+           BBtnInput8, BBtnInput9, BBtnInput10, BBtnInput11, BBtnInput12, BBtnInput13,
+           BBtnInput14, BBtnInput17, BBtnInput18, BBtnInput19, BBtnInput20, BBtnInput21, 
+           BBtnInput22]
 #
-GroupInputs = MESet(Inputs)
-GroupOutputs = MESet(Outputs)
+GroupInputsA = MESet(InputsA)
+GroupInputsB = MESet(InputsB)
+
+GroupOutputsA = MESet(OutputsA)
+GroupOutputsB = MESet(OutputsB)
 
 # Mode Projection
 ProjeccionA = [ABtnPwrProjA, ABtnScreenAUp, ABtnScreenADown, ABtnElevAUp, ABtnElevADown, ALCDCab1, ALCDCab2,
@@ -1404,49 +1416,6 @@ def ReceiveXTP(command, value, qualifier):
             else:
                 ABtnSignal22.SetState(0)
                 BBtnSignal22.SetState(0)
-
-    elif command == 'OutputTieStatus':
-        #print('--- Parsing Matrix: (Out ' +  qualifier['Output'] + ' In ' + value + ' ' + qualifier['Tie Type'] + ')')
-        if value == '1':
-            GroupInputs.SetCurrent(ABtnInput1)
-        elif value == '2':
-            GroupInputs.SetCurrent(ABtnInput2)
-        elif value == '3':
-            GroupInputs.SetCurrent(ABtnInput3)
-        elif value == '4':
-            GroupInputs.SetCurrent(ABtnInput4)
-        elif value == '5':
-            GroupInputs.SetCurrent(ABtnInput5)
-        elif value == '6':
-            GroupInputs.SetCurrent(ABtnInput6)
-        elif value == '7':
-            GroupInputs.SetCurrent(ABtnInput7)
-        elif value == '8':
-            GroupInputs.SetCurrent(ABtnInput8)
-        elif value == '9':
-            GroupInputs.SetCurrent(ABtnInput9)
-        elif value == '10':
-            GroupInputs.SetCurrent(ABtnInput10)
-        elif value == '11':
-            GroupInputs.SetCurrent(ABtnInput11)
-        elif value == '12':
-            GroupInputs.SetCurrent(ABtnInput12)
-        elif value == '13':
-            GroupInputs.SetCurrent(ABtnInput13)
-        elif value == '14':
-            GroupInputs.SetCurrent(ABtnInput14)
-        elif value == '17':
-            GroupInputs.SetCurrent(ABtnInput17)
-        elif value == '18':
-            GroupInputs.SetCurrent(ABtnInput18)
-        elif value == '19':
-            GroupInputs.SetCurrent(ABtnInput19)
-        elif value == '20':
-            GroupInputs.SetCurrent(ABtnInput20)
-        elif value == '21':
-            GroupInputs.SetCurrent(ABtnInput21)
-        elif value == '22':
-            GroupInputs.SetCurrent(ABtnInput22)
     pass
 
 def ReceiveTesira(command, value, qualifier):
@@ -2688,311 +2657,365 @@ def FullMain(button, state):
     pass
 
 # ACTIONS - MATRIX TIE INFO FUNCTIONS ------------------------------------------
-def FunctionActiveTie(output):
+def FunctionActiveTie(output, touch):
     '''This retrieve the real Output-Input Video Relation when the user push the Display button'''
     activeTie = XTP.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
     ##
-    if activeTie == '1':
-        GroupInputs.SetCurrent(ABtnInput1)
-    elif activeTie == '2':
-        GroupInputs.SetCurrent(ABtnInput2)
-    elif activeTie == '3':
-        GroupInputs.SetCurrent(ABtnInput3)
-    elif activeTie == '4':
-        GroupInputs.SetCurrent(ABtnInput4)
-    ##
-    elif activeTie == '5':
-        GroupInputs.SetCurrent(ABtnInput5)
-    elif activeTie == '6':
-        GroupInputs.SetCurrent(ABtnInput6)
-    elif activeTie == '7':
-        GroupInputs.SetCurrent(ABtnInput7)
-    elif activeTie == '8':
-        GroupInputs.SetCurrent(ABtnInput8)
-    ##
-    elif activeTie == '9':
-        GroupInputs.SetCurrent(ABtnInput9)
-    elif activeTie == '10':
-        GroupInputs.SetCurrent(ABtnInput10)
-    elif activeTie == '11':
-        GroupInputs.SetCurrent(ABtnInput11)
-    elif activeTie == '12':
-        GroupInputs.SetCurrent(ABtnInput12)
-    ##
-    elif activeTie == '13':
-        GroupInputs.SetCurrent(ABtnInput13)
-    elif activeTie == '14':
-        GroupInputs.SetCurrent(ABtnInput14)
-    ##
-    elif activeTie == '17':
-        GroupInputs.SetCurrent(ABtnInput17)
-    elif activeTie == '18':
-        GroupInputs.SetCurrent(ABtnInput18)
-    elif activeTie == '19':
-        GroupInputs.SetCurrent(ABtnInput19)
-    elif activeTie == '20':
-        GroupInputs.SetCurrent(ABtnInput20)
-    ##
-    elif activeTie == '21':
-        GroupInputs.SetCurrent(ABtnInput21)
-    elif activeTie == '22':
-        GroupInputs.SetCurrent(ABtnInput22)
+    if touch == 'TLP1':
+        if activeTie == '1':
+            GroupInputsA.SetCurrent(ABtnInput1)
+        elif activeTie == '2':
+            GroupInputsA.SetCurrent(ABtnInput2)
+        elif activeTie == '3':
+            GroupInputsA.SetCurrent(ABtnInput3)
+        elif activeTie == '4':
+            GroupInputsA.SetCurrent(ABtnInput4)
+        ##
+        elif activeTie == '5':
+            GroupInputsA.SetCurrent(ABtnInput5)
+        elif activeTie == '6':
+            GroupInputsA.SetCurrent(ABtnInput6)
+        elif activeTie == '7':
+            GroupInputsA.SetCurrent(ABtnInput7)
+        elif activeTie == '8':
+            GroupInputsA.SetCurrent(ABtnInput8)
+        ##
+        elif activeTie == '9':
+            GroupInputsA.SetCurrent(ABtnInput9)
+        elif activeTie == '10':
+            GroupInputsA.SetCurrent(ABtnInput10)
+        elif activeTie == '11':
+            GroupInputsA.SetCurrent(ABtnInput11)
+        elif activeTie == '12':
+            GroupInputsA.SetCurrent(ABtnInput12)
+        ##
+        elif activeTie == '13':
+            GroupInputsA.SetCurrent(ABtnInput13)
+        elif activeTie == '14':
+            GroupInputsA.SetCurrent(ABtnInput14)
+        ##
+        elif activeTie == '17':
+            GroupInputsA.SetCurrent(ABtnInput17)
+        elif activeTie == '18':
+            GroupInputsA.SetCurrent(ABtnInput18)
+        elif activeTie == '19':
+            GroupInputsA.SetCurrent(ABtnInput19)
+        elif activeTie == '20':
+            GroupInputsA.SetCurrent(ABtnInput20)
+        ##
+        elif activeTie == '21':
+            GroupInputsA.SetCurrent(ABtnInput21)
+        elif activeTie == '22':
+            GroupInputsA.SetCurrent(ABtnInput22)
+    else:
+        if activeTie == '1':
+            GroupInputsB.SetCurrent(BBtnInput1)
+        elif activeTie == '2':
+            GroupInputsB.SetCurrent(BBtnInput2)
+        elif activeTie == '3':
+            GroupInputsB.SetCurrent(BBtnInput3)
+        elif activeTie == '4':
+            GroupInputsB.SetCurrent(BBtnInput4)
+        ##
+        elif activeTie == '5':
+            GroupInputsB.SetCurrent(BBtnInput5)
+        elif activeTie == '6':
+            GroupInputsB.SetCurrent(BBtnInput6)
+        elif activeTie == '7':
+            GroupInputsB.SetCurrent(BBtnInput7)
+        elif activeTie == '8':
+            GroupInputsB.SetCurrent(BBtnInput8)
+        ##
+        elif activeTie == '9':
+            GroupInputsB.SetCurrent(BBtnInput9)
+        elif activeTie == '10':
+            GroupInputsB.SetCurrent(BBtnInput10)
+        elif activeTie == '11':
+            GroupInputsB.SetCurrent(BBtnInput11)
+        elif activeTie == '12':
+            GroupInputsB.SetCurrent(BBtnInput12)
+        ##
+        elif activeTie == '13':
+            GroupInputsB.SetCurrent(BBtnInput13)
+        elif activeTie == '14':
+            GroupInputsB.SetCurrent(BBtnInput14)
+        ##
+        elif activeTie == '17':
+            GroupInputsB.SetCurrent(BBtnInput17)
+        elif activeTie == '18':
+            GroupInputsB.SetCurrent(BBtnInput18)
+        elif activeTie == '19':
+            GroupInputsB.SetCurrent(BBtnInput19)
+        elif activeTie == '20':
+            GroupInputsB.SetCurrent(BBtnInput20)
+        ##
+        elif activeTie == '21':
+            GroupInputsB.SetCurrent(BBtnInput21)
+        elif activeTie == '22':
+            GroupInputsB.SetCurrent(BBtnInput22)
     pass
 
 # ACTIONS - SWITCHING VIDEO OUTPUTS MODE ---------------------------------------
-@event(Outputs, 'Pressed')
+@event(OutputsA + OutputsB, 'Pressed')
 def OutsSwitching(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
-    #
-    ## Mutually Exclusive
-    GroupOutputs.SetCurrent(button)
+    ## Data Init
     global output
-    
-    ## Button Functions
+    global touch
+    ## Mutually Exclusive
     if button.Host.DeviceAlias == 'TouchPanelA':
-        # XTP Slot 1-----------------------------------------------------
-        if button is ABtnOut1:
-            output = '1'
-            print("Touch 1: {0}".format("Out Room 1: Projector"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut2:
-            output = '2'
-            print("Touch 1: {0}".format("Out Room 1: LCD Podium"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut3:
-            output = '3'
-            print("Touch 1: {0}".format("Out Room 1: LCD Lobby"))
-            ##Recall Function
-            FunctionActiveTie(output)
+        touch = 'TLP1'
+        GroupOutputsA.SetCurrent(button)
+    else:
+        touch = 'TLP2'
+        GroupOutputsB.SetCurrent(button)
+
+    # XTP Slot 1-----------------------------------------------------
+    if button.ID == 101:
+        output = '1'
+        print("Touch: {0}".format("Out Room 1: Projector"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 102:
+        output = '2'
+        print("Touch: {0}".format("Out Room 1: LCD Podium"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 103:
+        output = '3'
+        print("Touch: {0}".format("Out Room 1: LCD Lobby"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    
+    #XTP Slot 2-----------------------------------------------------
+    elif button.ID == 105:
+        output = '5'
+        print("Touch 1: {0}".format("Out Room 2: Projector"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 106:
+        output = '6'
+        print("Touch 1: {0}".format("Out Room 2: LCD Podium"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 107:
+        output = '7'
+        print("Touch 1: {0}".format("Out Room 2: LCD Lobby"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+
+    #XTP Slot 3-----------------------------------------------------
+    elif button.ID == 109:
+        output = '9'
+        print("Touch 1: {0}".format("Out Room 1: Tricaster In 1"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 110:
+        output = '10'
+        print("Touch 1: {0}".format("Out Room 1: Tricaster In 2"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 111:
+        output = '11'
+        print("Touch 1: {0}".format("Out Room 1: Tricaster In 3"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 112:
+        output = '12'
+        print("Touch 1: {0}".format("Out Room 1: Tricaster In 4"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+
+    #XTP Slot 4-----------------------------------------------------
+    elif button.ID == 113:
+        output = '13'
+        print("Touch 1: {0}".format("Out Room 2: Tricaster In 1"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 114:
+        output = '14'
+        print("Touch 1: {0}".format("Out Room 2: Tricaster In 2"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 115:
+        output = '15'
+        print("Touch 1: {0}".format("Out Room 2: Tricaster In 3"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 116:
+        output = '16'
+        print("Touch 1: {0}".format("Out Room 2: Tricaster In 4"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
         
-        #XTP Slot 2-----------------------------------------------------
-        elif button is ABtnOut5:
-            output = '5'
-            print("Touch 1: {0}".format("Out Room 2: Projector"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut6:
-            output = '6'
-            print("Touch 1: {0}".format("Out Room 2: LCD Podium"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut7:
-            output = '7'
-            print("Touch 1: {0}".format("Out Room 2: LCD Lobby"))
-            ##Recall Function
-            FunctionActiveTie(output)
+    #XTP Slot 5------------------------------------------------------
+    elif button.ID == 117:
+        output = '17'
+        print("Touch 1: {0}".format("Out Room 1: Cisco Camera"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 118:
+        output = '18'
+        print("Touch 1: {0}".format("Out Room 1: Cisco Graphics"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 119:
+        output = '19'
+        print("Touch 1: {0}".format("Out Room 2: Cisco Camera"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 120:
+        output = '20'
+        print("Touch 1: {0}".format("Out Room 2: Cisco Graphics"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
 
-        #XTP Slot 3-----------------------------------------------------
-        elif button is ABtnOut9:
-            output = '9'
-            print("Touch 1: {0}".format("Out Room 1: Tricaster In 1"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut10:
-            output = '10'
-            print("Touch 1: {0}".format("Out Room 1: Tricaster In 2"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut11:
-            output = '11'
-            print("Touch 1: {0}".format("Out Room 1: Tricaster In 3"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut12:
-            output = '12'
-            print("Touch 1: {0}".format("Out Room 1: Tricaster In 4"))
-            ##Recall Function
-            FunctionActiveTie(output)
-
-        #XTP Slot 4-----------------------------------------------------
-        elif button is ABtnOut13:
-            output = '13'
-            print("Touch 1: {0}".format("Out Room 2: Tricaster In 1"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut14:
-            output = '14'
-            print("Touch 1: {0}".format("Out Room 2: Tricaster In 2"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut15:
-            output = '15'
-            print("Touch 1: {0}".format("Out Room 2: Tricaster In 3"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut16:
-            output = '16'
-            print("Touch 1: {0}".format("Out Room 2: Tricaster In 4"))
-            ##Recall Function
-            FunctionActiveTie(output)
-            
-        #XTP Slot 5------------------------------------------------------
-        elif button is ABtnOut17:
-            output = '17'
-            print("Touch 1: {0}".format("Out Room 1: Cisco Camera"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut18:
-            output = '18'
-            print("Touch 1: {0}".format("Out Room 1: Cisco Graphics"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut19:
-            output = '19'
-            print("Touch 1: {0}".format("Out Room 2: Cisco Camera"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut20:
-            output = '20'
-            print("Touch 1: {0}".format("Out Room 2: Cisco Graphics"))
-            ##Recall Function
-            FunctionActiveTie(output)
-
-        #XTP Slot 6------------------------------------------------------
-        elif button is ABtnOut22:
-            output = '21'
-            print("Touch 1: {0}".format("Out Room 1: Recorder"))
-            ##Recall Function
-            FunctionActiveTie(output)
-        #
-        elif button is ABtnOut22:
-            output = '22'
-            print("Touch 1: {0}".format("Out Room 2: Recorder"))
-            ##Recall Function
-            FunctionActiveTie(output)
+    #XTP Slot 6------------------------------------------------------
+    elif button.ID == 121:
+        output = '21'
+        print("Touch 1: {0}".format("Out Room 1: Recorder"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
+    #
+    elif button.ID == 122:
+        output = '22'
+        print("Touch 1: {0}".format("Out Room 2: Recorder"))
+        ##Recall Function
+        FunctionActiveTie(output, touch)
     pass
 
 # ACTIONS - SWITCHING VIDEO INPUTS MODE ----------------------------------------
-@event(Inputs, 'Pressed')
+@event(InputsA + InputsB, 'Pressed')
 def InSwitching(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
-    #
     ## Data Init
-    GroupInputs.SetCurrent(button)
     global output
-    global input
-    ## Button Functions
+    print(button.ID)
+    ## Mutually Exclusive
     if button.Host.DeviceAlias == 'TouchPanelA':
-        # XTP Slot 1-----------------------------------------------------
-        if button is ABtnInput1:
-            input = '1'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: Placa Left"))
-        #
-        elif button is ABtnInput2:
-            input = '2'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: Placa Right"))
-        #
-        elif button is ABtnInput3:
-            input = '3'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: Placa Stage"))
-        #
-        elif button is ABtnInput4:
-            input = '4'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: Placa Back"))
+        GroupInputsA.SetCurrent(button)
+    else:
+        GroupInputsB.SetCurrent(button)
 
-        # XTP Slot 2-----------------------------------------------------
-        elif button is ABtnInput5:
-            input = '5'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: Placa Left"))
-        #
-        elif button is ABtnInput6:
-            input = '6'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: Placa Right"))
-        #
-        elif button is ABtnInput7:
-            input = '7'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: Placa Stage"))
-        #
-        elif button is ABtnInput8:
-            input = '8'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: Placa Back"))
-            
-        # XTP Slot 3-----------------------------------------------------
-        elif button is ABtnInput9:
-            input = '9'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: PTZ Frontal"))
-        #
-        elif button is ABtnInput10:
-            input = '10'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: PTZ Back"))
-        #
-        elif button is ABtnInput11:
-            input = '11'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: PTZ Frontal"))
-        #
-        elif button is ABtnInput12:
-            input = '12'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: PTZ Back"))
-            
-        # XTP Slot 4-----------------------------------------------------
-        elif button is ABtnInput13:
-            input = '13'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 1: PC Cabina"))
-        #
-        elif button is ABtnInput14:
-            input = '14'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Room 2: PC Cabina"))
-            
-        # XTP Slot 5-----------------------------------------------------
-        elif button is ABtnInput17:
-            input = '17'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Core: Cisco 1 Out"))
-        #
-        elif button is ABtnInput18:
-            input = '18'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Core: Cisco 2 Out"))
-        #
-        elif button is ABtnInput19:
-            input = '19'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Core: ShareLink 1"))
-        #
-        elif button is ABtnInput20:
-            input = '20'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Core: ShareLink 2"))
-            
-        # XTP Slot 6-----------------------------------------------------
-        elif button is ABtnInput21:
-            input = '21'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Core: Tricaster 1 Out"))
-        #
-        elif button is ABtnInput22:
-            input = '22'
-            XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
-            print("Touch 1: {0}".format("In Core: Tricaster 2 Out"))
+    ## Button Functions
+    # XTP Slot 1-----------------------------------------------------
+    if button.ID == 201:
+        input = '1'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: Placa Left"))
+    #
+    elif button.ID == 202:
+        input = '2'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: Placa Right"))
+    #
+    elif button.ID == 203:
+        input = '3'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: Placa Stage"))
+    #
+    elif button.ID == 204:
+        input = '4'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: Placa Back"))
+
+    # XTP Slot 2-----------------------------------------------------
+    elif button.ID == 205:
+        input = '5'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: Placa Left"))
+    #
+    elif button.ID == 206:
+        input = '6'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: Placa Right"))
+    #
+    elif button.ID == 207:
+        input = '7'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: Placa Stage"))
+    #
+    elif button.ID == 208:
+        input = '8'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: Placa Back"))
+        
+    # XTP Slot 3-----------------------------------------------------
+    elif button.ID == 209:
+        input = '9'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: PTZ Frontal"))
+    #
+    elif button.ID == 210:
+        input = '10'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: PTZ Back"))
+    #
+    elif button.ID == 211:
+        input = '11'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: PTZ Frontal"))
+    #
+    elif button.ID == 212:
+        input = '12'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: PTZ Back"))
+        
+    # XTP Slot 4-----------------------------------------------------
+    elif button.ID == 213:
+        input = '13'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 1: PC Cabina"))
+    #
+    elif button.ID == 214:
+        input = '14'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Room 2: PC Cabina"))
+        
+    # XTP Slot 5-----------------------------------------------------
+    elif button.ID == 217:
+        input = '17'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Core: Cisco 1 Out"))
+    #
+    elif button.ID == 218:
+        input = '18'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Core: Cisco 2 Out"))
+    #
+    elif button.ID == 219:
+        input = '19'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Core: ShareLink 1"))
+    #
+    elif button.ID == 220:
+        input = '20'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Core: ShareLink 2"))
+        
+    # XTP Slot 6-----------------------------------------------------
+    elif button.ID == 221:
+        input = '21'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Core: Tricaster 1 Out"))
+    #
+    elif button.ID == 222:
+        input = '22'
+        XTP.Set('MatrixTieCommand', None, {'Input':input, 'Output':output, 'Tie Type':'Video'})
+        print("Touch: {0}".format("In Core: Tricaster 2 Out"))
     pass
 
 # ACTIONS - RELAYS FUNCTIONS ---------------------------------------------------
