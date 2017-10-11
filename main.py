@@ -789,7 +789,8 @@ def Initialize():
 
     ## Notify to console
     print('System Initialize')
-    ALblPython.SetText(Version())
+    ALblPython.SetText('Extron API ' + Version())
+    BLblPython.SetText('Extron API ' + Version())
     pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
@@ -1580,12 +1581,12 @@ def ReceiveTesira(command, value, qualifier):
         if qualifier['Instance Tag'] == 'Room' and qualifier['Channel'] == '1':
             if value == 'True':
                 Room_Data['Mixed'] = True
-                #Tesira.Set('PresetRecall', '1')
+                Tesira.Set('PresetRecall', '1')
                 GroupRoomA.SetCurrent(ARoomMixed)
                 GroupRoomB.SetCurrent(BRoomMixed)
             else:
                 Room_Data['Mixed'] = False
-                #Tesira.Set('PresetRecall', '2')
+                Tesira.Set('PresetRecall', '2')
                 GroupRoomA.SetCurrent(ARoomSplit)
                 GroupRoomB.SetCurrent(BRoomSplit)
     pass
@@ -2344,9 +2345,11 @@ def Tesira_PhysicalConex(interface, state):
        AttemptConnectProjector"""
     if state == 'Connected':
         ABtnLanTesira.SetState(1)
+        BBtnLanTesira.SetState(1)
         reconnectWaitTesira.Cancel()
     else:
         ABtnLanTesira.SetState(0)
+        BBtnLanTesira.SetState(0)
         print('Socket Disconnected: Tesira')
     pass
 
@@ -2594,7 +2597,7 @@ def FunctionMixRoom():
     ## Store the data in dictionary
     Tesira.Set('LogicState', 'True', {'Instance Tag':'Room', 'Channel':'1'})
     Room_Data['Mixed'] = True
-    #Tesira.Set('PresetRecall', '1')
+    Tesira.Set('PresetRecall', '1')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
     ABtnRoom2.SetState(1)
@@ -2603,14 +2606,14 @@ def FunctionMixRoom():
     GroupRoomA.SetCurrent(ARoomMixed)
     GroupRoomB.SetCurrent(BRoomMixed)
     ## Notify to console
-    print("Room Split")
+    print("Room Mixed")
     pass
 
 def FunctionSplitRoom():
     ## Store the data in dictionary
     Tesira.Set('LogicState', 'False', {'Instance Tag':'Room', 'Channel':'1'})
     Room_Data['Mixed'] = False
-    #Tesira.Set('PresetRecall', '2')
+    Tesira.Set('PresetRecall', '2')
     ## Activate button feedback
     ABtnRoom1.SetState(1)
     ABtnRoom2.SetState(0)
@@ -2619,7 +2622,7 @@ def FunctionSplitRoom():
     GroupRoomA.SetCurrent(ARoomSplit)
     GroupRoomB.SetCurrent(BRoomSplit)
     ## Notify to console
-    print("Room Mixed")
+    print("Room Split")
     pass
 
 # ACTIONS - ROOM CONFIGURATION MODE --------------------------------------------
