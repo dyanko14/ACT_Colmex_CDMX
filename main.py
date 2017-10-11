@@ -109,22 +109,22 @@ ABtnInfo    = Button(TLP1, 15)
 ABtnPower   = Button(TLP1, 16)
 
 # Mode Main - Up Bar
-ALblMain    = Label(TLP1, 20)
-ABtnRoom2   = Button(TLP1, 21)
-ABtnRoom1   = Button(TLP1, 22)
+ALblMain = Label(TLP1, 20)
+ABtnRoom2 = Button(TLP1, 21)
+ABtnRoom1 = Button(TLP1, 22)
 
 # Mode Switching ---------------------------------------------------------------
 # Outputs ----------------------------------------------------------------------
 # XTP Out Slot 1
-ABtnOut1  = Button(TLP1, 101) ##Room1 Projector
-ABtnOut2  = Button(TLP1, 102) ##Room1 LCD Confidence
-ABtnOut3  = Button(TLP1, 103) ##Room1 LCD Podium
+ABtnOut1 = Button(TLP1, 101) ##Room1 Projector
+ABtnOut2 = Button(TLP1, 102) ##Room1 LCD Confidence
+ABtnOut3 = Button(TLP1, 103) ##Room1 LCD Podium
 # XTP Out Slot 2
-ABtnOut5  = Button(TLP1, 105) ##Room2 Projector
-ABtnOut6  = Button(TLP1, 106) ##Room2 LCD Confidence
-ABtnOut7  = Button(TLP1, 107) ##Room2 LCD Podium
+ABtnOut5 = Button(TLP1, 105) ##Room2 Projector
+ABtnOut6 = Button(TLP1, 106) ##Room2 LCD Confidence
+ABtnOut7 = Button(TLP1, 107) ##Room2 LCD Podium
 # XTP Out Slot 3
-ABtnOut9  = Button(TLP1, 109) ##Core Tricaster 1 - Input 1
+ABtnOut9 = Button(TLP1, 109) ##Core Tricaster 1 - Input 1
 ABtnOut10 = Button(TLP1, 110) ##Core Tricaster 1 - Input 2
 ABtnOut11 = Button(TLP1, 111) ##Core Tricaster 1 - Input 3
 ABtnOut12 = Button(TLP1, 112) ##Core Tricaster 1 - Input 4
@@ -697,16 +697,26 @@ GroupRecB1 = MESet([ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause])
 GroupRecB2 = MESet([BBtnRecBRecord, BBtnRecBStop, BBtnRecBPause])
 
 # Mode Videoconference
-VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete]
-VCButtons = [ABtnVC1Call, ABtnVC1DTMF, ABtnVC1ContenOn, ABtnVC1ContenOff, ABtnVC1Answer, ABtnVC1Reject]
-GroupContentA = MESet([ABtnVC1ContenOn, ABtnVC1ContenOff])
+VCDial = [ADial0, ADial1, ADial2, ADial3, ADial4, ADial5, ADial6, ADial7, ADial8, ADial9, ADialDot, ADialHash, ADialDelete,
+          BDial0, BDial1, BDial2, BDial3, BDial4, BDial5, BDial6, BDial7, BDial8, BDial9, BDialDot, BDialHash, BDialDelete,]
+
+VCButtons = [ABtnVC1Call, ABtnVC1DTMF, ABtnVC1ContenOn, ABtnVC1ContenOff, ABtnVC1Answer, ABtnVC1Reject,
+             BBtnVC1Call, BBtnVC1DTMF, BBtnVC1ContenOn, BBtnVC1ContenOff, BBtnVC1Answer, BBtnVC1Reject]
+
+GroupContentA1 = MESet([ABtnVC1ContenOn, ABtnVC1ContenOff])
+GroupContentA2 = MESet([BBtnVC1ContenOn, BBtnVC1ContenOff])
 #
-VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial7, A2Dial8, A2Dial9, A2DialDot, A2DialHash, A2DialDelete]
-VC2Buttons = [ABtnVC2Call, ABtnVC2DTMF, ABtnVC2ContenOn, ABtnVC2ContenOff, ABtnVC2Answer, ABtnVC2Reject]
-GroupContentB = MESet([ABtnVC2ContenOn, ABtnVC2ContenOff])
+VC2Dial = [A2Dial0, A2Dial1, A2Dial2, A2Dial3, A2Dial4, A2Dial5, A2Dial6, A2Dial7, A2Dial8, A2Dial9, A2DialDot, A2DialHash, A2DialDelete,
+           B2Dial0, B2Dial1, B2Dial2, B2Dial3, B2Dial4, B2Dial5, B2Dial6, B2Dial7, B2Dial8, B2Dial9, B2DialDot, B2DialHash, B2DialDelete]
+
+VC2Buttons = [ABtnVC2Call, ABtnVC2DTMF, ABtnVC2ContenOn, ABtnVC2ContenOff, ABtnVC2Answer, ABtnVC2Reject,
+              BBtnVC2Call, BBtnVC2DTMF, BBtnVC2ContenOn, BBtnVC2ContenOff, BBtnVC2Answer, BBtnVC2Reject]
+
+GroupContentB1 = MESet([ABtnVC2ContenOn, ABtnVC2ContenOff])
+GroupContentB2 = MESet([BBtnVC2ContenOn, BBtnVC2ContenOff])
 
 # Mode PowerOff
-GroupPower = [ABtnPowerA, ABtnPowerB, ABtnPowerAB]
+GroupPower = [ABtnPowerA, ABtnPowerB, ABtnPowerAB, BBtnPowerA, BBtnPowerB, BBtnPowerAB]
 
 # Button State List
 ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
@@ -1247,8 +1257,10 @@ def ReceiveXTP(command, value, qualifier):
             XTP.Disconnect()
             reconnectWaitXTP.Restart()
             ABtnLanXTP.SetState(0)
+            BBtnLanXTP.SetState(0)
         else:
             ABtnLanXTP.SetState(1)
+            BBtnLanXTP.SetState(1)
     #
     elif command == 'InputSignal':
         # XTP Slot 1-------------------
@@ -1551,13 +1563,16 @@ def ReceiveCisco1(command, value, qualifier):
     elif command == 'Presentation':
         print('--- Parsing Cisco 1: (Presentation ' +  value + ' )')
         if value == '2':
-            GroupContentA.SetCurrent(ABtnVC1ContenOn)
+            GroupContentA1.SetCurrent(ABtnVC1ContenOn)
+            GroupContentA2.SetCurrent(BBtnVC1ContenOn)
         elif value == 'Stop':
-            GroupContentA.SetCurrent(ABtnVC1ContenOff)
+            GroupContentA1.SetCurrent(ABtnVC1ContenOff)
+            GroupContentA1.SetCurrent(BBtnVC1ContenOff)
     #
     elif command == 'CallStatus':
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
         ALblinfo1VC1.SetText(value)
+        BLblinfo1VC1.SetText(value)
         #
         if value == 'Ringing':
             TLP1.ShowPopup('Cisco1.Call')
@@ -1566,15 +1581,20 @@ def ReceiveCisco1(command, value, qualifier):
         #
         if value == 'Idle' or value == 'Disconnecting':
             ABtnVC1Call.SetState(0)
+            BBtnVC1Call.SetState(0)
             ABtnVC1Call.SetText('Llamar')
+            BBtnVC1Call.SetText('Llamar')
         #
         elif value == 'Connected' or value == 'Connecting':
             ABtnVC1Call.SetState(1)
+            BBtnVC1Call.SetState(1)
             ABtnVC1Call.SetText('Colgar')
+            BBtnVC1Call.SetText('Colgar')
     #
     elif command == 'DisplayName':
         print('--- Parsing Cisco 1: (DisplayName ' +  value + ' )')
         ALblVC1Remote.SetText(value)
+        BLblVC1Remote.SetText(value)
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 1: (RemoteNumber ' +  value + ' )')
@@ -1602,12 +1622,15 @@ def ReceiveCisco2(command, value, qualifier):
     elif command == 'Presentation':
         print('--- Parsing Cisco 2: (Presentation ' +  value + ' )')
         if value == '2':
-            GroupContentB.SetCurrent(ABtnVC2ContenOn)
+            GroupContentB1.SetCurrent(ABtnVC2ContenOn)
+            GroupContentB2.SetCurrent(BBtnVC2ContenOn)
         elif value == 'Stop':
-            GroupContentB.SetCurrent(ABtnVC2ContenOff)
+            GroupContentB1.SetCurrent(ABtnVC2ContenOff)
+            GroupContentB2.SetCurrent(BBtnVC2ContenOff)
     #
     elif command == 'CallStatus':
         ALblinfo1VC2.SetText(value)
+        BLblinfo1VC2.SetText(value)
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
         #
         if value == 'Ringing':
@@ -1617,15 +1640,20 @@ def ReceiveCisco2(command, value, qualifier):
         #
         if value == 'Idle' or value == 'Disconnecting':
             ABtnVC2Call.SetState(0)
+            BBtnVC2Call.SetState(0)
             ABtnVC2Call.SetText('Llamar')
+            BBtnVC2Call.SetText('Llamar')
         #
         elif value == 'Connected' or value == 'Connecting':
             ABtnVC2Call.SetState(1)
+            BBtnVC2Call.SetState(1)
             ABtnVC2Call.SetText('Colgar')
+            BBtnVC2Call.SetText('Colgar')
     #
     elif command == 'DisplayName':
         print('--- Parsing Cisco 2: (DisplayName ' +  value + ' )')
         ALblVC2Remote.SetText(value)
+        BLblVC2Remote.SetText(value)
     #
     elif command == 'RemoteNumber':
         print('--- Parsing Cisco 2: (RemoteNumber ' +  value + ' )')
@@ -2076,11 +2104,8 @@ SubscribeProjectorB()
 def SubscribeCisco1():
     Cisco1.SubscribeStatus('ConnectionStatus', None, ReceiveCisco1)
     Cisco1.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco1)
-    Cisco1.SubscribeStatus('PresentationMode', None, ReceiveCisco1)
     Cisco1.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco1)
-    Cisco1.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco1)
     Cisco1.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco1)
-    Cisco1.SubscribeStatus('IPAddress', None, ReceiveCisco1)
     Cisco1.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco1)
     pass
 SubscribeCisco1()
@@ -2088,11 +2113,8 @@ SubscribeCisco1()
 def SubscribeCisco2():
     Cisco2.SubscribeStatus('ConnectionStatus', None, ReceiveCisco2)
     Cisco2.SubscribeStatus('Presentation', {'Instance':'1'}, ReceiveCisco2)
-    Cisco2.SubscribeStatus('PresentationMode', None, ReceiveCisco2)
     Cisco2.SubscribeStatus('CallStatus', {'Call':'1'}, ReceiveCisco2)
-    Cisco2.SubscribeStatus('CallStatusType', {'Call':'1'}, ReceiveCisco2)
     Cisco2.SubscribeStatus('DisplayName', {'Call':'1'}, ReceiveCisco2)
-    Cisco2.SubscribeStatus('IPAddress', None, ReceiveCisco2)
     Cisco2.SubscribeStatus('RemoteNumber', {'Call':'1'}, ReceiveCisco2)
     pass
 SubscribeCisco2()
@@ -2662,7 +2684,9 @@ def FunctionActiveTie(output, touch):
     activeTie = XTP.ReadStatus('OutputTieStatus', {'Output':output, 'Tie Type':'Video'})
     ##
     if touch == 'TLP1':
-        if activeTie == '1':
+        if activeTie == '0':
+            GroupInputsA.SetCurrent(None)
+        elif activeTie == '1':
             GroupInputsA.SetCurrent(ABtnInput1)
         elif activeTie == '2':
             GroupInputsA.SetCurrent(ABtnInput2)
@@ -2708,7 +2732,9 @@ def FunctionActiveTie(output, touch):
         elif activeTie == '22':
             GroupInputsA.SetCurrent(ABtnInput22)
     else:
-        if activeTie == '1':
+        if activeTie == '0':
+            GroupInputsB.SetCurrent(None)
+        elif activeTie == '1':
             GroupInputsB.SetCurrent(BBtnInput1)
         elif activeTie == '2':
             GroupInputsB.SetCurrent(BBtnInput2)
@@ -3302,6 +3328,7 @@ def PrintDialerVC1(btn_name):
         dialerVC = dialerVC[:-1]       #Remove the last char of the string
         Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
         ALblVC1Dial.SetText(dialerVC)      #Send the string to GUI Label
+        BLblVC1Dial.SetText(dialerVC)
     else:                            #If the user push a [*#0-9] button
         number = str(btn_name[4])    #Extract the valid character of BTN name
         if Cisco1_Data['DTMF'] == True:
@@ -3313,11 +3340,12 @@ def PrintDialerVC1(btn_name):
             dialerVC += number           #Append the last char to the string
             Cisco1_Data['Dial'] = dialerVC #Asign the string to the data dictionary
             ALblVC1Dial.SetText(dialerVC)  #Send the string to GUI Label
+            BLblVC1Dial.SetText(dialerVC)
     pass
 
 ## This function is called when the user press a Dial Button
 @event(VCDial, ButtonEventList)
-def vi_dial_events(button, state):
+def vc_dial_events(button, state):
     """User Actions: Touch VC Page"""
     ## All the VC Dial Buttons pressed come in button variable
     if state == 'Pressed' or state == 'Repeated':
@@ -3332,47 +3360,56 @@ def vi_dial_events(button, state):
 def VC_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ABtnVC1Call:
+    if button.ID == 2143:
         if Cisco1.ReadStatus('CallStatus', {'Call':'1'}) == 'Connected':
             Cisco1.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
             ALblVC1Dial.SetText('')
+            BLblVC1Dial.SetText('')
             dialerVC = ''
-            print("Touch 1: {0}".format("Cisco1: Hangup"))
+            print("Touch: {0}".format("Cisco1: Hangup"))
         else:
             Cisco1.Set('Hook', 'Dial', {'Number':Cisco1_Data['Dial'], 'Protocol':'H323'})
-            print("Touch 1: {0}".format("Cisco1: Call"))
+            print("Touch: {0}".format("Cisco1: Call"))
     #
-    elif button is ABtnVC1DTMF:
+    elif button.ID == 2142:
         if Cisco1_Data['DTMF'] == False:
             Cisco1_Data['DTMF'] = True
             ADialDot.SetText('*')
+            BDialDot.SetText('*')
             ABtnVC1DTMF.SetState(1)
+            BBtnVC1DTMF.SetState(1)
             print("Touch 1: {0}".format("Cisco1: DTMF On"))
         else:
             Cisco1_Data['DTMF'] = False
             ADialDot.SetText('?')
+            BDialDot.SetText('?')
             ABtnVC1DTMF.SetState(0)
+            BBtnVC1DTMF.SetState(0)
             print("Touch 1: {0}".format("Cisco1: DTMF Off"))
     #
-    elif button is ABtnVC1ContenOn:
-        GroupContentA.SetCurrent(ABtnVC1ContenOn)
+    elif button.ID == 2145:
+        GroupContentA1.SetCurrent(ABtnVC1ContenOn)
+        GroupContentA2.SetCurrent(BBtnVC1ContenOn)
         Cisco1.Set('Presentation', '2', {'Instance': '1'})
-        print("Touch 1: {0}".format("Cisco1: Content On"))
+        print("Touch: {0}".format("Cisco1: Content On"))
     #
-    elif button is ABtnVC1ContenOff:
-        GroupContentA.SetCurrent(ABtnVC1ContenOff)
+    elif button.ID == 2146:
+        GroupContentA1.SetCurrent(ABtnVC1ContenOff)
+        GroupContentA2.SetCurrent(BBtnVC1ContenOff)
         Cisco1.Set('Presentation', 'Stop', {'Instance': '1'})
-        print("Touch 1: {0}".format("Cisco1: Content Off"))
+        print("Touch: {0}".format("Cisco1: Content Off"))
     #
-    elif button is ABtnVC1Answer:
+    elif button.ID == 400:
         TLP1.HidePopup('Cisco1.Call')
+        TLP2.HidePopup('Cisco1.Call')
         Cisco1.Set('Hook', 'Accept', {'Number':'','Protocol': 'H323'})
-        print("Touch 1: {0}".format("Cisco1: Answer"))
+        print("Touch: {0}".format("Cisco1: Answer"))
     #
-    elif button is ABtnVC1Reject:
+    elif button.ID == 401:
         TLP1.HidePopup('Cisco1.Call')
+        TLP2.HidePopup('Cisco1.Call')
         Cisco1.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
-        print("Touch 1: {0}".format("Cisco1: Reject"))
+        print("Touch: {0}".format("Cisco1: Reject"))
     pass
 
 # ACTIONS - CISCO 2 MODE -----------------------------------------------------
@@ -3387,7 +3424,7 @@ def PrintDialerVC2(btn_name):
         dialerVC2 = dialerVC2[:-1]     #Remove the last char of the string
         Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
         ALblVC2Dial.SetText(dialerVC2)  #Send the string to GUI Label
-
+        BLblVC2Dial.SetText(dialerVC2)
     else:                            #If the user push a [*#0-9] button
         number = str(btn_name[4])    #Extract the valid character of BTN name
         if Cisco2_Data['DTMF'] == True:
@@ -3399,6 +3436,7 @@ def PrintDialerVC2(btn_name):
             dialerVC2 += number           #Append the last char to the string
             Cisco2_Data['Dial'] = dialerVC2 #Asign the string to the data dictionary
             ALblVC2Dial.SetText(dialerVC2)  #Send the string to GUI Label
+            BLblVC2Dial.SetText(dialerVC2)
     pass
 
 @event(VC2Dial, ButtonEventList)
@@ -3417,47 +3455,54 @@ def VC2_dial_events(button, state):
 def VC_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ABtnVC2Call:
+    if button.ID == 2113:
         if Cisco2.ReadStatus('CallStatus', {'Call':'1'}) == 'Connected':
             Cisco2.Set('Hook', 'Disconnect 1', {'Number':'','Protocol': 'H323'})
             ALblVC2Dial.SetText('')
+            BLblVC2Dial.SetText('')
             dialerVC2 = ''
             print("Touch 1: {0}".format("Cisco2: Hangup"))
         else:
             Cisco2.Set('Hook', 'Dial', {'Number':Cisco2_Data['Dial'], 'Protocol':'H323'})
             print("Touch 1: {0}".format("Cisco2: Call"))
     #
-    elif button is ABtnVC2DTMF:
+    elif button.ID == 2112:
         if Cisco2_Data['DTMF'] == False:
             Cisco2_Data['DTMF'] = True
             A2DialDot.SetText('*')
+            B2DialDot.SetText('*')
             ABtnVC2DTMF.SetState(1)
-            print("Touch 1: {0}".format("Cisco2: DTMF On"))
+            BBtnVC2DTMF.SetState(1)
+            print("Touch: {0}".format("Cisco2: DTMF On"))
         else:
             Cisco2_Data['DTMF'] = False
             A2DialDot.SetText('?')
+            B2DialDot.SetText('?')
             ABtnVC2DTMF.SetState(0)
-            print("Touch 1: {0}".format("Cisco2: DTMF Off"))
+            BBtnVC2DTMF.SetState(0)
+            print("Touch: {0}".format("Cisco2: DTMF Off"))
     #
-    elif button is ABtnVC2ContenOn:
-        GroupContentB.SetCurrent(ABtnVC2ContenOn)
+    elif button.ID == 2115:
+        GroupContentB1.SetCurrent(ABtnVC2ContenOn)
+        GroupContentB2.SetCurrent(BBtnVC2ContenOn)
         Cisco2.Set('Presentation', '2', {'Instance': '1'})
-        print("Touch 1: {0}".format("Cisco2: Content On"))
+        print("Touch: {0}".format("Cisco2: Content On"))
     #
-    elif button is ABtnVC2ContenOff:
-        GroupContentB.SetCurrent(ABtnVC2ContenOff)
+    elif button.ID == 2116:
+        GroupContentB1.SetCurrent(ABtnVC2ContenOff)
+        GroupContentB2.SetCurrent(BBtnVC2ContenOff)
         Cisco2.Set('Presentation', 'Stop', {'Instance': '1'})
-        print("Touch 1: {0}".format("Cisco2: Content Off"))
+        print("Touch: {0}".format("Cisco2: Content Off"))
     #
-    elif button is ABtnVC2Answer:
+    elif button.ID == 402:
         TLP1.HidePopup('Cisco2.Call')
         Cisco2.Set('Hook', 'Accept', {'Number':'','Protocol': 'H323'})
-        print("Touch 1: {0}".format("Cisco2: Answer"))
+        print("Touch: {0}".format("Cisco2: Answer"))
     #
-    elif button is ABtnVC2Reject:
+    elif button.ID == 403:
         TLP1.HidePopup('Cisco2.Call')
         Cisco2.Set('Hook', 'Reject', {'Number':'','Protocol': 'H323'})
-        print("Touch 1: {0}".format("Cisco2: Reject"))
+        print("Touch: {0}".format("Cisco2: Reject"))
     pass
 
 
@@ -3564,16 +3609,18 @@ def PowerOffRoomAB():
 def PowerOff_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button is ABtnPowerA:
-        PowerOffRoomA()
-        print("Touch 1: {0}".format("PowerOff: Sala A"))
-    elif button is ABtnPowerB:
-        #PowerOffRoomB()
-        print("Touch 1: {0}".format("PowerOff: Sala B"))
-    elif button is ABtnPowerAB:
+    if button.ID == 420:
         #PowerOffRoomAB()
-        print("Touch 1: {0}".format("PowerOff: Sala A-B"))
+        print("Touch: {0}".format("PowerOff: Sala A-B"))
+    #
+    elif button.ID == 421:
+        #PowerOffRoomA()
+        print("Touch: {0}".format("PowerOff: Sala A"))
+    #
+    elif button.ID == 422:
+        #PowerOffRoomB()
+        print("Touch: {0}".format("PowerOff: Sala B"))
     pass
-## End Events Definitions-------------------------------------------------------
 
+## End Events Definitions-------------------------------------------------------
 Initialize()
