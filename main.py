@@ -1428,6 +1428,133 @@ def ReceiveXTP(command, value, qualifier):
             else:
                 ABtnSignal22.SetState(0)
                 BBtnSignal22.SetState(0)
+    #
+    elif command == 'OutputTieStatus':
+        if qualifier['Output'] == '21': #Recorder A (Extron SMP 111)
+            if qualifier['Tie Type'] == 'Video':
+                if value == '1':
+                    ALblRecA1.SetText('S1: PC Left')
+                    BLblRecA1.SetText('S1: PC Left')
+                elif value == '2':
+                    ALblRecA1.SetText('S1: PC Right')
+                    BLblRecA1.SetText('S1: PC Right')
+                elif value == '3':
+                    ALblRecA1.SetText('S1: PC Stage')
+                    BLblRecA1.SetText('S1: PC Stage')
+                elif value == '4':
+                    ALblRecA1.SetText('S1: PC Back')
+                    BLblRecA1.SetText('S1: PC Back')
+                elif value == '5':
+                    ALblRecA1.SetText('S2: PC Left')
+                    BLblRecA1.SetText('S2: PC Left')
+                elif value == '6':
+                    ALblRecA1.SetText('S2: PC Right')
+                    BLblRecA1.SetText('S2: PC Right')
+                elif value == '7':
+                    ALblRecA1.SetText('S2: PC Stage')
+                    BLblRecA1.SetText('S2: PC Stage')
+                elif value == '8':
+                    ALblRecA1.SetText('S2: PC Back')
+                    BLblRecA1.SetText('S2: PC Back')
+                elif value == '9':
+                    ALblRecA1.SetText('S1: PTZ Front')
+                    BLblRecA1.SetText('S1: PTZ Front')
+                elif value == '10':
+                    ALblRecA1.SetText('S1: PTZ Back')
+                    BLblRecA1.SetText('S1: PTZ Back')
+                elif value == '11':
+                    ALblRecA1.SetText('S2: PTZ Front')
+                    BLblRecA1.SetText('S2: PTZ Front')
+                elif value == '12':
+                    ALblRecA1.SetText('S2: PTZ Back')
+                    BLblRecA1.SetText('S2: PTZ Back')
+                elif value == '13':
+                    ALblRecA1.SetText('PC Cabina A')
+                    BLblRecA1.SetText('PC Cabina A')
+                elif value == '14':
+                    ALblRecA1.SetText('PC Cabina B')
+                    BLblRecA1.SetText('PC Cabina B')
+                elif value == '17':
+                    ALblRecA1.SetText('Cisco A')
+                    BLblRecA1.SetText('Cisco A')
+                elif value == '18':
+                    ALblRecA1.SetText('Cisco B')
+                    BLblRecA1.SetText('Cisco B')
+                elif value == '19':
+                    ALblRecA1.SetText('ShareLink A')
+                    BLblRecA1.SetText('ShareLink A')
+                elif value == '20':
+                    ALblRecA1.SetText('ShareLink B')
+                    BLblRecA1.SetText('ShareLink B')
+                elif value == '21':
+                    ALblRecA1.SetText('Tricaster A')
+                    BLblRecA1.SetText('Tricaster A')
+                elif value == '22':
+                    ALblRecA1.SetText('Tricaster B')
+                    BLblRecA1.SetText('Tricaster B')
+        #
+        elif qualifier['Output'] == '22': #Recorder B (Extron SMP 111)
+            if qualifier['Tie Type'] == 'Video':
+                if value == '1':
+                    ALblRecB1.SetText('S1: PC Left')
+                    BLblRecB1.SetText('S1: PC Left')
+                elif value == '2':
+                    ALblRecB1.SetText('S1: PC Right')
+                    BLblRecB1.SetText('S1: PC Right')
+                elif value == '3':
+                    ALblRecB1.SetText('S1: PC Stage')
+                    BLblRecB1.SetText('S1: PC Stage')
+                elif value == '4':
+                    ALblRecB1.SetText('S1: PC Back')
+                    BLblRecB1.SetText('S1: PC Back')
+                elif value == '5':
+                    ALblRecB1.SetText('S2: PC Left')
+                    BLblRecB1.SetText('S2: PC Left')
+                elif value == '6':
+                    ALblRecB1.SetText('S2: PC Right')
+                    BLblRecB1.SetText('S2: PC Right')
+                elif value == '7':
+                    ALblRecB1.SetText('S2: PC Stage')
+                    BLblRecB1.SetText('S2: PC Stage')
+                elif value == '8':
+                    ALblRecB1.SetText('S2: PC Back')
+                    BLblRecB1.SetText('S2: PC Back')
+                elif value == '9':
+                    ALblRecB1.SetText('S1: PTZ Front')
+                    BLblRecB1.SetText('S1: PTZ Front')
+                elif value == '10':
+                    ALblRecB1.SetText('S1: PTZ Back')
+                    BLblRecB1.SetText('S1: PTZ Back')
+                elif value == '11':
+                    ALblRecB1.SetText('S2: PTZ Front')
+                    BLblRecB1.SetText('S2: PTZ Front')
+                elif value == '12':
+                    ALblRecB1.SetText('S2: PTZ Back')
+                    BLblRecB1.SetText('S2: PTZ Back')
+                elif value == '13':
+                    ALblRecB1.SetText('PC Cabina A')
+                    BLblRecB1.SetText('PC Cabina A')
+                elif value == '14':
+                    ALblRecB1.SetText('PC Cabina B')
+                    BLblRecB1.SetText('PC Cabina B')
+                elif value == '17':
+                    ALblRecB1.SetText('Cisco A')
+                    BLblRecB1.SetText('Cisco A')
+                elif value == '18':
+                    ALblRecB1.SetText('Cisco B')
+                    BLblRecB1.SetText('Cisco B')
+                elif value == '19':
+                    ALblRecB1.SetText('ShareLink A')
+                    BLblRecB1.SetText('ShareLink A')
+                elif value == '20':
+                    ALblRecB1.SetText('ShareLink B')
+                    BLblRecB1.SetText('ShareLink B')
+                elif value == '21':
+                    ALblRecB1.SetText('Tricaster A')
+                    BLblRecB1.SetText('Tricaster A')
+                elif value == '22':
+                    ALblRecB1.SetText('Tricaster B')
+                    BLblRecB1.SetText('Tricaster B')
     pass
 
 def ReceiveTesira(command, value, qualifier):
