@@ -1718,9 +1718,17 @@ def ReceiveCisco1(command, value, qualifier):
         BLblinfo1VC1.SetText(value)
         #
         if value == 'Ringing':
-            TLP1.ShowPopup('Cisco1.Call')
+            if Room_Data['Mixed'] == True:
+                TLP1.ShowPopup('Cisco1.Call')
+                TLP2.ShowPopup('Cisco1.Call')
+            else:
+                TLP1.ShowPopup('Cisco1.Call')
         else:
-            TLP1.HidePopup('Cisco1.Call')
+            if Room_Data['Mixed'] == True:
+                TLP1.HidePopup('Cisco1.Call')
+                TLP2.HidePopup('Cisco1.Call')
+            else:
+                TLP1.HidePopup('Cisco1.Call')
         #
         if value == 'Idle' or value == 'Disconnecting':
             ABtnVC1Call.SetState(0)
@@ -1777,9 +1785,17 @@ def ReceiveCisco2(command, value, qualifier):
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
         #
         if value == 'Ringing':
-            TLP1.ShowPopup('Cisco2.Call')
+            if Room_Data['Mixed'] == True:
+                TLP1.ShowPopup('Cisco2.Call')
+                TLP2.ShowPopup('Cisco2.Call')
+            else:
+                TLP2.ShowPopup('Cisco2.Call')
         else:
-            TLP1.HidePopup('Cisco2.Call')
+            if Room_Data['Mixed'] == True:
+                TLP1.HidePopup('Cisco2.Call')
+                TLP2.HidePopup('Cisco2.Call')
+            else:
+                TLP2.HidePopup('Cisco2.Call')
         #
         if value == 'Idle' or value == 'Disconnecting':
             ABtnVC2Call.SetState(0)
