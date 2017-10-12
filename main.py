@@ -354,9 +354,12 @@ ALblinfo1RecB = Label(TLP1, 321)
 ALblPython    = Label(TLP1, 326)
 
 # Mode PowerOff ------------------------------------------------------------------
-ABtnPowerAB   = Button(TLP1, 420)
-ABtnPowerA    = Button(TLP1, 421)
-ABtnPowerB    = Button(TLP1, 422)
+ABtnPowerAB   = Button(TLP1, 420, holdTime=1, repeatTime=1,)
+ABtnPowerA    = Button(TLP1, 421, holdTime=1, repeatTime=1,)
+ABtnPowerB    = Button(TLP1, 422, holdTime=1, repeatTime=1,)
+ALblPowerAB   = Label(TLP1, 430)
+ALblPowerA    = Label(TLP1, 431)
+ALblPowerB    = Label(TLP1, 432)
 
 # TouchPanel B -----------------------------------------------------------------
 # Mode Index -------------------------------------------------------------------
@@ -621,10 +624,12 @@ BLblinfo1RecB = Label(TLP2, 321)
 BLblPython    = Label(TLP2, 326)
 
 # Mode PowerOff ------------------------------------------------------------------
-BBtnPowerAB   = Button(TLP2, 420)
-BBtnPowerA    = Button(TLP2, 421)
-BBtnPowerB    = Button(TLP2, 422)
-
+BBtnPowerAB   = Button(TLP2, 420, repeatTime=1, holdTime=3)
+BBtnPowerA    = Button(TLP2, 421, repeatTime=1, holdTime=3)
+BBtnPowerB    = Button(TLP2, 422, repeatTime=1, holdTime=3)
+BLblPowerAB   = Label(TLP2, 430)
+BLblPowerA    = Label(TLP2, 431)
+BLblPowerB    = Label(TLP2, 432)
 
 # BUTTON GROUPING --------------------------------------------------------------
 # Mode Index
@@ -753,6 +758,14 @@ def Initialize():
     global input
     output = ''
     input = ''
+ 
+    ## PowerCounter Data Init
+    global PowerCounterAB
+    global PowerCounterA
+    global PowerCounterB
+    PowerCounterAB = 4
+    PowerCounterA = 4
+    PowerCounterB = 4
 
     ## Cisco1 Dial PAGE
     global dialerVC  ## To access the Dial String variable in all program
@@ -1612,6 +1625,7 @@ def ReceiveProjectorA(command, value, qualifier):
     #
     elif command == 'Power':
         ALblinfo1ProjA.SetText('Power ' + value)
+        BLblinfo1ProjA.SetText('Power ' + value)
         print('--- Parsing Projector A: (Power ' +  value + ' )')
         if value == 'On':
             ABtnPwrProjA.SetState(1)
@@ -1651,6 +1665,7 @@ def ReceiveProjectorB(command, value, qualifier):
     #
     elif command == 'Power':
         ALblinfo1ProjB.SetText('Power ' + value)
+        BLblinfo1ProjB.SetText('Power ' + value)
         print('--- Parsing Projector B: (Power ' +  value + ' )')
         if value == 'On':
             ABtnPwrProjB.SetState(1)
@@ -2532,6 +2547,7 @@ def LCDLob2_PhysicalConex(interface, state):
         ABtnLanLCDLob2.SetState(0)
         print('Socket Disconnected: LCD Lob2')
     pass
+
 @event(LCDPod1, 'Disconnected')
 @event(LCDPod1, 'Connected')
 def LCDPod1_PhysicalConex(interface, state):
@@ -2580,16 +2596,26 @@ Cisco2_Data = {
 }
 
 # ACTIONS - INDEX PAGE MODE ----------------------------------------------------
-@event(GroupModeIndex, 'Pressed')
+@event(GroupModeIndex, ButtonEventList)
 def Index(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    if button.Host.DeviceAlias == 'TouchPanelA':
-        TLP1.ShowPage('Main')
-        print("Touch 1: {0}".format("Index"))
+    if state == 'Pressed':
+        button.SetState(1)
+        #
+        if Room_Data['Mixed'] == True:
+            TLP1.ShowPage('Main')
+            TLP2.ShowPage('Main')
+            print("Touch: {0}".format("Index"))
+        else:
+            if button.Host.DeviceAlias == 'TouchPanelA':
+                TLP1.ShowPage('Main')
+                print("Touch 1: {0}".format("Index"))
+            else:
+                TLP2.ShowPage('Main')
+                print("Touch 2: {0}".format("Index"))
     else:
-        TLP2.ShowPage('Main')
-        print("Touch 2: {0}".format("Index"))
+        button.SetState(0)
     pass
 
 def FunctionMixRoom():
@@ -2605,6 +2631,13 @@ def FunctionMixRoom():
     BBtnRoom2.SetState(1)
     GroupRoomA.SetCurrent(ARoomMixed)
     GroupRoomB.SetCurrent(BRoomMixed)
+    # TouchPanel Actions
+    TLP1.ShowPopup('Room')
+    TLP2.ShowPopup('Room')
+    GroupMainA.SetCurrent(ABtnRoom)
+    GroupMainB.SetCurrent(BBtnRoom)
+    ALblMain.SetText('Configuración de Sala')
+    BLblMain.SetText('Configuración de Sala')
     ## Notify to console
     print("Room Mixed")
     pass
@@ -2621,6 +2654,13 @@ def FunctionSplitRoom():
     BBtnRoom2.SetState(1)
     GroupRoomA.SetCurrent(ARoomSplit)
     GroupRoomB.SetCurrent(BRoomSplit)
+    # TouchPanel Actions
+    TLP1.ShowPopup('Room')
+    TLP2.ShowPopup('Room')
+    GroupMainA.SetCurrent(ABtnRoom)
+    GroupMainB.SetCurrent(BBtnRoom)
+    ALblMain.SetText('Configuración de Sala')
+    BLblMain.SetText('Configuración de Sala')
     ## Notify to console
     print("Room Split")
     pass
@@ -2628,19 +2668,13 @@ def FunctionSplitRoom():
 # ACTIONS - ROOM CONFIGURATION MODE --------------------------------------------
 ## Room Page
 @event(ModeRoom, 'Pressed')
-def Index(button, state):
+def Room(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     # Validate the Active TouchPanel
-    if button.Host.DeviceAlias == 'TouchPanelA':
-        if button is ARoomSplit:
-            FunctionSplitRoom()
-        else:
-            FunctionMixRoom()
+    if button.ID == 241:
+        FunctionMixRoom()
     else:
-        if button is BRoomSplit:
-            FunctionSplitRoom()
-        else:
-            FunctionMixRoom()
+        FunctionSplitRoom()
     pass
 
 # ACTIONS - MAIN OPERATION MODE ------------------------------------------------
@@ -3735,21 +3769,74 @@ def PowerOffRoomAB():
     TLP2.ShowPage('Index')
     pass
 
-@event(GroupPower, 'Pressed')
+@event(GroupPower, ButtonEventList)
 def PowerOff_Mode(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
+    global PowerCounterAB
+    global PowerCounterA
+    global PowerCounterB
+    #
     if button.ID == 420:
-        #PowerOffRoomAB()
-        print("Touch: {0}".format("PowerOff: Sala A-B"))
+        if state == 'Pressed':
+            PowerCounterAB = 3
+            ALblPowerAB.SetText(str(PowerCounterAB))
+            BLblPowerAB.SetText(str(PowerCounterAB))
+        #
+        elif state == 'Repeated':
+            PowerCounterAB -= 1
+            ALblPowerAB.SetText(str(PowerCounterAB))
+            BLblPowerAB.SetText(str(PowerCounterAB))
+            if PowerCounterAB == 0:
+                #PowerOffRoomAB()
+                TLP1.ShowPage('Index')
+                TLP2.ShowPage('Index')
+                print("Touch: {0}".format("PowerOff: Sala A-B"))
+        #
+        elif state == 'Released' or state == 'Tapped':
+            PowerCounterAB = 0
+            ALblPowerAB.SetText('..')
+            BLblPowerAB.SetText('..')
     #
     elif button.ID == 421:
-        #PowerOffRoomA()
-        print("Touch: {0}".format("PowerOff: Sala A"))
+        if state == 'Pressed':
+            PowerCounterA = 3
+            ALblPowerA.SetText(str(PowerCounterA))
+            BLblPowerA.SetText(str(PowerCounterA))
+        #
+        elif state == 'Repeated':
+            PowerCounterA -= 1
+            ALblPowerA.SetText(str(PowerCounterA))
+            BLblPowerA.SetText(str(PowerCounterA))
+            if PowerCounterA == 0:
+                #PowerOffRoomA()
+                TLP1.ShowPage('Index')
+                print("Touch: {0}".format("PowerOff: Sala 1"))
+        #
+        elif state == 'Released' or state == 'Tapped':
+            PowerCounterA = 0
+            ALblPowerA.SetText('..')
+            BLblPowerA.SetText('..')
     #
     elif button.ID == 422:
-        #PowerOffRoomB()
-        print("Touch: {0}".format("PowerOff: Sala B"))
+        if state == 'Pressed':
+            PowerCounterB = 3
+            ALblPowerB.SetText(str(PowerCounterB))
+            BLblPowerB.SetText(str(PowerCounterB))
+        #
+        elif state == 'Repeated':
+            PowerCounterB -= 1
+            ALblPowerB.SetText(str(PowerCounterB))
+            BLblPowerB.SetText(str(PowerCounterB))
+            if PowerCounterB == 0:
+                #PowerOffRoomB()
+                TLP2.ShowPage('Index')
+                print("Touch: {0}".format("PowerOff: Sala 2"))
+        #
+        elif state == 'Released' or state == 'Tapped':
+            PowerCounterB = 0
+            ALblPowerB.SetText('..')
+            BLblPowerB.SetText('..')
     pass
 
 ## End Events Definitions-------------------------------------------------------
