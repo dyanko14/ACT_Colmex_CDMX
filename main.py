@@ -1,9 +1,10 @@
-"""--------------------------------------------------------------------------
+global MSJ
+MSJ = """----------------------------------------------------------------------
  Business   | Asesores y Consultores en Tecnología S.A. de C.V.
  Programmer | Dyanko Cisneros Mendoza
  Customer   | Colegio de México (COLMEX)
  Project    | Alfonso Reyes Auditorium
- Version    | 0.8 ---------------------------------------------------------"""
+ Version    | 0.9 ---------------------------------------------------------"""
 
 ## Begin ControlScript Import -------------------------------------------------
 from extronlib import event, Version
@@ -661,11 +662,16 @@ ProjeccionB = [ABtnPwrProjB, ABtnScreenBUp, ABtnScreenBDown,
                BBtnElevBUp, BBtnElevBDown, B2LCDCab1, B2LCDCab2,
                B2LCDCab3, B2LCDLobby, BLCDPodium2]
 #
-GroupScreenA = MESet([ABtnScreenAUp, ABtnScreenADown])
-GroupElevatA = MESet([ABtnElevAUp, ABtnElevADown])
+GroupScreenA1 = MESet([ABtnScreenAUp, ABtnScreenADown])
+GroupScreenA2 = MESet([BBtnScreenAUp, BBtnScreenADown])
+GroupElevatA1 = MESet([ABtnElevAUp, ABtnElevADown])
+GroupElevatA2 = MESet([BBtnElevAUp, BBtnElevADown])
 #
-GroupScreen2A = MESet([ABtnScreenBUp, ABtnScreenBDown])
-GroupElevat2A = MESet([ABtnElevBUp, ABtnElevBDown])
+GroupScreenB1 = MESet([ABtnScreenBUp, ABtnScreenBDown])
+GroupScreenB2 = MESet([BBtnScreenBUp, BBtnScreenBDown])
+GroupElevatB1 = MESet([ABtnElevBUp, ABtnElevBDown])
+GroupElevatB2 = MESet([BBtnElevBUp, BBtnElevBDown])
+
 # Mode Recording---------------------------------------------------------------
 GroupModeRec = [ABtnRecARecord, ABtnRecAStop, ABtnRecAPause,
                 ABtnRecBRecord, ABtnRecBStop, ABtnRecBPause,
@@ -784,8 +790,9 @@ def Initialize():
 
     ## Notify to console
     print('System Initialize')
-    ALblPython.SetText('Extron API ' + Version()) #Print the API Version in GUI: TLP2
-    BLblPython.SetText('Extron API ' + Version()) #Print the API Version in GUI: TLP2
+    ALblPython.SetText('Extron API v' + Version()) #Print the API Version in GUI: TLP1
+    BLblPython.SetText('Extron API v' + Version()) #Print the API Version in GUI: TLP2
+    print(MSJ)
     pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
@@ -1615,13 +1622,13 @@ def ReceiveProjectorA(command, value, qualifier):
         if value == 'On':
             ABtnPwrProjA.SetState(1)
             BBtnPwrProjA.SetState(1)
-            #Room1ElevatorDown()
-            #Room1ScreenDown()
+            Room1ElevatorDown()
+            Room1ScreenDown()
         else:
             ABtnPwrProjA.SetState(0)
             BBtnPwrProjA.SetState(0)
-            #Room1ElevatorUp()
-            #Room1ScreenUp()
+            Room1ElevatorUp()
+            Room1ScreenUp()
     #
     elif command == 'Input':
         ALblinfo2ProjA.SetText(value)
@@ -1655,13 +1662,13 @@ def ReceiveProjectorB(command, value, qualifier):
         if value == 'On':
             ABtnPwrProjB.SetState(1)
             BBtnPwrProjB.SetState(1)
-            #Room2ElevatorDown()
-            #Room2ScreenDown()
+            Room2ElevatorDown()
+            Room2ScreenDown()
         else:
             ABtnPwrProjB.SetState(0)
             BBtnPwrProjB.SetState(0)
-            #Room2ElevatorUp()
-            #Room2ScreenUp()
+            Room2ElevatorUp()
+            Room2ScreenUp()
     #
     elif command == 'Input':
         ALblinfo2ProjB.SetText(value)
@@ -3216,6 +3223,10 @@ def Room1ScreenUp():
     AScreenDw.SetState('Open')
     #AScreenUp.SetState('Close')
     AScreenUp.Pulse(2)
+
+    # Button Feedback
+    GroupScreenA1.SetCurrent(ABtnScreenAUp)
+    GroupScreenA2.SetCurrent(BBtnScreenAUp)
     pass
 
 def Room1ScreenDown():
@@ -3223,18 +3234,28 @@ def Room1ScreenDown():
     AScreenUp.SetState('Open')
     #AScreenDw.SetState('Close')
     AScreenDw.Pulse(2)
+
+    # Button Feedback
+    GroupScreenA1.SetCurrent(ABtnScreenADown)
+    GroupScreenA2.SetCurrent(BBtnScreenADown)
     pass
 
 def Room1ElevatorUp():
     """Control of Relays"""
     AElevatDw.SetState('Open')
     AElevatUp.SetState('Close')
+    # Button Feedback
+    GroupElevatA1.SetCurrent(ABtnElevAUp)
+    GroupElevatA2.SetCurrent(BBtnElevAUp)
     pass
 
 def Room1ElevatorDown():
     """Control of Relays"""
     AElevatUp.SetState('Open')
     AElevatDw.SetState('Close')
+    # Button Feedback
+    GroupElevatA1.SetCurrent(ABtnElevADown)
+    GroupElevatA2.SetCurrent(BBtnElevADown)
     pass
 
 def Room2ScreenUp():
@@ -3242,6 +3263,10 @@ def Room2ScreenUp():
     A2ScreenDw.SetState('Open')
     #A2ScreenUp.SetState('Close')
     A2ScreenUp.Pulse(2)
+
+    # Button Feedback
+    GroupScreenB1.SetCurrent(ABtnScreenBUp)
+    GroupScreenB2.SetCurrent(BBtnScreenBUp)
     pass
 
 def Room2ScreenDown():
@@ -3249,18 +3274,28 @@ def Room2ScreenDown():
     A2ScreenUp.SetState('Open')
     #A2ScreenDw.SetState('Close')
     A2ScreenDw.Pulse(2)
+
+    # Button Feedback
+    GroupScreenB1.SetCurrent(ABtnScreenBDown)
+    GroupScreenB2.SetCurrent(BBtnScreenBDown)
     pass
 
 def Room2ElevatorUp():
     """Control of Relays"""
     A2ElevatDw.SetState('Open')
     A2ElevatUp.SetState('Close')
+    # Button Feedback
+    GroupElevatB1.SetCurrent(ABtnElevBUp)
+    GroupElevatB2.SetCurrent(BBtnElevBUp)
     pass
 
 def Room2ElevatorDown():
     """Control of Relays"""
     A2ElevatUp.SetState('Open')
     A2ElevatDw.SetState('Close')
+    # Button Feedback
+    GroupElevatB1.SetCurrent(ABtnElevBDown)
+    GroupElevatB2.SetCurrent(BBtnElevBDown)
     pass
 
 # ACTIONS - DISPLAYS A MODE ----------------------------------------------------
@@ -3285,22 +3320,18 @@ def buttons_actions_displaysA(button, state):
             Room1ScreenDown()
     #
     elif button.ID == 31: #Screen A - Up
-        GroupScreenA.SetCurrent(ABtnScreenAUp)
         Room1ScreenUp()
         print("Touch: {0}".format("Screen 1: Up"))
     #
     elif button.ID == 32: #Screen A - Down
-        GroupScreenA.SetCurrent(ABtnScreenADown)
         Room1ScreenDown()
         print("Touch: {0}".format("Screen 1: Down"))
     #
     elif button.ID == 33: #Elevator A - Up
-        GroupElevatA.SetCurrent(ABtnElevAUp)
         Room1ElevatorUp()
         print("Touch: {0}".format("Elevator 1: Up"))
     #
     elif button.ID == 34: #Elevator A - Down
-        GroupElevatA.SetCurrent(ABtnElevADown)
         Room1ElevatorDown()
         print("Touch: {0}".format("Elevator 1: Down"))
     #
@@ -3380,22 +3411,18 @@ def buttons_actions_displaysB(button, state):
             Room2ScreenDown()
     #
     elif button.ID == 36: #Screen B - Up
-        GroupScreen2A.SetCurrent(ABtnScreenBUp)
         Room2ScreenUp()
         print("Touch 1: {0}".format("Screen 2: Up"))
     #
     elif button.ID == 37: #Screen B - Down
-        GroupScreen2A.SetCurrent(ABtnScreenBDown)
         Room2ScreenDown()
         print("Touch 1: {0}".format("Screen 2: Down"))
     #
     elif button.ID == 38: #Elevator B - Up
-        GroupElevat2A.SetCurrent(ABtnElevBUp)
         Room2ElevatorUp()
         print("Touch 1: {0}".format("Elevator 2: Up"))
     #
     elif button.ID == 39: #Elevator B - Down
-        GroupElevat2A.SetCurrent(ABtnElevBDown)
         Room2ElevatorDown()
         print("Touch 1: {0}".format("Elevator 2: Down"))
     #
@@ -3458,7 +3485,6 @@ def buttons_actions_displaysB(button, state):
 def buttons_actions_recording(button, state):
     """Are actions that occur with user interaction with TouchPanel"""
     #
-    print(button.ID)
     if button.ID == 61: #Rec
         RecA.Set('Record', 'Start')
         print("Touch: {0}".format("SMP11-A: Rec"))
@@ -3790,7 +3816,7 @@ def buttons_actions_poweroff(button, state):
             ALblPowerAB.SetText(str(PowerCounterAB))
             BLblPowerAB.SetText(str(PowerCounterAB))
             if PowerCounterAB == 0:
-                #PowerOffRoomAB()
+                PowerOffRoomAB()
                 TLP1.ShowPage('Index')
                 TLP2.ShowPage('Index')
                 print("Touch: {0}".format("PowerOff: Sala A-B"))
@@ -3811,7 +3837,7 @@ def buttons_actions_poweroff(button, state):
             ALblPowerA.SetText(str(PowerCounterA))
             BLblPowerA.SetText(str(PowerCounterA))
             if PowerCounterA == 0:
-                #PowerOffRoomA()
+                PowerOffRoomA()
                 TLP1.ShowPage('Index')
                 print("Touch: {0}".format("PowerOff: Sala 1"))
         #
@@ -3831,7 +3857,7 @@ def buttons_actions_poweroff(button, state):
             ALblPowerB.SetText(str(PowerCounterB))
             BLblPowerB.SetText(str(PowerCounterB))
             if PowerCounterB == 0:
-                #PowerOffRoomB()
+                PowerOffRoomB()
                 TLP2.ShowPage('Index')
                 print("Touch: {0}".format("PowerOff: Sala 2"))
         #
