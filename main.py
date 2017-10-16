@@ -961,7 +961,7 @@ def QueryCisco1():
     Cisco1_Queue.rotate(-1)
     Cisco1_PollingWait.Restart()
     #
-Cisco1_PollingWait = Wait(1, QueryCisco1)
+Cisco1_PollingWait = Wait(0.5, QueryCisco1)
 
 def QueryCisco2():
     """This send Query commands to device every 1s"""
@@ -970,7 +970,7 @@ def QueryCisco2():
     Cisco2_Queue.rotate(-1)
     Cisco2_PollingWait.Restart()
     #
-Cisco2_PollingWait = Wait(1, QueryCisco2)
+Cisco2_PollingWait = Wait(0.5, QueryCisco2)
 
 def QueryRecA():
     """This send Query commands to device every 1s"""
@@ -3223,6 +3223,8 @@ def Room1ScreenUp():
     AScreenDw.SetState('Open')
     #AScreenUp.SetState('Close')
     AScreenUp.Pulse(2)
+    AScreenUp.Pulse(2)
+    AScreenUp.Pulse(2)
 
     # Button Feedback
     GroupScreenA1.SetCurrent(ABtnScreenAUp)
@@ -3233,6 +3235,8 @@ def Room1ScreenDown():
     """Control of Relays"""
     AScreenUp.SetState('Open')
     #AScreenDw.SetState('Close')
+    AScreenDw.Pulse(2)
+    AScreenDw.Pulse(2)
     AScreenDw.Pulse(2)
 
     # Button Feedback
@@ -3263,6 +3267,8 @@ def Room2ScreenUp():
     A2ScreenDw.SetState('Open')
     #A2ScreenUp.SetState('Close')
     A2ScreenUp.Pulse(2)
+    A2ScreenUp.Pulse(2)
+    A2ScreenUp.Pulse(2)
 
     # Button Feedback
     GroupScreenB1.SetCurrent(ABtnScreenBUp)
@@ -3273,6 +3279,8 @@ def Room2ScreenDown():
     """Control of Relays"""
     A2ScreenUp.SetState('Open')
     #A2ScreenDw.SetState('Close')
+    A2ScreenDw.Pulse(2)
+    A2ScreenDw.Pulse(2)
     A2ScreenDw.Pulse(2)
 
     # Button Feedback
