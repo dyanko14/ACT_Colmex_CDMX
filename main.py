@@ -1,5 +1,4 @@
-global MSJ
-MSJ = """----------------------------------------------------------------------
+"""----------------------------------------------------------------------------
  Business   | Asesores y Consultores en Tecnología S.A. de C.V.
  Programmer | Dyanko Cisneros Mendoza
  Customer   | Colegio de México (COLMEX)
@@ -36,41 +35,59 @@ import chri_vp_D13HDHS_D13WUHS_v1_0_2_0 as ModuleChristie
 import extr_sm_SMP_111_v1_1_0_0 as ModuleSMP111
 import smsg_display_LHxxQMFPLGCKR_Series_v1_0_0_0 as ModuleSamsung
 import biam_dsp_TesiraSeries_v1_5_20_0 as ModuleTesira
-import csco_vtc_SX_Series_CE82_v1_1_0_2 as ModuleCisco
+import csco_vtc_SX_Series_CE82_v1_1_0_2 as ModuleCisco1
+import csco_vtc_SX_Series_CE82_v1_1_0_2_ as ModuleCisco2
 
 # INSTANCES OF MODULES --------------------------------------------------------
 # Here I create instances of each physical device with each Python module
 # Video Server
 XTP = ModuleXTP.EthernetClass('172.16.241.5', 23, Model='XTP II CrossPoint 3200')
 XTP.devicePassword = 'SWExtronXTP'
+XTP.Connect(timeout=5)
 # Audio Server
 Tesira = ModuleTesira.EthernetClass('172.16.241.100', 23, Model='Tesira SERVER-IO')
+Tesira.Connect(timeout=5)
 # Projectors
 ProjA = ModuleChristie.EthernetClass('172.16.240.201', 3002, Model='D13WU-HS')
+ProjA.Connect(timeout=5)
 ProjB = ModuleChristie.EthernetClass('172.16.240.200', 3002, Model='D13WU-HS')
+ProjB.Connect(timeout=5)
 # Recorders
 RecA = ModuleSMP111.EthernetClass('172.16.241.6', 23, Model='SMP 111')
 RecA.devicePassword = 'R3cSala1'
+RecA.Connect(timeout=5)
 RecB = ModuleSMP111.EthernetClass('172.16.241.7', 23, Model='SMP 111')
 RecB.devicePassword = 'R3cSala2'
+RecB.Connect(timeout=5)
 # Displays
 Monitor1 = IRInterface(IPCP, 'IRS1', 'Samsung.eir') #Infrarred Port 1
 Monitor2 = IRInterface(IPCP, 'IRS2', 'Samsung.eir') #Infrarred Port 2
 LCDCab1 = ModuleSamsung.EthernetClass('172.16.241.24', 1515, Model='LH55QMFPLGC/KR')
+LCDCab1.Connect(timeout=5)
 LCDCab2 = ModuleSamsung.EthernetClass('172.16.241.25', 1515, Model='LH55QMFPLGC/KR')
+LCDCab2.Connect(timeout=5)
 LCDCab3 = ModuleSamsung.EthernetClass('172.16.241.26', 1515, Model='LH55QMFPLGC/KR')
+LCDCab3.Connect(timeout=5)
 LCDCab4 = ModuleSamsung.EthernetClass('172.16.241.27', 1515, Model='LH55QMFPLGC/KR')
+LCDCab4.Connect(timeout=5)
 LCDPod1 = ModuleSamsung.EthernetClass('172.16.241.28', 1515, Model='LH55QMFPLGC/KR')
+LCDPod1.Connect(timeout=5)
 LCDPod2 = ModuleSamsung.EthernetClass('172.16.241.29', 1515, Model='LH55QMFPLGC/KR')
+LCDPod2.Connect(timeout=5)
 LCDLob1 = ModuleSamsung.EthernetClass('172.16.241.30', 1515, Model='LH55QMFPLGC/KR')
+LCDLob1.Connect(timeout=5)
 LCDLob2 = ModuleSamsung.EthernetClass('172.16.241.31', 1515, Model='LH55QMFPLGC/KR')
+LCDLob2.Connect(timeout=5)
 # Videoconference Códecs
-Cisco1 = ModuleCisco.EthernetClass('172.16.240.87', 23, Model='SX20 CE8.2.X')
-Cisco1.deviceUsername = 'admin'
-Cisco1.devicePassword = 'auditc0lm3xS1'
-Cisco2 = ModuleCisco.EthernetClass('172.16.240.88', 23, Model='SX20 CE8.2.X')
-Cisco2.deviceUsername = 'admin'
-Cisco2.devicePassword = 'auditc0lm3xS2'
+Cisco1 = ModuleCisco1.EthernetClass('172.16.240.87', 23, Model='SX20 CE8.2.X')
+Cisco1.deviceName = 'admin'
+Cisco1.devicePassword = 'admin@2017'
+Cisco1.Connect(timeout=5)
+
+Cisco2 = ModuleCisco2.EthernetClass('172.16.240.88', 23, Model='SX20 CE8.2.X')
+Cisco2.deviceName = 'admin'
+Cisco2.devicePassword = 'admin@2017'
+Cisco2.Connect(timeout=5)    
 
 # PHYSICAL INTERFACES OF IPCP PROCESSOR ---------------------------------------
 # Here I create instances of each physical port in variables
@@ -718,27 +735,6 @@ ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 # INITIALIZE FUNCTION ---------------------------------------------------------
 def Initialize():
     """This is the last function that loads when starting the system"""
-    ## Open Ethernet Device Sockets
-    XTP.Connect(timeout=5)
-    Tesira.Connect(timeout=5)
-    #
-    ProjA.Connect(timeout=5)
-    ProjB.Connect(timeout=5)
-    #
-    RecA.Connect(timeout=5)
-    RecB.Connect(timeout=5)
-    #
-    LCDCab1.Connect(timeout=5)
-    LCDCab2.Connect(timeout=5)
-    LCDCab3.Connect(timeout=5)
-    LCDCab4.Connect(timeout=5)
-    LCDLob1.Connect(timeout=5)
-    LCDLob2.Connect(timeout=5)
-    LCDPod1.Connect(timeout=5)
-    LCDPod2.Connect(timeout=5)
-    #
-    Cisco1.Connect(timeout=5)
-    Cisco2.Connect(timeout=5)
 
     ## Initializing data for XTP
     global output #This is the output device selected by user
@@ -792,7 +788,6 @@ def Initialize():
     print('System Initialize')
     ALblPython.SetText('Extron API v' + Version()) #Print the API Version in GUI: TLP1
     BLblPython.SetText('Extron API v' + Version()) #Print the API Version in GUI: TLP2
-    print(MSJ)
     pass
 
 # RECONEX / QUERY LIST ---------------------------------------------------------
@@ -843,7 +838,7 @@ CISCO1_QUERY_LIST = [
     ('CallStatus', {'Call':'1'}),
     ('DisplayName', {'Call':'1'}),
     ('RemoteNumber', {'Call':'1'}),
-]
+    ]
 Cisco1_Queue = collections.deque(CISCO1_QUERY_LIST)
 
 CISCO2_QUERY_LIST = [
@@ -961,7 +956,7 @@ def QueryCisco1():
     Cisco1_Queue.rotate(-1)
     Cisco1_PollingWait.Restart()
     #
-Cisco1_PollingWait = Wait(0.5, QueryCisco1)
+Cisco1_PollingWait = Wait(1, QueryCisco1)
 
 def QueryCisco2():
     """This send Query commands to device every 1s"""
@@ -970,7 +965,7 @@ def QueryCisco2():
     Cisco2_Queue.rotate(-1)
     Cisco2_PollingWait.Restart()
     #
-Cisco2_PollingWait = Wait(0.5, QueryCisco2)
+Cisco2_PollingWait = Wait(1, QueryCisco2)
 
 def QueryRecA():
     """This send Query commands to device every 1s"""
@@ -1073,6 +1068,8 @@ def AttemptConnectXTP():
     result = XTP.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitXTP.Restart()
+    else:
+        XTP_PollingWait.Restart()
     pass
 reconnectWaitXTP = Wait(15, AttemptConnectXTP)
 
@@ -1084,6 +1081,8 @@ def AttemptConnectTesira():
     result = Tesira.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitTesira.Restart()
+    else:
+        Tesira_PollingWait.Restart()
     pass
 reconnectWaitTesira = Wait(15, AttemptConnectTesira)
 
@@ -1095,6 +1094,8 @@ def AttemptConnectProjectorA():
     result = ProjA.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitProjectorA.Restart()
+    else:
+        Projector_A_PollingWait.Restart()
     pass
 reconnectWaitProjectorA = Wait(15, AttemptConnectProjectorA)
 
@@ -1106,17 +1107,21 @@ def AttemptConnectProjectorB():
     result = ProjB.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitProjectorB.Restart()
+    else:
+        Projector_B_PollingWait.Restart()
     pass
 reconnectWaitProjectorB = Wait(15, AttemptConnectProjectorB)
 
 def AttemptConnectCisco1():
-    """Attempt to create a TCP connection to the LCD
+    """Attempt to create a TCP connection to the Device
        IF it fails, retry in 15 seconds
     """
     print('Attempting to connect Cisco 1')
     result = Cisco1.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitCisco1.Restart()
+    else:
+        Cisco1_PollingWait.Restart()
     pass
 reconnectWaitCisco1 = Wait(15, AttemptConnectCisco1)
 
@@ -1128,6 +1133,8 @@ def AttemptConnectCisco2():
     result = Cisco2.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitCisco2.Restart()
+    else:
+        Cisco2_PollingWait.Restart()
     pass
 reconnectWaitCisco2 = Wait(15, AttemptConnectCisco2)
 
@@ -1139,6 +1146,8 @@ def AttemptConnectRecA():
     result = RecA.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitRecA.Restart()
+    else:
+        RecA_PollingWait.Restart()
     pass
 reconnectWaitRecA = Wait(15, AttemptConnectRecA)
 
@@ -1150,6 +1159,8 @@ def AttemptConnectRecB():
     result = RecB.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitRecB.Restart()
+    else:
+        RecB_PollingWait.Restart()
     pass
 reconnectWaitRecB = Wait(15, AttemptConnectRecB)
 
@@ -1161,6 +1172,8 @@ def AttemptConnectLCDCab1():
     result = LCDCab1.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab1.Restart()
+    else:
+        LCDCab1_PollingWait.Restart()
     pass
 reconnectWaitLCDCab1 = Wait(15, AttemptConnectLCDCab1)
 
@@ -1172,6 +1185,8 @@ def AttemptConnectLCDCab2():
     result = LCDCab2.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab2.Restart()
+    else:
+        LCDCab2_PollingWait.Restart()
     pass
 reconnectWaitLCDCab2 = Wait(15, AttemptConnectLCDCab2)
 
@@ -1183,6 +1198,8 @@ def AttemptConnectLCDCab3():
     result = LCDCab3.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab3.Restart()
+    else:
+        LCDCab3_PollingWait.Restart()
     pass
 reconnectWaitLCDCab3 = Wait(15, AttemptConnectLCDCab3)
 
@@ -1194,6 +1211,8 @@ def AttemptConnectLCDCab4():
     result = LCDCab4.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDCab4.Restart()
+    else:
+        LCDCab4_PollingWait.Restart()
     pass
 reconnectWaitLCDCab4 = Wait(15, AttemptConnectLCDCab4)
 
@@ -1205,6 +1224,8 @@ def AttemptConnectLCDLob1():
     result = LCDLob1.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDLob1.Restart()
+    else:
+        LCDLob1_PollingWait.Restart()
     pass
 reconnectWaitLCDLob1 = Wait(15, AttemptConnectLCDLob1)
 
@@ -1216,6 +1237,8 @@ def AttemptConnectLCDLob2():
     result = LCDLob2.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDLob2.Restart()
+    else:
+        LCDLob2_PollingWait.Restart()
     pass
 reconnectWaitLCDLob2 = Wait(15, AttemptConnectLCDLob2)
 
@@ -1227,6 +1250,8 @@ def AttemptConnectLCDPod1():
     result = LCDPod1.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDPod1.Restart()
+    else:
+        LCDPod1_PollingWait.Restart()
     pass
 reconnectWaitLCDPod1 = Wait(15, AttemptConnectLCDPod1)
 
@@ -1238,6 +1263,8 @@ def AttemptConnectLCDPod2():
     result = LCDPod2.Connect(timeout=5)
     if result != 'Connected':
         reconnectWaitLCDPod2.Restart()
+    else:
+        LCDPod2_PollingWait.Restart()
     pass
 reconnectWaitLCDPod2 = Wait(15, AttemptConnectLCDPod2)
 
@@ -1692,6 +1719,7 @@ def ReceiveCisco1(command, value, qualifier):
             ABtnLanVC1.SetState(0)
             BBtnLanVC1.SetState(0)
         else:
+            SubscribeCisco1()
             ABtnLanVC1.SetState(1)
             BBtnLanVC1.SetState(1)
     #
@@ -1702,7 +1730,7 @@ def ReceiveCisco1(command, value, qualifier):
             GroupContentA2.SetCurrent(BBtnVC1ContenOn)
         elif value == 'Stop':
             GroupContentA1.SetCurrent(ABtnVC1ContenOff)
-            GroupContentA1.SetCurrent(BBtnVC1ContenOff)
+            GroupContentA2.SetCurrent(BBtnVC1ContenOff)
     #
     elif command == 'CallStatus':
         print('--- Parsing Cisco 2: (CallStatus ' +  value + ' )')
@@ -1759,6 +1787,7 @@ def ReceiveCisco2(command, value, qualifier):
             ABtnLanVC2.SetState(0)
             BBtnLanVC2.SetState(0)
         else:
+            SubscribeCisco2()
             ABtnLanVC2.SetState(1)
             BBtnLanVC2.SetState(1)
     #
@@ -2193,25 +2222,19 @@ def SubscribeXTP():
     XTP.SubscribeStatus('InputSignal', {'Input':'12'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'13'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'14'}, ReceiveXTP)
-    #XTP.SubscribeStatus('InputSignal', {'Input':'15'}, ReceiveXTP)
-    #XTP.SubscribeStatus('InputSignal', {'Input':'16'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'17'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'18'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'19'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'20'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'21'}, ReceiveXTP)
     XTP.SubscribeStatus('InputSignal', {'Input':'22'}, ReceiveXTP)
-    #XTP.SubscribeStatus('InputSignal', {'Input':'23'}, ReceiveXTP)
-    #XTP.SubscribeStatus('InputSignal', {'Input':'24'}, ReceiveXTP)
     ##
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'1', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'2', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'3', 'Tie Type':'Video'}, ReceiveXTP)
-    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'4', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'5', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'6', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'7', 'Tie Type':'Video'}, ReceiveXTP)
-    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'8', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'9', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'10', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'11', 'Tie Type':'Video'}, ReceiveXTP)
@@ -2226,8 +2249,6 @@ def SubscribeXTP():
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'20', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'21', 'Tie Type':'Video'}, ReceiveXTP)
     XTP.SubscribeStatus('OutputTieStatus', {'Output':'22', 'Tie Type':'Video'}, ReceiveXTP)
-    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'23', 'Tie Type':'Video'}, ReceiveXTP)
-    #XTP.SubscribeStatus('OutputTieStatus', {'Output':'24', 'Tie Type':'Video'}, ReceiveXTP)
     pass
 SubscribeXTP()
 #
@@ -2414,6 +2435,7 @@ def Cisco1_PhysicalConex(interface, state):
        AttemptConnectFunction"""
     if state == 'Connected':
         ABtnLanVC1.SetState(1)
+        SubscribeCisco1()
         reconnectWaitCisco1.Cancel()
     else:
         print('Socket Disconnected: Cisco1')
@@ -2429,6 +2451,7 @@ def Cisco2_PhysicalConex(interface, state):
        AttemptConnectFunction"""
     if state == 'Connected':
         ABtnLanVC2.SetState(1)
+        SubscribeCisco2()
         reconnectWaitCisco2.Cancel()
     else:
         print('Socket Disconnected: Cisco2')
