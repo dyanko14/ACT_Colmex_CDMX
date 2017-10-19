@@ -3,7 +3,7 @@
  Programmer | Dyanko Cisneros Mendoza
  Customer   | Colegio de México (COLMEX)
  Project    | Alfonso Reyes Auditorium
- Version    | 0.9 ---------------------------------------------------------"""
+ Version    | 1 ------------------------------------------------------------"""
 
 ## Begin ControlScript Import -------------------------------------------------
 from extronlib import event, Version
